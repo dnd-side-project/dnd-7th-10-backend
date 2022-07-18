@@ -55,4 +55,18 @@ jobs:
           file: ./Dockerfile
           push: true
           tags:
-            ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:latest         
+            ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:latest
+            
+##      - name: Docker pull in AWS
+##        uses: appleboy/ssh-action@master
+##        with:
+##          host:
+##         username:
+##          key:
+##          envs:
+##          script:
+##            docker login
+##            docker pull ${{secrets.DOCKER_USER}}/$REPO
+##            docker stop backend
+##            docker rm backend_server
+##            docker run -d -p 80:8080 audtncks2/spring-app
