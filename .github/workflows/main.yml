@@ -27,13 +27,17 @@ jobs:
         run : chmod +x gradlew
         
       - name: Build Gradle
-        run: ./gradlew build
+        run: ./gradlew clean build
         
       - name: Get Current Time
         uses: josStorer/get-current-time@v2.0.0
+        id: current-time
         with:
           format: YYYY-MM-DDTHH-mm-ss
           utcOffset: "+09:00"
+          
+      - name: Show Current Time
+        run: echo "CurrentTime=${{ steps.current-time.outputs.formattedTime }}"
         
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2.0.0
