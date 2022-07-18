@@ -45,4 +45,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags:
-            ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:latest         
