@@ -3,16 +3,12 @@ version: '3'
 services:
   nginx:
     restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
+    image: audtncks2/nginx
     ports:
       - "80:80"
     depends_on:
       - spring
   spring:
-    build:
-      dockerfile: Dockerfile
-      context: ./
+    image: audtncks2/spring-app
     ports:
       - "8080:8080"
