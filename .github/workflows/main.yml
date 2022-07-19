@@ -48,20 +48,23 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           
-      - name: Image Build and Push
+      - name: Spring Boot Image Build and Push
         uses: docker/build-push-action@v3.0.0
         with: 
-          context: .
-          file: ./Dockerfile
+          context: ./
+          file: Dockerfile
           push: true
           tags:
             ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:latest
       
-      - name: Generate Deploy Package
-        run: |
-          mkdir -p deploy
-          cp build/libs/*.jar deploy/
-          cd deploy && zip -r deploy.zip .
+      - name: Nginx Image Build and Push
+        uses: docker/build-push-action@v3.0.0
+        with:
+          context: ./nginx/
+          file: Dockerfile
+          push: true
+          tags:
+            ${{ secrets.DOCKERHUB_USERNAME }}/nginx:latest
       
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v20
@@ -72,4 +75,4 @@ jobs:
           region: ap-northeast-2
           application_name: dnd-7th-linkApp
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
-          deployment_package: deploy/deploy.zip     
+          
