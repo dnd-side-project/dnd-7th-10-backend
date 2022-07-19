@@ -8,5 +8,3 @@
 * Spring Configuration Processor
 * MariaDB Driver
 * Validation
-
-https://medium.com/ryanjang-devnotes/ci-cd-hands-on-github-actions-docker-hub-aws-ec2-ba09f80297e1
