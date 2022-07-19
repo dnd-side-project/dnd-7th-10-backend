@@ -59,8 +59,9 @@ jobs:
       
       - name: Generate Deploy Package
         run:
-          cp build/libs/*.jar deploy/application.jar
-          cd deploy && zip -r deploy.zip
+          mkdir deployment
+          cp build/libs/*.jar deployment/application.jar
+          cd deployment && zip -r deploy.zip
       
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v20
@@ -71,4 +72,4 @@ jobs:
           region: ap-northeast-2
           application_name: dnd-7th-linkApp
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
-          deployment_package: deploy/deploy.zip     
+          deployment_package: deployment/deploy.zip     
