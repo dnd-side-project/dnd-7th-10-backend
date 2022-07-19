@@ -59,8 +59,14 @@ jobs:
       
       - name: Generate Deploy Package
         run:
-          mkdir deployment
+          mkdir deploy
+          
+      - name: Generate2
+        run:
           cp build/libs/*.jar deployment/application.jar
+      
+      - name: Generate3
+        run:
           cd deployment && zip -r deploy.zip
       
       - name: Deploy to EB
