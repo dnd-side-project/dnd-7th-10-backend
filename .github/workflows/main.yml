@@ -27,7 +27,7 @@ jobs:
         run : chmod +x gradlew
         
       - name: Build Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean build|
         
       - name: Get Current Time
         uses: josStorer/get-current-time@v2.0.0
@@ -58,16 +58,10 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:latest
       
       - name: Generate Deploy Package
-        run:
-          mkdir /deploy
-          
-      - name: Generate2
-        run:
-          cp build/libs/*.jar /deploy/application.jar
-      
-      - name: Generate3
-        run:
-          cd /deploy && zip -r deploy.zip
+        run: |
+          mkdir -p deploy
+          cp build/libs/*.jar deploy/application.jar
+          cd deploy && zip -r deploy.zip .
       
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v20
@@ -78,4 +72,4 @@ jobs:
           region: ap-northeast-2
           application_name: dnd-7th-linkApp
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
-          deployment_package: /deploy/deploy.zip     
+          deployment_package: deploy/deploy.zip     
