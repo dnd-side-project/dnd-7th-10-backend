@@ -66,13 +66,15 @@ jobs:
           tags:
             ${{ secrets.DOCKERHUB_USERNAME }}/nginx:latest
       
-#       - name: Deploy to EB
-#         uses: einaregilsson/beanstalk-deploy@v20
-#         with:
-#           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#           environment_name: dnd-7th-linkApp-env
-#           region: ap-northeast-2
-#           application_name: dnd-7th-linkApp
-#           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          environment_name: dnd-7th-linkApp-env
+          region: ap-northeast-2
+          application_name: dnd-7th-linkApp
+          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+          deployment_package: ./docker-compose.yml
+          
           
