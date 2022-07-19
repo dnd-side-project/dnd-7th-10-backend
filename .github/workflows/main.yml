@@ -56,7 +56,9 @@ jobs:
           push: true
           tags:
             ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:latest
+      
       - name: Generate Deploy Package
+        run:
           mkdir -p deploy
           cp build/libs/*.jar deploy/application.jar
           cd deploy && zip -r deploy.zip
