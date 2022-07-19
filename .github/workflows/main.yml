@@ -50,7 +50,8 @@ jobs:
           
       - name: Spring Boot Image Build and Push
         uses: docker/build-push-action@v3.0.0
-        with: 
+        with:
+          context: ./
           file: ./Dockerfile
           push: true
           tags:
@@ -59,6 +60,7 @@ jobs:
       - name: Nginx Image Build and Push
         uses: docker/build-push-action@v3.0.0
         with:
+          context: ./nginx
           file: ./nginx/Dockerfile
           push: true
           tags:
