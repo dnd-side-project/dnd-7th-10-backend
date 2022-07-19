@@ -59,7 +59,7 @@ jobs:
       
       - name: Generate Deploy Package
         run:
-          mkdir -p deploy
+          ls deploy
           cp build/libs/*.jar deploy/application.jar
           cd deploy && zip -r deploy.zip
       
