@@ -2,25 +2,13 @@ version: '3'
 
 services:
   spring:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: audtncks2/spring-app
     ports:
       - "8080:8080"
   nginx:
     restart: always
-<<<<<<< HEAD
     image: audtncks2/nginx
     ports:
       - "80:80"
     depends_on:
       - spring
-=======
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    depends_on:
-      - spring
->>>>>>> 84a6c1b (docker image change)
