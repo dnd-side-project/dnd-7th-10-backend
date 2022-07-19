@@ -51,7 +51,6 @@ jobs:
       - name: Spring Boot Image Build and Push
         uses: docker/build-push-action@v3.0.0
         with: 
-          context: ./
           file: Dockerfile
           push: true
           tags:
@@ -60,8 +59,7 @@ jobs:
       - name: Nginx Image Build and Push
         uses: docker/build-push-action@v3.0.0
         with:
-          context: ./nginx/
-          file: Dockerfile
+          file: ./nginx/Dockerfile
           push: true
           tags:
             ${{ secrets.DOCKERHUB_USERNAME }}/nginx:latest
