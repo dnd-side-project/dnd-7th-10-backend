@@ -9,6 +9,6 @@ services:
     restart: always
     image: audtncks2/nginx
     ports:
-      - "80:80"
+      - "443:443"
     depends_on:
       - spring
