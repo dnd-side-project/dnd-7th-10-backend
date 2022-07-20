@@ -2,7 +2,7 @@ name: main
 
 on:
   push:
-    branches: dnd-side-project/dnd-7th-10-backend main
+    branches: main
 
 
   # Allows you to run this workflow manually from the Actions tab
