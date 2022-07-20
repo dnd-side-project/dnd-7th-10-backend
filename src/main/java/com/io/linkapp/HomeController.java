@@ -8,7 +8,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(){
-        return "${hello}";
+        return "Hello! This is Linggle App Index page. Please visit 'www.linggle-io.ml/api/members'.";
     }
 
     @GetMapping("/api")
