@@ -1,14 +1,14 @@
 spring:
   datasource:
-    url: jdbc:postgresql:dnd-7th-postgre.chjuel78c8av.ap-northeast-2.rds.amazonaws.com:5432/linkapp
     driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://dnd-7th-postgre.chjuel78c8av.ap-northeast-2.rds.amazonaws.com:5432/linkapp
     username: root
     password: audtncks
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
