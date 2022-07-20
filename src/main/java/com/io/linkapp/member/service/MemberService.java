@@ -5,6 +5,8 @@ import com.io.linkapp.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class MemberService {
@@ -17,5 +19,9 @@ public class MemberService {
         public void save(){
             Member member = new Member();
             memberRepository.save(member);
+        }
+
+        public List<Member> findAll(){
+            return memberRepository.findAll();
         }
 }
