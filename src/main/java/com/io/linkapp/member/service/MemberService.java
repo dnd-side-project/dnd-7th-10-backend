@@ -10,18 +10,19 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class MemberService {
-        private final MemberRepository memberRepository;
 
-        public Member findById(Long id){
-            return memberRepository.findById(id).get();
-        }
+    private final MemberRepository memberRepository;
 
-        public void save(){
-            Member member = new Member();
-            memberRepository.save(member);
-        }
+    public Member findById(Long id) {
+        return memberRepository.findById(id).get();
+    }
 
-        public List<Member> findAll(){
-            return memberRepository.findAll();
-        }
+    public void save() {
+        Member member = new Member();
+        memberRepository.save(member);
+    }
+
+    public List<Member> findAll() {
+        return memberRepository.findAll();
+    }
 }

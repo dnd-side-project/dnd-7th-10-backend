@@ -9,5 +9,4 @@ class LinkAppApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
