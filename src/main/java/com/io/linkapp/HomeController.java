@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
 
     @GetMapping("/")
-    public String home(){
+    public String home() {
         return "Hello! This is Linggle App Index page. Please visit 'www.linggle-io.ml/api/members'.";
     }
 
     @GetMapping("/api")
-    public String api(){
+    public String api() {
         return "api";
     }
 }

@@ -16,18 +16,18 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/api/register")
-    public ResponseEntity save(){
+    public ResponseEntity save() {
         memberService.save();
         return ResponseEntity.ok().body("save complete");
     }
 
     @GetMapping("/api/member")
-    public ResponseEntity<Member> findMember(){
+    public ResponseEntity<Member> findMember() {
         return ResponseEntity.ok().body(memberService.findById(1L));
     }
-    
+
     @GetMapping("/api/members")
-    public ResponseEntity<List<Member>> findAll(){
+    public ResponseEntity<List<Member>> findAll() {
         return ResponseEntity.ok().body(memberService.findAll());
     }
 }
