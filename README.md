@@ -33,6 +33,11 @@
 </details>
 
 <details>
+<summary>Branch Strategy</summary>
+ 
+</details>
+
+<details>
  
 <summary>Commit Convention</summary>
 
