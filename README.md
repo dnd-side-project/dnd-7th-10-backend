@@ -34,17 +34,6 @@
 
 <details>
  
-<summary>Code Formatting</summary>
- 
-* Google Java Style Guide 플러그인 적용
-* 추가 설정
-  * Indent : 4
-  * Tab Size : 4
- 
-</details>
-
-<details>
- 
 <summary>Commit Convention</summary>
 
 커밋 메세지는 두 단락으로 구성한다.
