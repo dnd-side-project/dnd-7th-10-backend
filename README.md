@@ -1,12 +1,8 @@
 ## 10조 인앤아웃(I/O) - 링끌
 
 <details>
-<summary>Architecture</sumaary>
-<img width="951" alt="Linggle-architecture" src="https://user-images.githubusercontent.com/87016418/180770061-27754e73-f702-47b7-a1ba-327eede7adc1.png">
-</details>
-
-<details>
 <summary>Dependency</summary>
+ 
 * Spring Web
 * Spring Security
 * OAuth2 Client
@@ -16,22 +12,39 @@
 * Spring Configuration Processor
 * MariaDB Driver
 * Validation
+ 
 </details>
 
 <details>
 <summary>Coding Convention</summary>
+ 
 * 패키지 네이밍 규칙
   * lowerCamelCase
 * 클래스 네이밍 규칙
   * UpperCamelCase(PascalCase)
-* 코드 스타일 규칙(포맷팅)
-  * Google Java Style Guide
 * DB 네이밍 규칙
   * lower_snake_case
+* Code Style
+  * Google Java Style Guide 플러그인 적용
+    * 추가 설정
+    * Indent : 4
+    * Tab Size : 4
+
 </details>
 
+<details>
+ 
+<summary>Code Formatting</summary>
+ 
+* Google Java Style Guide 플러그인 적용
+* 추가 설정
+  * Indent : 4
+  * Tab Size : 4
+ 
+</details>
 
 <details>
+ 
 <summary>Commit Convention</summary>
 
 커밋 메세지는 두 단락으로 구성한다.
@@ -75,4 +88,5 @@ body는 꼭 필요하지 않은 경우는 생략하되 적어야 할 경우 `무
 한글을 사용한다.
 
 15개 내의 단어로 구성한다.
+ 
 </details>
