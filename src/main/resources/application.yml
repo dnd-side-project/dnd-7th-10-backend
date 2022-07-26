@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://dnd-7th-postgre.chjuel78c8av.ap-northeast-2.rds.amazonaws.com:5432/linkapp
-    username: root
-    password: audtncks
+    url: none
+    username: none
+    password: none
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
