@@ -1,6 +1,15 @@
 ## 10조 인앤아웃(I/O) - 링끌
 
 <details>
+
+<summary>System Architecture</summary>
+
+<img width="951" alt="Linggle-architecture" src="https://user-images.githubusercontent.com/87016418/181003905-d0d09f8b-9dc0-472a-b373-30c202fbb5fa.png">
+
+
+</details>
+
+<details>
 <summary>Dependency</summary>
  
 * Spring Web
@@ -34,6 +43,18 @@
 
 <details>
 <summary>Branch Strategy</summary>
+
+* Respositories
+  * upstream(Upstream Repository)
+  * origin(Origin Repostiory)
+  
+* Branches
+  * main : 제품으로 출시될 수 있는 브랜치
+  * feature : 기능 단위 개발 브랜치
+    * feature/feature-name
+  * issue : 발생한 버그를 수정하는 브랜치
+    * issue/issue-number 
+ 
  
 </details>
 
