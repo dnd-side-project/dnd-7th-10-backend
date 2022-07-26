@@ -30,8 +30,8 @@ jobs:
           files: ${{ env.RESOURCE_PATH }}
         env:
           spring.datasource.url: ${{ secrets.DATASOURCE_URL }}
-          spring.datasource.username: ${{ secrets.DATASOURCE-USERNAME }}
-          spring.datasource.password: ${{ secrets.DATASOURCE-PASSWORD }}
+          spring.datasource.username: ${{ secrets.DATASOURCE_USERNAME }}
+          spring.datasource.password: ${{ secrets.DATASOURCE_PASSWORD }}
           jpa.hibernate.ddl-auto: none
         
       - name: Build Gradle
