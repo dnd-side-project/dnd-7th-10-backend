@@ -2,10 +2,15 @@ package com.io.linkapp.link.controller;
 
 import com.io.linkapp.link.domain.Memo;
 import com.io.linkapp.link.service.MemoService;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -14,21 +19,20 @@ public class MemoController {
 
     private final MemoService memoService;
 
-    @GetMapping("/api/save")
-    public void memo(){
-        Memo memo = Memo.builder()
-            .content("메모")
-            .articleId(UUID.randomUUID())
-            .build();
-
-        memoService.save(memo);
+    @GetMapping("/api/memo/{id}")
+    public ResponseEntity<Memo> findMemoById(@PathVariable("id") UUID uuid){
+        Memo memo = memoService.findMemoById(uuid);
+        return ResponseEntity.ok().body(memo);
     }
 
-    @GetMapping("/api/memo")
-    public ResponseEntity<Memo> findMemo(){
-        UUID id = UUID.randomUUID();
-        Memo body = memoService.findMemoById(id);
+    @GetMapping("/api/memos")
+    public ResponseEntity<List<Memo>> findAll(){
+        List<Memo> memos = memoService.findAllMemo();
+        return ResponseEntity.ok(memos);
+    }
 
-        return ResponseEntity.ok().body(body);
+    @PostMapping("/api/memo")
+    public void memo(@RequestBody Memo memo) {
+        memoService.save(memo);
     }
 }
