@@ -45,12 +45,52 @@ class MemoControllerTest {
             .content("새로운 메모")
             .build();
 
-        //when
+        //expected
         mockMvc.perform(post("/api/memo")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andDo(print());
+    }
+
+    @Test
+    @DisplayName("POST: 단건 메모 저장 시 NULL, 공백이 들어가면 400에러를 반환한다")
+    void saveNullMemo() throws Exception {
+        //given
+        UUID uuid = UUID.randomUUID();
+        Memo request = Memo.builder()
+                .articleId(uuid)
+                .content("")
+                .build();
+
+        //expected
+        mockMvc.perform(post("/api/memo")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("내용을 입력해주세요."))
+                .andExpect(jsonPath("$.code").value(400))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("POST: 단건 메모 저장 시 공백만 아주 많이 들어가도 400 에러를 반환한다")
+    void saveNullRecursiveMemo() throws Exception {
+        //given
+        UUID uuid = UUID.randomUUID();
+        Memo request = Memo.builder()
+                .articleId(uuid)
+                .content("                         ")
+                .build();
+
+        //expected
+        mockMvc.perform(post("/api/memo")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("내용을 입력해주세요."))
+                .andExpect(jsonPath("$.code").value(400))
+                .andDo(print());
     }
 
     @Test
@@ -75,11 +115,14 @@ class MemoControllerTest {
     }
 
     @Test
-    @DisplayName("GET: api/memos 요청 시 모든 메모를 불러온다")
-    void findAllMemoTest() throws Exception {
-        mockMvc.perform(get("/api/memo")
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andDo(print());
+    @DisplayName("GET: 없는 메모를 조회 시 404 에러를 반환한다")
+    void findNotExistedMemo() throws Exception {
+        //expected
+        mockMvc.perform(get("/api/memo/{id}", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(404))
+                .andExpect(jsonPath("$.message").value("존재하지 않는 메모입니다."))
+                .andDo(print());
     }
 }
