@@ -1,6 +1,5 @@
 package com.io.linkapp.link.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.io.linkapp.exception.MemoNotFoundException;
 import com.io.linkapp.link.domain.Memo;
