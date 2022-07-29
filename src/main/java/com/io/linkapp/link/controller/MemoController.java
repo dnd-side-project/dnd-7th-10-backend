@@ -37,6 +37,11 @@ public class MemoController {
         memoService.save(memoRequest);
     }
 
+    @PatchMapping("/api/memo/{id}")
+    public void editMemo(@PathVariable("id") UUID uuid, @RequestBody @Valid MemoRequest memoRequest) {
+        memoService.editMemo(uuid, memoRequest);
+    }
+
     @DeleteMapping("/api/memo/{id}")
     public void deleteMemo(@PathVariable("id") UUID uuid) {
         memoService.deleteMemo(uuid);

@@ -43,4 +43,12 @@ public class MemoService {
 
         memoRepository.delete(memo);
     }
+
+    public void editMemo(UUID uuid, MemoRequest memoRequest) {
+        Memo memo = memoRepository.findById(uuid)
+                .orElseThrow(MemoNotFoundException::new);
+
+        memo.edit(memoRequest.getContent());
+        memoRepository.save(memo);
+    }
 }

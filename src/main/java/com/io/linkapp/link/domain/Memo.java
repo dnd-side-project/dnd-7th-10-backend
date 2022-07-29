@@ -49,4 +49,8 @@ public class Memo {
         this.registerDate = registerDate;
         this.modifiedDate = modifiedDate;
     }
+
+    public void edit(String content){
+        this.content = content;
+    }
 }
