@@ -5,13 +5,12 @@ import com.io.linkapp.link.service.MemoService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import com.io.linkapp.request.MemoRequest;
+import com.io.linkapp.response.MemoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -22,9 +21,9 @@ public class MemoController {
     private final MemoService memoService;
 
     @GetMapping("/api/memo/{id}")
-    public ResponseEntity<Memo> findMemoById(@PathVariable("id") UUID uuid){
-        Memo memo = memoService.findMemoById(uuid);
-        return ResponseEntity.ok().body(memo);
+    public ResponseEntity<MemoResponse> findMemoById(@PathVariable("id") UUID uuid){
+        MemoResponse memoResponse = memoService.findMemoById(uuid);
+        return ResponseEntity.ok().body(memoResponse);
     }
 
     @GetMapping("/api/memos")
@@ -34,7 +33,12 @@ public class MemoController {
     }
 
     @PostMapping("/api/memo")
-    public void memo(@RequestBody @Valid Memo memo) {
-        memoService.save(memo);
+    public void memo(@RequestBody @Valid MemoRequest memoRequest) {
+        memoService.save(memoRequest);
+    }
+
+    @DeleteMapping("/api/memo/{id}")
+    public void deleteMemo(@PathVariable("id") UUID uuid) {
+        memoService.deleteMemo(uuid);
     }
 }

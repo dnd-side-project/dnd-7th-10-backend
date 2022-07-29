@@ -1,16 +1,10 @@
 package com.io.linkapp.link.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.io.linkapp.link.domain.Memo;
 import com.io.linkapp.link.repository.MemoRepository;
 import com.io.linkapp.link.service.MemoService;
-import java.util.UUID;
+import com.io.linkapp.request.MemoRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +12,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.UUID;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,7 +42,7 @@ class MemoControllerTest {
     void saveMemoTest() throws Exception {
         //given
         UUID uuid = UUID.randomUUID();
-        Memo request = Memo.builder()
+        MemoRequest request = MemoRequest.builder()
             .articleId(uuid)
             .content("새로운 메모")
             .build();
@@ -58,7 +60,7 @@ class MemoControllerTest {
     void saveNullMemo() throws Exception {
         //given
         UUID uuid = UUID.randomUUID();
-        Memo request = Memo.builder()
+        MemoRequest request = MemoRequest.builder()
                 .articleId(uuid)
                 .content("")
                 .build();
@@ -78,9 +80,9 @@ class MemoControllerTest {
     void saveNullRecursiveMemo() throws Exception {
         //given
         UUID uuid = UUID.randomUUID();
-        Memo request = Memo.builder()
+        MemoRequest request = MemoRequest.builder()
                 .articleId(uuid)
-                .content("                         ")
+                .content("                  ")
                 .build();
 
         //expected
