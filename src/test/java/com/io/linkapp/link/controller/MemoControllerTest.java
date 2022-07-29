@@ -1,10 +1,12 @@
 package com.io.linkapp.link.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.io.linkapp.exception.MemoNotFoundException;
 import com.io.linkapp.link.domain.Memo;
 import com.io.linkapp.link.repository.MemoRepository;
 import com.io.linkapp.link.service.MemoService;
 import com.io.linkapp.request.MemoRequest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -121,6 +122,41 @@ class MemoControllerTest {
     void findNotExistedMemo() throws Exception {
         //expected
         mockMvc.perform(get("/api/memo/{id}", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value(404))
+                .andExpect(jsonPath("$.message").value("존재하지 않는 메모입니다."))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("DELETE: api/memo/{id} 메모 삭제 시 정상적으로 삭제 된다")
+    void deleteMemo() throws Exception {
+        //given
+        UUID uuid = UUID.randomUUID();
+        Memo temporaryMemo = Memo.builder()
+                .articleId(uuid)
+                .content("임시메모")
+                .build();
+
+        memoRepository.save(temporaryMemo);
+
+        //when
+        UUID memoId = temporaryMemo.getId();
+        mockMvc.perform(delete("/api/memo/{id}", memoId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        //then
+        Assertions.assertThrows(MemoNotFoundException.class,
+                () -> memoService.findMemoById(memoId));
+    }
+    
+    @Test
+    @DisplayName("DELETE: api/memo/{id} 없는 메모를 삭제 시 404를 반환한다")
+    void deleteNotExistMemo() throws Exception {
+        mockMvc.perform(delete("/api/memo/{id}", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(404))
