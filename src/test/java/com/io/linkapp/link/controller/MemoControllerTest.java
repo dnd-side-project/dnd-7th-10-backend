@@ -1,5 +1,6 @@
 package com.io.linkapp.link.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.io.linkapp.exception.MemoNotFoundException;
 import com.io.linkapp.link.domain.Memo;
@@ -127,6 +128,35 @@ class MemoControllerTest {
                 .andExpect(jsonPath("$.code").value(404))
                 .andExpect(jsonPath("$.message").value("존재하지 않는 메모입니다."))
                 .andDo(print());
+    }
+
+    @Test
+    @DisplayName("PATCH: api/memo/{id} 로 메모 내용을 변경한다.")
+    void editMemo() throws Exception {
+
+        //given
+        UUID uuid = UUID.randomUUID();
+        Memo memo = Memo.builder()
+                .articleId(uuid)
+                .content("메모")
+                .build();
+
+        memoRepository.save(memo);
+
+        MemoRequest memoRequest = MemoRequest.builder()
+                .content("메모수정")
+                .build();
+
+        //when
+        mockMvc.perform(patch("/api/memo/{id}", memo.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(memoRequest)))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        //then
+        String content = memoRepository.findById(memo.getId()).get().getContent();
+        Assertions.assertEquals("메모수정", content);
     }
 
     @Test
