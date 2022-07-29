@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RestController
 public class MemoController {
@@ -32,7 +34,7 @@ public class MemoController {
     }
 
     @PostMapping("/api/memo")
-    public void memo(@RequestBody Memo memo) {
+    public void memo(@RequestBody @Valid Memo memo) {
         memoService.save(memo);
     }
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +32,7 @@ public class Memo {
     private UUID articleId;
 
     @Column(name = "memo_content")
+    @NotBlank(message = "내용을 입력해주세요.")
     private String content;
 
     @CreatedDate
