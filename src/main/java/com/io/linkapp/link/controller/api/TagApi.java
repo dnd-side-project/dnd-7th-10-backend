@@ -7,6 +7,8 @@ import com.io.linkapp.link.service.TagService;
 import com.io.linkapp.request.TagRequest;
 import com.io.linkapp.response.TagResponse;
 import com.io.linkapp.response.TagResponse.GetAll;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(value = "Tag", tags = {"Tag"})
 @RequestMapping(value = "/tag", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 @RequiredArgsConstructor
@@ -34,15 +37,14 @@ public class TagApi {
     private final TagService service;
     
     @SneakyThrows
-    //@ApiOperation("목록 조회")
+    @ApiOperation("목록 조회")
     @GetMapping("/get-list")
     public List<GetAll> getList(@Valid TagRequest.GetAll in){
         return formMapper.toGetAllList(service.getList(TagFormPredicate.search(in)));
     }
     
     @SneakyThrows
-    //@ApiPageable
-    //@ApiOperation("페이징 조회")
+    @ApiOperation("페이징 조회")
     @GetMapping("/get-page")
     public Page<GetAll> getPage(@Valid TagRequest.GetAll in,
         @PageableDefault(size = 20, sort = "regDt", direction = Sort.Direction.DESC) Pageable page){
@@ -50,7 +52,7 @@ public class TagApi {
     }
     
     @SneakyThrows
-    //@ApiOperation("조회")
+    @ApiOperation("조회")
     @GetMapping("/get/{id}")
     public TagResponse.GetAll get(@PathVariable UUID id){
         return formMapper.toGetAll(service.get(id));
@@ -58,7 +60,7 @@ public class TagApi {
     
     
     @SneakyThrows
-    //@ApiOperation("등록")
+    @ApiOperation("등록")
     @PostMapping("/add")
     public TagResponse.GetAll add(@Valid @RequestBody TagRequest.Add in){
         Tag newTag = formMapper.toTag(in);
@@ -68,19 +70,18 @@ public class TagApi {
     
     
     @SneakyThrows
-    //@ApiOperation("수정")
+    @ApiOperation("수정")
     @PostMapping("/modify/{id}")
     public TagResponse.GetAll add(@PathVariable UUID id,@Valid @RequestBody TagRequest.Modify in){
         return formMapper.toGetAll(service.modify(id, formMapper.toTag(in)));
     }
     
     @SneakyThrows
-    //@ApiOperation("삭제")
+    @ApiOperation("삭제")
     @PostMapping("/remove/{id}")
     public void remove(@PathVariable UUID id) {
         service.remove(id);
     }
-    
     
     
 }

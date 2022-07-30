@@ -1,5 +1,6 @@
 package com.io.linkapp.request;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,8 @@ public class TagRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class GetAll{ //검색 조건
-        
+    
+        @ApiModelProperty(value = "태그명")
         private String tagName;
         
     }
@@ -27,6 +29,7 @@ public class TagRequest {
     @AllArgsConstructor
     public static class Add{
         
+        @ApiModelProperty(value = "태그명")
         private String tagName;
         
     }
@@ -39,6 +42,7 @@ public class TagRequest {
     @AllArgsConstructor
     public static class Modify{
         
+        @ApiModelProperty(value = "태그명")
         private String tagName;
         
     }
@@ -51,7 +55,8 @@ public class TagRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Remove {
-        
+    
+        @ApiModelProperty(value = "태그명")
         private String tagName;
         
     }
