@@ -2,6 +2,7 @@ package com.io.linkapp.link.controller.api;
 
 import com.io.linkapp.link.controller.mapper.TagFormMapper;
 import com.io.linkapp.link.controller.predicate.TagFormPredicate;
+import com.io.linkapp.link.domain.Tag;
 import com.io.linkapp.link.service.TagService;
 import com.io.linkapp.request.TagRequest;
 import com.io.linkapp.response.TagResponse;
@@ -60,7 +61,9 @@ public class TagApi {
     //@ApiOperation("등록")
     @PostMapping("/add")
     public TagResponse.GetAll add(@Valid @RequestBody TagRequest.Add in){
-        return formMapper.toGetAll(service.add(formMapper.toTag(in)));
+        Tag newTag = formMapper.toTag(in);
+        newTag.setArticleId(UUID.randomUUID()); //임시 더미 데이터
+        return formMapper.toGetAll(service.add(newTag));
     }
     
     
