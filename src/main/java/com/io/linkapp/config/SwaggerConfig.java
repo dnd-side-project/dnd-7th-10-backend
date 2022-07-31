@@ -32,7 +32,8 @@ public class SwaggerConfig {
         
         int tagOrd = 0;
         docket.tags(
-            new Tag("Tag", "태그 API", ++tagOrd)
+            new Tag("Tag", "태그 API", ++tagOrd),
+            new Tag("Memo", "메모 API", ++tagOrd)
         );
         return docket;
     }

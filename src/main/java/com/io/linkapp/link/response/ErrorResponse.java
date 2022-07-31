@@ -1,4 +1,4 @@
-package com.io.linkapp.response;
+package com.io.linkapp.link.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;

@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,7 +48,7 @@ public class Memo {
         this.modifiedDate = modifiedDate;
     }
 
-    public void edit(String content){
+    public void modify(String content){
         this.content = content;
     }
 }

@@ -1,11 +1,11 @@
-package com.io.linkapp.link.controller;
+package com.io.linkapp.link.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.io.linkapp.exception.MemoNotFoundException;
 import com.io.linkapp.link.domain.Memo;
 import com.io.linkapp.link.repository.MemoRepository;
 import com.io.linkapp.link.service.MemoService;
-import com.io.linkapp.request.MemoRequest;
+import com.io.linkapp.link.request.MemoRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class MemoControllerTest {
+class MemoApiTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -179,7 +179,7 @@ class MemoControllerTest {
 
         //then
         Assertions.assertThrows(MemoNotFoundException.class,
-                () -> memoService.findMemoById(memoId));
+                () -> memoService.findById(memoId));
     }
     
     @Test

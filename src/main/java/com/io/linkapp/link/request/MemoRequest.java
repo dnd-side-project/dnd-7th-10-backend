@@ -1,4 +1,4 @@
-package com.io.linkapp.request;
+package com.io.linkapp.link.request;
 
 import lombok.Builder;
 import lombok.Getter;
