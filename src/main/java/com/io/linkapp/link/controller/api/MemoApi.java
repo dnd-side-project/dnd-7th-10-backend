@@ -1,9 +1,8 @@
 package com.io.linkapp.link.controller.api;
 
-import com.io.linkapp.link.domain.Memo;
-import com.io.linkapp.link.service.MemoService;
 import com.io.linkapp.link.request.MemoRequest;
 import com.io.linkapp.link.response.MemoResponse;
+import com.io.linkapp.link.service.MemoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -17,11 +16,9 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Api(value = "Memo", tags = {"Memo"})
-@RequestMapping(value = "/api")
 @RequiredArgsConstructor
 @RestController
 public class MemoApi {
@@ -37,8 +34,8 @@ public class MemoApi {
 
     @ApiOperation("메모 전체 조회")
     @GetMapping("/memos")
-    public ResponseEntity<List<Memo>> getList(){
-        List<Memo> memos = memoService.getList();
+    public ResponseEntity<List<MemoResponse>> getList(){
+        List<MemoResponse> memos = memoService.getList();
         return ResponseEntity.ok(memos);
     }
 
