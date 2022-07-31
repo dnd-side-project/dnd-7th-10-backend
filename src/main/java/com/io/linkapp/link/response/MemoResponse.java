@@ -1,4 +1,4 @@
-package com.io.linkapp.response;
+package com.io.linkapp.link.response;
 
 import com.io.linkapp.link.domain.Memo;
 import lombok.Builder;

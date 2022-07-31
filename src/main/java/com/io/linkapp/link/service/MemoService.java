@@ -2,12 +2,13 @@ package com.io.linkapp.link.service;
 
 import com.io.linkapp.exception.MemoNotFoundException;
 import com.io.linkapp.link.domain.Memo;
+import com.io.linkapp.link.mapper.MemoMapper;
 import com.io.linkapp.link.repository.MemoRepository;
 import java.util.List;
 import java.util.UUID;
 
-import com.io.linkapp.request.MemoRequest;
-import com.io.linkapp.response.MemoResponse;
+import com.io.linkapp.link.request.MemoRequest;
+import com.io.linkapp.link.response.MemoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,38 +18,33 @@ public class MemoService {
 
     private final MemoRepository memoRepository;
 
-    public MemoResponse findMemoById(UUID id){
+    public MemoResponse findById(UUID id){
         Memo memo = memoRepository.findById(id)
                 .orElseThrow(MemoNotFoundException::new);
 
-        return new MemoResponse(memo);
+        return MemoMapper.INSTANCE.toResponseDto(memo);
     }
 
-    public void save(MemoRequest memoRequest){
-        Memo memo = Memo.builder()
-                .articleId(memoRequest.getArticleId())
-                .content(memoRequest.getContent())
-                .build();
-
-        memoRepository.save(memo);
+    public void add(MemoRequest memoRequest){
+        memoRepository.save(MemoMapper.INSTANCE.toEntity(memoRequest));
     }
 
-    public List<Memo> findAllMemo(){
+    public List<Memo> getList(){
         return memoRepository.findAll();
     }
 
-    public void deleteMemo(UUID id){
+    public void remove(UUID id){
         Memo memo = memoRepository.findById(id)
                 .orElseThrow(MemoNotFoundException::new);
 
         memoRepository.delete(memo);
     }
 
-    public void editMemo(UUID uuid, MemoRequest memoRequest) {
+    public void modify(UUID uuid, MemoRequest memoRequest) {
         Memo memo = memoRepository.findById(uuid)
                 .orElseThrow(MemoNotFoundException::new);
 
-        memo.edit(memoRequest.getContent());
+        memo.modify(memoRequest.getContent());
         memoRepository.save(memo);
     }
 }

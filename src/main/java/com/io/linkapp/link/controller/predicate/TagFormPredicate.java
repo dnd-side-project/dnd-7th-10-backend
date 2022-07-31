@@ -1,7 +1,7 @@
 package com.io.linkapp.link.controller.predicate;
 
 import com.io.linkapp.link.domain.QTag;
-import com.io.linkapp.request.TagRequest;
+import com.io.linkapp.link.request.TagRequest;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.apache.commons.lang3.StringUtils;
