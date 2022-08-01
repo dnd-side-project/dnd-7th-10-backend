@@ -1,21 +1,16 @@
 package com.io.linkapp.link.controller.api;
 
-import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.request.ArticleRequest;
 import com.io.linkapp.link.response.ArticleResponse;
 import com.io.linkapp.link.service.ArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
-import javax.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @Api(value = "Article", tags = {"Article"})
 @RequiredArgsConstructor

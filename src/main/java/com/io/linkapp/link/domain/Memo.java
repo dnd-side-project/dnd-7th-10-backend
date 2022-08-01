@@ -1,5 +1,6 @@
 package com.io.linkapp.link.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.io.linkapp.common.BaseTimeEntity;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -26,6 +27,7 @@ public class Memo extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
+    @JsonBackReference
     private Article article;
 
     @Column(name = "memo_content")
@@ -44,6 +46,8 @@ public class Memo extends BaseTimeEntity {
 
     public void addMemoToArticle(Article article) {
         this.article = article;
-        article.getMemos().add(this);
+        if(!article.getMemos().contains(this)) {
+            article.getMemos().add(this);
+        }
     }
 }

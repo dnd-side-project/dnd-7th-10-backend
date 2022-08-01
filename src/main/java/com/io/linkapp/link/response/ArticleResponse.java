@@ -1,12 +1,12 @@
 package com.io.linkapp.link.response;
 
 import com.io.linkapp.link.domain.Memo;
-import java.time.LocalDate;
+import lombok.Builder;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import lombok.Builder;
-import lombok.Getter;
 
 @Builder
 @Getter
