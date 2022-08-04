@@ -4,8 +4,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.util.ObjectUtils;
 
@@ -21,6 +25,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserService userService) {
         super(authenticationManager);
+        System.out.println("jwtAuthorizationFilter");
         this.userService = userService;
     }
 
@@ -33,9 +38,19 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             String jwtToken = request.getHeader(JwtProperty.HEADER).replace(JwtProperty.TOKEN_PREFIX, "");
             System.out.println(jwtToken);
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC512(JwtProperty.SECRET)).build();
-
             DecodedJWT decodedJWT = jwtVerifier.verify(jwtToken);
             System.out.println(decodedJWT);
+            String username = decodedJWT.getClaim("username").asString();
+
+            if (username != null) {
+                User user = userService.findByUsername(username);
+
+                PrincipalDetails principalDetails = new PrincipalDetails(user);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    principalDetails, null);
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
         }
 
         chain.doFilter(request, response);
