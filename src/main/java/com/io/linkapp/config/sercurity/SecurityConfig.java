@@ -1,5 +1,6 @@
 package com.io.linkapp.config.sercurity;
 
+import com.io.linkapp.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
     private final CorsFilter corsFilter;
+    private final UserService userService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -28,8 +30,8 @@ public class SecurityConfig {
                 .apply(new JwtCustomFilter())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**")
-                .access("hasRole('ROLE_USER')")
+                .anyRequest()
+                .permitAll()
                 .and().build();
     }
 
@@ -41,7 +43,8 @@ public class SecurityConfig {
             System.out.println("JwtCustomFilter");
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             http.addFilter(corsFilter)
-                    .addFilter(new JwtAuthenticationFilter(authenticationManager));
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager))
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, userService));
         }
     }
 
