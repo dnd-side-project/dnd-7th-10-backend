@@ -105,3 +105,18 @@ body는 꼭 필요하지 않은 경우는 생략하되 적어야 할 경우 `무
 15개 내의 단어로 구성한다.
  
 </details>
+
+<details>
+<summary>Spring Security 참고사항</summary>
+
+흐름 요약
+* AuthenticationFilter
+  * UsernamePasswordAuthenticationToken
+    * AuthenticationManager
+      * AuthenticationProvider
+        * UserDetailService
+          * UserDetails
+            * SecurityContextHolder
+              * Authentication
+
+</details>

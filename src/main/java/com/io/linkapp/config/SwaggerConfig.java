@@ -43,9 +43,9 @@ public class SwaggerConfig {
     //해당 swagger 문서 전체에 대한 info
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("DND 7TH I/O LINNKLE API")
+            .title("DND 7TH I/O LINKKLE API")
             .version("1.0.0")
-            .description("LINNKE API")
+            .description("LINKKLE API")
             .build();
     }
     
