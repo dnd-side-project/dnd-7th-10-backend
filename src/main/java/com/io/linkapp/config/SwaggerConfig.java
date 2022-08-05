@@ -46,7 +46,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
             .title("DND 7TH I/O LINNKLE API")
             .version("1.0.0")
-            .description("LINNKE API")
+            .description("LINNKLE API")
             .build();
     }
     
