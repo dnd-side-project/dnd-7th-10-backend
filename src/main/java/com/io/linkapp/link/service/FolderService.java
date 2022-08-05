@@ -63,7 +63,11 @@ public class FolderService {
      * @return
      */
     public Folder add(Folder folder) {
-        return repository.save(folder);
+        System.out.println("before save folder title :"+folder.getFolderTitle());
+        Folder saved = repository.save(folder);
+        System.out.println("after save folder title :"+saved.getFolderTitle());
+        
+        return saved;
     }
     
     /**

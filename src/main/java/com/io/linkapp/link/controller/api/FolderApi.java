@@ -2,17 +2,12 @@ package com.io.linkapp.link.controller.api;
 
 import com.io.linkapp.link.controller.mapper.FolderFormMapper;
 import com.io.linkapp.link.controller.predicate.FolderFormPredicate;
-import com.io.linkapp.link.domain.Folder;
-import com.io.linkapp.link.domain.Tag;
 import com.io.linkapp.link.request.FolderRequest;
-import com.io.linkapp.link.request.TagRequest;
 import com.io.linkapp.link.response.FolderResponse;
 import com.io.linkapp.link.response.FolderResponse.GetAll;
-import com.io.linkapp.link.response.TagResponse;
 import com.io.linkapp.link.service.FolderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -49,9 +44,9 @@ public class FolderApi {
     
     @SneakyThrows
     @ApiOperation("페이징 조회")
-    @GetMapping("")
+    @GetMapping
     public Page<GetAll> getPage(@Valid FolderRequest.GetAll in,
-        @PageableDefault(size = 20, sort = "regDt", direction = Sort.Direction.DESC) Pageable page){
+        @PageableDefault(size = 20, direction = Sort.Direction.DESC) Pageable page){
         return service.getPage(FolderFormPredicate.search(in),page).map(formMapper::toGetAll);
     }
     
@@ -64,8 +59,9 @@ public class FolderApi {
     
     @SneakyThrows
     @ApiOperation("등록")
-    @PostMapping("")
+    @PostMapping("/add")
     public FolderResponse.GetAll add(@Valid @RequestBody FolderRequest.Add in){
+        System.out.println("Add in: "+ in.toString());
         return formMapper.toGetAll(service.add(formMapper.toFolder(in)));
     }
     

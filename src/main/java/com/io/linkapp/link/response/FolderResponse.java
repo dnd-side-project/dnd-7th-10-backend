@@ -1,5 +1,6 @@
 package com.io.linkapp.link.response;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ public class FolderResponse {
     
     @Data
     @Builder
+    @ApiModel
     @ToString
     @NoArgsConstructor
     @AllArgsConstructor
@@ -20,9 +22,8 @@ public class FolderResponse {
         @ApiModelProperty(value = "폴더 식별번호")
         private UUID folderId;
         
-        
         @ApiModelProperty(value = "폴더명")
-        private String folderName;
+        private String folderTitle;
         
     }
     

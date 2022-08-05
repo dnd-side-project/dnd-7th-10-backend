@@ -13,7 +13,7 @@ public class FolderFormPredicate {
         QFolder qfolder = QFolder.folder;
     
         if(StringUtils.isNotEmpty(in.getFolderTitle())){
-            builder.and(qfolder.folderTitle.eq(in.getFolderTitle()));
+            builder.and(qfolder.folderTitle.contains(in.getFolderTitle()));
         }
         
         return builder;

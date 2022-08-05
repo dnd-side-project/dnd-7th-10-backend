@@ -1,12 +1,9 @@
 package com.io.linkapp.link.controller.mapper;
 
 import com.io.linkapp.link.domain.Folder;
-import com.io.linkapp.link.domain.Tag;
 import com.io.linkapp.link.request.FolderRequest;
-import com.io.linkapp.link.request.TagRequest;
 import com.io.linkapp.link.response.FolderResponse;
-import com.io.linkapp.link.response.TagResponse;
-import com.io.linkapp.link.response.TagResponse.GetAll;
+import com.io.linkapp.link.response.FolderResponse.GetAll;
 import java.util.List;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
