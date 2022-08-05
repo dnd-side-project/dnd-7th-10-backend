@@ -41,6 +41,13 @@ public class FolderApi {
 //        return formMapper.toGetAllList(service.getList(FolderFormPredicate.search(in)));
 //    }
     
+    @SneakyThrows
+    @ApiOperation("테스트용")
+    @GetMapping("/test")
+    public String test(@Valid @RequestBody FolderRequest.Add in){
+        return "hi";
+    }
+    
     
     @SneakyThrows
     @ApiOperation("페이징 조회")
