@@ -1,11 +1,10 @@
 package com.io.linkapp.config.sercurity;
 
 import com.io.linkapp.user.domain.User;
-import java.util.ArrayList;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class PrincipalDetails implements UserDetails {
@@ -13,11 +12,18 @@ public class PrincipalDetails implements UserDetails {
     private final User user;
 
     public PrincipalDetails(User user) {
+        System.out.println("PrincipalDetails");
         this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        user.getRoleList().forEach(
+                role -> authorities.add(() -> role)
+        );
+
         return null;
     }
 

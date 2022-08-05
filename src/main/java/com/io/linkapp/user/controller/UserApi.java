@@ -19,7 +19,6 @@ public class UserApi {
 
     @PostMapping("/user")
     public String join(@RequestBody User user) {
-        System.out.println("뭐니대체");
         userService.save(user);
         return "회원가입 완료";
     }
