@@ -23,6 +23,11 @@ public class UserApi {
         return "회원가입 완료";
     }
 
+    @GetMapping("/user")
+    public String user(){
+        return "hi~";
+    }
+
 
     @GetMapping("/api/member")
     public ResponseEntity<User> findMember() {

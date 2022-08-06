@@ -1,4 +1,4 @@
-package com.io.linkapp.config.sercurity;
+package com.io.linkapp.config.security.auth;
 
 import com.io.linkapp.user.domain.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,19 +12,20 @@ public class PrincipalDetails implements UserDetails {
     private final User user;
 
     public PrincipalDetails(User user) {
-        System.out.println("PrincipalDetails");
         this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        user.getRoleList().forEach(
-                role -> authorities.add(() -> role)
-        );
-
-        return null;
+        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        GrantedAuthority authority = new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return String.valueOf(user.getRole());
+            }
+        };
+        authorities.add(authority);
+        return authorities;
     }
 
     @Override

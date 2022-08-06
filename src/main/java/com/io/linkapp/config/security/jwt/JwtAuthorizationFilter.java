@@ -1,9 +1,10 @@
-package com.io.linkapp.config.sercurity;
+package com.io.linkapp.config.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.io.linkapp.config.security.auth.PrincipalDetails;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,13 +12,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.util.ObjectUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.springframework.util.ObjectUtils;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -25,32 +26,24 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserService userService) {
         super(authenticationManager);
-        System.out.println("jwtAuthorizationFilter");
         this.userService = userService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("JwtAuthorizationFilter, doFilterInternal");
-
-        if(!ObjectUtils.isEmpty(request.getHeader(JwtProperty.HEADER))) {
-            System.out.println("으으음...");
+        if (!ObjectUtils.isEmpty(request.getHeader(JwtProperty.HEADER))) {
             String jwtToken = request.getHeader(JwtProperty.HEADER).replace(JwtProperty.TOKEN_PREFIX, "");
-            System.out.println(jwtToken);
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC512(JwtProperty.SECRET)).build();
             DecodedJWT decodedJWT = jwtVerifier.verify(jwtToken);
-            System.out.println(decodedJWT);
             String username = decodedJWT.getClaim("username").asString();
 
-            if (username != null) {
+            if(username != null) {
                 User user = userService.findByUsername(username);
-
                 PrincipalDetails principalDetails = new PrincipalDetails(user);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    principalDetails, null);
-
+                principalDetails, null, principalDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
+            }
         }
 
         chain.doFilter(request, response);

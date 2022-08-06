@@ -1,4 +1,4 @@
-package com.io.linkapp.config.sercurity;
+package com.io.linkapp.config.security.jwt;
 
 public interface JwtProperty {
     public static final String SUBJECT = "Linkkle";

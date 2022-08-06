@@ -1,5 +1,7 @@
-package com.io.linkapp.config.sercurity;
+package com.io.linkapp.config.security;
 
+import com.io.linkapp.config.security.jwt.JwtAuthenticationFilter;
+import com.io.linkapp.config.security.jwt.JwtAuthorizationFilter;
 import com.io.linkapp.exception.JwtAccessDeniedException;
 import com.io.linkapp.exception.JwtAuthenticationException;
 import com.io.linkapp.user.service.UserService;
@@ -13,7 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.filter.CorsFilter;
 
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -48,7 +50,6 @@ public class SecurityConfig {
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
-            System.out.println("JwtCustomFilter");
             AuthenticationManager authenticationManager = http.getSharedObject(
                 AuthenticationManager.class);
             http.addFilter(corsFilter)

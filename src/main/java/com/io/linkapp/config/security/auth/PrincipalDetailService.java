@@ -1,4 +1,4 @@
-package com.io.linkapp.config.sercurity;
+package com.io.linkapp.config.security.auth;
 
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.service.UserService;
@@ -16,9 +16,7 @@ public class PrincipalDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("PrincipalDetailService loadUserByUsername");
         User user = userService.findByUsername(username);
-        System.out.println("============");
         return new PrincipalDetails(user);
    }
 }

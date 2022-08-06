@@ -1,5 +1,6 @@
 package com.io.linkapp.user.service;
 
+import com.io.linkapp.user.domain.Role;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,9 @@ public class UserService {
     }
 
     public void save(User user) {
-        userRepository.save(user.passwordEncode(bCryptPasswordEncoder));
+        user.setRoles(Role.BASIC);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     public List<User> findAll() {

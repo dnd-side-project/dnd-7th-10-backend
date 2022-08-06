@@ -1,4 +1,4 @@
-package com.io.linkapp.config.sercurity;
+package com.io.linkapp.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -21,18 +21,14 @@ public class User {
 
     private String password;
 
-    private String roles;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
-    public User passwordEncode(BCryptPasswordEncoder bCryptPasswordEncoder){
-        this.password = bCryptPasswordEncoder.encode(password);
-        return this;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public List<String> getRoleList(){
-        if(this.roles.length() > 0){
-            return Arrays.asList(this.roles.split(","));
-        }
-
-        return new ArrayList<>();
+    public void setRoles(Role role) {
+        this.role = role;
     }
 }
