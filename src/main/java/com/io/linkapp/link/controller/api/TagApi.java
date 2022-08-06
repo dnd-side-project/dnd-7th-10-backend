@@ -72,7 +72,7 @@ public class TagApi {
     @SneakyThrows
     @ApiOperation("수정")
     @PostMapping("/modify/{id}")
-    public TagResponse.GetAll add(@PathVariable UUID id,@Valid @RequestBody TagRequest.Modify in){
+    public TagResponse.GetAll modify(@PathVariable UUID id,@Valid @RequestBody TagRequest.Modify in){
         return formMapper.toGetAll(service.modify(id, formMapper.toTag(in)));
     }
     
