@@ -34,8 +34,8 @@ public class SwaggerConfig {
         docket.tags(
             new Tag("Article", "아티클 API", ++tagOrd),
             new Tag("Tag", "태그 API", ++tagOrd),
-            new Tag("Memo", "메모 API", ++tagOrd),
-            new Tag("User", "유저 API", ++tagOrd)
+            new Tag("Folder", "폴더 API", ++tagOrd),
+            new Tag("Memo", "메모 API", ++tagOrd)
         );
         return docket;
     }
@@ -44,9 +44,9 @@ public class SwaggerConfig {
     //해당 swagger 문서 전체에 대한 info
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("DND 7TH I/O LINKKLE API")
+            .title("DND 7TH I/O LINNKLE API")
             .version("1.0.0")
-            .description("LINKKLE API")
+            .description("LINNKLE API")
             .build();
     }
     

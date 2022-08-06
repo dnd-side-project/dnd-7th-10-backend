@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -52,7 +51,6 @@ public class FolderService {
      * @param id 식별번호
      * @return
      */
-    @Transactional(readOnly = true)
     public Folder get(UUID id){
         return repository.findOne(new BooleanBuilder(QFolder.folder.folderId.eq(id))).orElse(null);
     }
@@ -65,7 +63,11 @@ public class FolderService {
      * @return
      */
     public Folder add(Folder folder) {
-        return repository.save(folder);
+        System.out.println("before save folder title :"+folder.getFolderTitle());
+        Folder saved = repository.save(folder);
+        System.out.println("after save folder title :"+saved.getFolderTitle());
+        
+        return saved;
     }
     
     /**
