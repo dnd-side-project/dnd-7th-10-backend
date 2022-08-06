@@ -2,8 +2,6 @@ package com.io.linkapp.config.security;
 
 import com.io.linkapp.config.security.jwt.JwtAuthenticationFilter;
 import com.io.linkapp.config.security.jwt.JwtAuthorizationFilter;
-import com.io.linkapp.exception.JwtAccessDeniedException;
-import com.io.linkapp.exception.JwtAuthenticationException;
 import com.io.linkapp.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,8 +20,8 @@ public class SecurityConfig {
 
     private final CorsFilter corsFilter;
     private final UserService userService;
-    private final JwtAuthenticationException jwtAuthenticationException;
-    private final JwtAccessDeniedException jwtAccessDeniedException;
+    private final AuthenticationExceptionHandler jwtAuthenticationException;
+    private final AuthenticationDeniedExceptionHandler jwtAccessDeniedException;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -38,13 +36,12 @@ public class SecurityConfig {
             .antMatchers("/user/**")
             .permitAll()
             .anyRequest()
-            .authenticated()
+            .permitAll()
             .and()
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationException)
             .accessDeniedHandler(jwtAccessDeniedException)
             .and().build();
     }
-
 
     public class JwtCustomFilter extends AbstractHttpConfigurer<JwtCustomFilter, HttpSecurity> {
 

@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.io.linkapp.config.security.auth.PrincipalDetails;
 import com.io.linkapp.user.domain.User;
+import java.io.PrintWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,6 +46,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withClaim("username", principalDetails.getUsername())
                 .sign(Algorithm.HMAC512(JwtProperty.SECRET));
 
+        response.sendRedirect("/");
         response.addHeader(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtToken);
     }
 }

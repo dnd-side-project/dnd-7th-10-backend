@@ -1,5 +1,6 @@
-package com.io.linkapp.exception;
+package com.io.linkapp.config.security;
 
+import com.io.linkapp.exception.UnAuthorizedException;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,12 +10,11 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JwtAuthenticationException implements AuthenticationEntryPoint {
+public class AuthenticationExceptionHandler implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
-        AuthenticationException authException) throws IOException, ServletException {
-        System.out.println("언오쏘");
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+        AuthenticationException authException){
+        throw new UnAuthorizedException();
     }
 }

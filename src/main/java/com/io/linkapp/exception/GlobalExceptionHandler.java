@@ -1,6 +1,5 @@
-package com.io.linkapp.link.controller;
+package com.io.linkapp.exception;
 
-import com.io.linkapp.exception.MemoException;
 import com.io.linkapp.link.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -10,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestControllerAdvice
-public class ExceptionController {
+public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MemoException.class)
+    @ExceptionHandler(GlobalException.class)
     public ResponseEntity<ErrorResponse> handleMemoException(MemoException memoException) {
         int statusCode = memoException.statusCode();
         String message = memoException.getMessage();

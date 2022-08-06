@@ -1,9 +1,6 @@
 package com.io.linkapp.exception;
 
-import lombok.Getter;
-
-@Getter
-public class MemoNotFoundException extends MemoException{
+public class MemoNotFoundException extends GlobalException{
 
     private static final String MESSAGE = "존재하지 않는 메모입니다.";
 

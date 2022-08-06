@@ -1,6 +1,8 @@
 package com.io.linkapp.user.domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ import java.util.List;
 @Getter
 @Table(name = "users")
 @Entity
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -23,4 +26,10 @@ public class User {
 
     @Enumerated(value = EnumType.STRING)
     private Role role = Role.BASIC;
+
+    @Builder
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }
