@@ -105,3 +105,21 @@ body는 꼭 필요하지 않은 경우는 생략하되 적어야 할 경우 `무
 15개 내의 단어로 구성한다.
  
 </details>
+
+<details>
+<summary>Spring Security 참고사항</summary>
+
+흐름 요약
+1. 로그인 요청(/login)
+   1. JwtAuthenticationFilter/attemptAuthentication()
+   2. PrincipalDetail Service(loadUserService)
+   3. PrincipalDetails
+   4. JwtAuthenticationFilter/successfulAuthentication()
+      1. 토큰 발급
+
+2. 일반 요청
+   1. JwtAuthorizationFilter/doFilterInternal
+      1. 토큰 검증
+      2. 유저 검증
+      3. 시큐리티 세션 저장(권한 확인용)
+</details>

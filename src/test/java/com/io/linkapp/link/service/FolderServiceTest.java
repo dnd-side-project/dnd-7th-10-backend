@@ -6,9 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.io.linkapp.link.controller.mapper.FolderFormMapperImpl;
 import com.io.linkapp.link.domain.Folder;
-import com.io.linkapp.link.mapper.FolderMapperImpl;
 import com.io.linkapp.link.repository.FolderRepository;
 import com.querydsl.core.BooleanBuilder;
 import java.util.Arrays;

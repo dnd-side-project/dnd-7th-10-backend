@@ -1,6 +1,5 @@
 package com.io.linkapp.link.request;
 
-import com.io.linkapp.link.domain.Article;
 import java.util.UUID;
 import javax.validation.constraints.NotBlank;
 import lombok.Builder;
