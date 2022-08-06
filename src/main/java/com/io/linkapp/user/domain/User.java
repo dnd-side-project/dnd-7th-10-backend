@@ -22,13 +22,5 @@ public class User {
     private String password;
 
     @Enumerated(value = EnumType.STRING)
-    private Role role;
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRoles(Role role) {
-        this.role = role;
-    }
+    private Role role = Role.BASIC;
 }

@@ -2,7 +2,9 @@ package com.io.linkapp.user.service;
 
 import com.io.linkapp.user.domain.Role;
 import com.io.linkapp.user.domain.User;
+import com.io.linkapp.user.mapper.UserMapper;
 import com.io.linkapp.user.repository.UserRepository;
+import com.io.linkapp.user.request.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,9 +27,10 @@ public class UserService {
                 .orElseThrow(RuntimeException::new);
     }
 
-    public void save(User user) {
-        user.setRoles(Role.BASIC);
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    public void save(UserRequest userRequest) {
+        userRequest.encodePassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
+        User user = UserMapper.INSTANCE.toEntity(userRequest);
+
         userRepository.save(user);
     }
 

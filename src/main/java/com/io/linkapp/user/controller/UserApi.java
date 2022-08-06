@@ -1,6 +1,7 @@
 package com.io.linkapp.user.controller;
 
 import com.io.linkapp.user.domain.User;
+import com.io.linkapp.user.request.UserRequest;
 import com.io.linkapp.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,8 @@ public class UserApi {
     private final UserService userService;
 
     @PostMapping("/user")
-    public String join(@RequestBody User user) {
-        userService.save(user);
+    public String join(@RequestBody UserRequest userRequest) {
+        userService.save(userRequest);
         return "회원가입 완료";
     }
 
