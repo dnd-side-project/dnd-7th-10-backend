@@ -38,6 +38,9 @@ public class SecurityConfig {
             .anyRequest()
             .permitAll()
             .and()
+            .oauth2Login()
+            .defaultSuccessUrl("/")
+            .and()
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationException)
             .accessDeniedHandler(jwtAccessDeniedException)
             .and().build();
