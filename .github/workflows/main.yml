@@ -32,6 +32,8 @@ jobs:
           spring.datasource.url: ${{ secrets.DATASOURCE_URL }}
           spring.datasource.username: ${{ secrets.DATASOURCE_USERNAME }}
           spring.datasource.password: ${{ secrets.DATASOURCE_PASSWORD }}
+          spring.security.client.registration.google.client-id: ${{ secrets.CLIENT_ID }}
+          spring.security.client.registration.google.client-secret: ${{ secrets.CLIENT_SECRET }}
           jpa.hibernate.ddl-auto: none
         
       - name: Build Gradle
