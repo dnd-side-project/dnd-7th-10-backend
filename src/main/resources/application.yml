@@ -13,14 +13,3 @@ spring:
       hibernate:
         format_sql: true
       show-sql: true
-
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: none
-            client-secret: none
-            scope:
-              - email
-              - profile
