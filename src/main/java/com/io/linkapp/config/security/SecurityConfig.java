@@ -39,7 +39,7 @@ public class SecurityConfig {
             .antMatchers("/kakao")
             .permitAll()
             .anyRequest()
-            .authenticated()
+            .permitAll()
             .and()
             .oauth2Login()
             .defaultSuccessUrl("/")
