@@ -35,7 +35,8 @@ public class SwaggerConfig {
             new Tag("Article", "아티클 API", ++tagOrd),
             new Tag("Tag", "태그 API", ++tagOrd),
             new Tag("Folder", "폴더 API", ++tagOrd),
-            new Tag("Memo", "메모 API", ++tagOrd)
+            new Tag("Memo", "메모 API", ++tagOrd),
+            new Tag("User", "유저 API", ++tagOrd)
         );
         return docket;
     }

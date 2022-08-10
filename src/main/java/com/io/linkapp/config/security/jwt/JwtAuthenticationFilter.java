@@ -46,7 +46,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withClaim("role", principalDetails.getUser().getRole().toString())
                 .sign(Algorithm.HMAC512(JwtProperty.SECRET));
 
-        response.sendRedirect("/");
         response.addHeader(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtToken);
     }
 }

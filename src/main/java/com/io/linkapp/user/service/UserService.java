@@ -32,10 +32,10 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public void signup(UserRequest userRequest) {
+    public User join(UserRequest userRequest) {
         userRequest.encodePassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
         User user = UserMapper.INSTANCE.toEntity(userRequest);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public void oauth2Signup(Oauth2UserRequest userRequest) {
