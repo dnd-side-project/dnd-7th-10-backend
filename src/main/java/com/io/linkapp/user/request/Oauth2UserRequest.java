@@ -6,15 +6,8 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class UserRequest {
+public class Oauth2UserRequest {
 
     @NotBlank(message = "아이디를 입력해주세요.")
     private String username;
-
-    @NotBlank(message = "비밀번호를 입력해주세요.")
-    private String password;
-
-    public void encodePassword(String password) {
-        this.password = password;
-    }
 }

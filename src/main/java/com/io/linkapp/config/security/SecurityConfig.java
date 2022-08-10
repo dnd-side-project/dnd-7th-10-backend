@@ -2,6 +2,7 @@ package com.io.linkapp.config.security;
 
 import com.io.linkapp.config.security.jwt.JwtAuthenticationFilter;
 import com.io.linkapp.config.security.jwt.JwtAuthorizationFilter;
+import com.io.linkapp.config.security.oauth.Oauth2SuccessHandler;
 import com.io.linkapp.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -35,11 +36,14 @@ public class SecurityConfig {
             .authorizeRequests()
             .antMatchers("/user/**")
             .permitAll()
+            .antMatchers("/kakao")
+            .permitAll()
             .anyRequest()
             .permitAll()
             .and()
             .oauth2Login()
             .defaultSuccessUrl("/")
+            .successHandler(new Oauth2SuccessHandler())
             .and()
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationException)
             .accessDeniedHandler(jwtAccessDeniedException)
