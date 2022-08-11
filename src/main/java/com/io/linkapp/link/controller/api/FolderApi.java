@@ -6,7 +6,6 @@ import com.io.linkapp.link.mapper.FolderMapper;
 import com.io.linkapp.link.request.FolderRequest;
 import com.io.linkapp.link.response.FolderResponse;
 import com.io.linkapp.link.service.FolderService;
-import com.io.linkapp.user.domain.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
