@@ -8,12 +8,12 @@ import org.apache.commons.lang3.StringUtils;
 
 public class FolderFormPredicate {
     
-    public static Predicate search(FolderRequest.GetAll in){
+    public static Predicate search(FolderRequest folderRequest){
         BooleanBuilder builder = new BooleanBuilder();
         QFolder qfolder = QFolder.folder;
     
-        if(StringUtils.isNotEmpty(in.getFolderTitle())){
-            builder.and(qfolder.folderTitle.contains(in.getFolderTitle()));
+        if(StringUtils.isNotEmpty(folderRequest.getFolderTitle())){
+            builder.and(qfolder.folderTitle.contains(folderRequest.getFolderTitle()));
         }
         
         return builder;
