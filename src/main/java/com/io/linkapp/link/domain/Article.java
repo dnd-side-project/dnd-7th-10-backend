@@ -54,6 +54,10 @@ public class Article extends BaseTimeEntity {
         this.linkContent = linkContent;
     }
 
+    public void setUser(User user){
+        this.user = user;
+    }
+
     public void addArticleToFolder(Folder folder) {
         this.folder = folder;
         if (!folder.getArticles().contains(this)) {
