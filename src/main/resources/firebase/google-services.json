@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "34270737323",
+    "project_id": "linkkle-b8413",
+    "storage_bucket": "linkkle-b8413.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34270737323:android:a76c98624d22c15d5098ee",
+        "android_client_info": {
+          "package_name": "com.io"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34270737323-h3ibcr4jampmnslgcueactvvb579dci4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZrxN-s95sF_LsekqCpSylUqOfWuL-Ahw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34270737323-h3ibcr4jampmnslgcueactvvb579dci4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "34270737323-6vk2njbqt9omb168jdml16lgq6krn2h8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.io"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
