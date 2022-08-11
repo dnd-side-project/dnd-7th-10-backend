@@ -1,5 +1,6 @@
 package com.io.linkapp.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.io.linkapp.common.BaseTimeEntity;
 import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.Folder;
@@ -30,9 +31,11 @@ public class User extends BaseTimeEntity {
     private String password;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference(value = "user-article")
     private List<Article> articles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference(value = "user-folder")
     private List<Folder> folders = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)

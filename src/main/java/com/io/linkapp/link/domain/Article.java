@@ -26,19 +26,19 @@ public class Article extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+    @JsonBackReference(value = "user-article")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "folder_id")
-    @JsonBackReference
+    @JsonBackReference(value = "folder-article")
     private Folder folder;
 
     private String linkTitle;
     private String linkContent;
 
     @OneToMany(mappedBy = "article")
-    @JsonManagedReference
+    @JsonManagedReference("article-memo")
     private List<Memo> memos = new ArrayList<>();
 
     private boolean isPin;

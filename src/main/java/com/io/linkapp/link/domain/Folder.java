@@ -25,12 +25,12 @@ public class Folder {
     private String folderTitle;
 
     @OneToMany(mappedBy = "folder")
-    @JsonManagedReference
+    @JsonManagedReference(value = "folder-article")
     private List<Article> articles = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+    @JsonBackReference(value = "user-folder")
     private User user;
 
     public void setFolderTitle(String folderTitle) {
@@ -38,7 +38,8 @@ public class Folder {
     }
 
     @Builder
-    public Folder(UUID folderId, String folderTitle){
+    public Folder(User user, UUID folderId, String folderTitle){
+        this.user = user;
         this.folderId = folderId;
         this.folderTitle = folderTitle;
     }
