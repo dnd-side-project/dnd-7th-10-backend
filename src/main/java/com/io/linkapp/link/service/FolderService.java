@@ -6,14 +6,16 @@ import com.io.linkapp.link.mapper.FolderMapper;
 import com.io.linkapp.link.repository.FolderRepository;
 import com.io.linkapp.link.request.FolderRequest;
 import com.io.linkapp.link.response.FolderResponse;
+import com.io.linkapp.user.domain.User;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -54,7 +56,8 @@ public class FolderService {
         return folderRepository.findOne(new BooleanBuilder(QFolder.folder.folderId.eq(id))).orElse(null);
     }
 
-    public FolderResponse add(FolderRequest folderRequest) {
+    public FolderResponse add(FolderRequest folderRequest, User user) {
+        folderRequest.setUser(user);
         Folder folder = FolderMapper.INSTANCE.toEntity(folderRequest);
         return FolderMapper.INSTANCE.toResponseDto(folderRepository.save(folder));
     }
