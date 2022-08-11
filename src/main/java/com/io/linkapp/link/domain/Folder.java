@@ -1,43 +1,46 @@
 package com.io.linkapp.link.domain;
 
-import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.io.linkapp.user.domain.User;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "folder")
-@Data
-@Builder
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 @NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Entity
 public class Folder {
-    
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @Column(name = "folder_id",nullable=false)
     private UUID folderId;
-    
-    @Column(name = "folder_title")
+
     private String folderTitle;
-    
-//    @Builder
-//    public Folder(UUID folderId, String folderTitle){
-//        this.folderId = folderId;
-//        this.folderTitle = folderTitle;
-//    }
-//
-//    @Builder
-//    public Folder(String folderTitle){
-//        this.folderTitle = folderTitle;
-//    }
-    
-    
-    
+
+    @OneToMany(mappedBy = "folder")
+    @JsonManagedReference(value = "folder-article")
+    private List<Article> articles = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "user-folder")
+    private User user;
+
+    public void setFolderTitle(String folderTitle) {
+        this.folderTitle = folderTitle;
+    }
+
+    @Builder
+    public Folder(User user, UUID folderId, String folderTitle){
+        this.user = user;
+        this.folderId = folderId;
+        this.folderTitle = folderTitle;
+    }
 }

@@ -1,18 +1,29 @@
 package com.io.linkapp;
 
+import com.io.linkapp.config.security.auth.PrincipalDetails;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@RestController
+@Slf4j
+@Controller
 public class HomeController {
 
+    @ResponseBody
     @GetMapping("/")
-    public String home() {
-        return "Hello! This is Linggle App Index page. Please visit 'www.linggle-io.ml/api/members'.";
+    public String home(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        return "Hello! This is Linkkle App Index page. Please visit 'www.linkkle-io.ml/api/members'.";
     }
 
-    @GetMapping("/api")
-    public String api() {
-        return "api";
+    @GetMapping("/kakao")
+    public String oauth2TestApi() {
+        return "login.html";
+    }
+
+    @GetMapping("/swagger")
+    public String swagger(){
+        return "redirect:/swagger-ui.html";
     }
 }

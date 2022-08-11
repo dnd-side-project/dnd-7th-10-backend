@@ -27,7 +27,7 @@ public class Memo extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
-    @JsonBackReference
+    @JsonBackReference(value = "article-memo")
     private Article article;
 
     @Column(name = "memo_content")

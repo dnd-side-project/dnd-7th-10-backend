@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(GlobalException.class)
-    public ResponseEntity<ErrorResponse> handleMemoException(MemoException memoException) {
-        int statusCode = memoException.statusCode();
-        String message = memoException.getMessage();
+    public ResponseEntity<ErrorResponse> handleGlobalException(GlobalException globalException) {
+        int statusCode = globalException.statusCode();
+        String message = globalException.getMessage();
 
         ErrorResponse errorResponseBody = ErrorResponse.builder()
                 .code(statusCode)
