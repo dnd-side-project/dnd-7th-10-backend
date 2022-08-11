@@ -1,26 +1,14 @@
 package com.io.linkapp.link.mapper;
 
 import com.io.linkapp.link.domain.Folder;
-import org.mapstruct.Builder;
+import com.io.linkapp.link.request.FolderRequest;
+import com.io.linkapp.link.response.FolderResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
-@Mapper(
-    implementationName = "FolderMapperImpl",
-    builder=@Builder(disableBuilder = true),
-    componentModel = "spring"
-)
-public abstract class FolderMapper {
-    
-    public Folder modify(Folder in, Folder out){
-        
-        if(in == null){
-            return null;
-        }
-        
-        out.setFolderId(in.getFolderId());
-        out.setFolderTitle(in.getFolderTitle());
-        
-        return out;
-    }
-    
+@Mapper
+public interface FolderMapper {
+    FolderMapper INSTANCE = Mappers.getMapper(FolderMapper.class);
+    Folder toEntity(FolderRequest folderRequest);
+    FolderResponse toResponseDto(Folder folder);
 }

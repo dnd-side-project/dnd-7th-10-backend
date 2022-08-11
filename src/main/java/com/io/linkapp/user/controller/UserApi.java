@@ -32,7 +32,7 @@ public class UserApi {
     @ApiOperation(value = "로그인", notes = "로그인 시 실제 요청은 Spring Security 가 수행함. 클라이언트 확인을 위한 API")
     @PostMapping("/login")
     public void loginDummyApi(@RequestBody UserRequest userRequest){
-        }
+    }
 
     @ApiOperation(value = "카카오 로그인 주소", notes = "동작하지 않음. 요청 주소 확인을 위한 API")
     @GetMapping("/oauth2/authorization/kakao")
