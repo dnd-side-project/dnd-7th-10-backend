@@ -31,11 +31,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation group: 'com.auth0', name: 'java-jwt', version: '4.0.0'
 
-    //fcm
-    implementation 'com.google.firebase:firebase-admin:6.8.1'
-    //okhttpclient
-    implementation "com.squareup.okhttp3:okhttp:4.9.1"
-
     //querydsl
     implementation 'com.querydsl:querydsl-jpa'
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
