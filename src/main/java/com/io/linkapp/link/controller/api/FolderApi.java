@@ -9,17 +9,22 @@ import com.io.linkapp.link.service.FolderService;
 import com.io.linkapp.user.domain.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
+import java.util.UUID;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.UUID;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @Api(value = "Folder", tags = {"Folder"})
 @RestController
@@ -28,17 +33,17 @@ public class FolderApi {
 
     private final FolderService folderService;
 
-    @ApiOperation("페이징 조회")
-    @GetMapping
-    public Page<FolderResponse> getPage(@Valid FolderRequest folderRequest,
-                                        @PageableDefault(size = 20, direction = Sort.Direction.DESC) Pageable page){
-        return folderService.getPage(FolderFormPredicate.search(folderRequest),page).map(FolderMapper.INSTANCE::toResponseDto);
-    }
-
     @ApiOperation("폴더 조회")
     @GetMapping("/folder/{id}")
     public FolderResponse get(@PathVariable UUID id) {
-        return FolderMapper.INSTANCE.toResponseDto(folderService.get(id));
+        return folderService.get(id);
+    }
+
+    @ApiOperation("유저가 작성한 폴더 전체 조회")
+    @GetMapping("/folders")
+    public List<FolderResponse> getAll(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        return folderService.getFoldersByUser(user);
     }
 
     @ApiOperation("폴더 등록")
