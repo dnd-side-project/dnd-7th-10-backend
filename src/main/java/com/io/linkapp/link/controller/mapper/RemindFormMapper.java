@@ -15,9 +15,7 @@ import org.mapstruct.Mapper;
 public abstract class RemindFormMapper {
     
     public abstract Remind toRemind(RemindRequest.Add in);
-
     public abstract RemindResponse.GetAll toGetAll(Remind in);
-    
     public abstract List<RemindResponse.GetAll> toGetAllList(List<Remind> in);
 
 }

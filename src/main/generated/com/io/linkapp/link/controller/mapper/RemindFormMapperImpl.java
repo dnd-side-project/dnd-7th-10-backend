@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-08-11T23:54:40+0900",
+    date = "2022-08-13T18:38:19+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 17.0.2 (Oracle Corporation)"
 )
 @Component
@@ -24,6 +24,8 @@ public class RemindFormMapperImpl extends RemindFormMapper {
 
         Remind remind = new Remind();
 
+        remind.setRemindTitle( in.getRemindTitle() );
+
         return remind;
     }
 
@@ -36,6 +38,7 @@ public class RemindFormMapperImpl extends RemindFormMapper {
         GetAll getAll = new GetAll();
 
         getAll.setRemindId( in.getRemindId() );
+        getAll.setUserId( in.getUserId() );
         getAll.setRemindTitle( in.getRemindTitle() );
 
         return getAll;
