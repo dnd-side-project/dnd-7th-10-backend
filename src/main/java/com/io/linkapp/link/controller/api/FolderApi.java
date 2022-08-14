@@ -54,7 +54,8 @@ public class FolderApi {
 
     @ApiOperation("폴더 수정")
     @PatchMapping("/folder/{id}")
-    public void modify(@PathVariable UUID id,@Valid @RequestBody FolderRequest folderRequest){
+    public FolderResponse modify(@PathVariable UUID uuid,@Valid @RequestBody FolderRequest folderRequest){
+        return folderService.edit(uuid, folderRequest);
     }
 
     @ApiOperation("폴더 삭제")

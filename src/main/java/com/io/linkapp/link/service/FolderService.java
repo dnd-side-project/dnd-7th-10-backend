@@ -41,4 +41,12 @@ public class FolderService {
     public void remove(UUID uuid){
         folderRepository.deleteById(uuid);
     }
+
+    public FolderResponse edit(UUID uuid, FolderRequest folderRequest) {
+        Folder folder = folderRepository.findById(uuid)
+            .orElseThrow(FolderNotFoundException::new);
+
+        folder.changeFolderTitle(folderRequest.getFolderTitle());
+        return FolderMapper.INSTANCE.toResponseDto(folderRepository.save(folder));
+    }
 }
