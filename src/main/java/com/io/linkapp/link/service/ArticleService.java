@@ -30,7 +30,7 @@ public class ArticleService {
         return ArticleMapper.INSTANCE.toResponseDto(article);
     }
 
-    public void add(ArticleRequest articleRequest, User user){
+    public void add(ArticleRequest articleRequest){
         Folder folder = folderRepository.findById(articleRequest.getFolderId())
             .orElseThrow(FolderNotFoundException::new);
 
@@ -38,7 +38,6 @@ public class ArticleService {
             .folder(folder)
             .linkContent(articleRequest.getLinkContent())
             .linkTitle(articleRequest.getLinkTitle())
-            .user(user)
             .build();
 
         articleRepository.save(article);

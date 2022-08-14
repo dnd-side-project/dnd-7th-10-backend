@@ -25,11 +25,6 @@ public class Article extends BaseTimeEntity {
     private UUID remindId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @JsonBackReference(value = "user-article")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "folder_id")
     @JsonBackReference(value = "folder-article")
     private Folder folder;
@@ -45,17 +40,12 @@ public class Article extends BaseTimeEntity {
     private boolean isMemo;
 
     @Builder
-    public Article(User user, Folder folder, UUID remindId, String linkTitle,
+    public Article(Folder folder, UUID remindId, String linkTitle,
         String linkContent) {
-        this.user = user;
         this.folder = folder;
         this.remindId = remindId;
         this.linkTitle = linkTitle;
         this.linkContent = linkContent;
-    }
-
-    public void setUser(User user){
-        this.user = user;
     }
 
     public void addArticleToFolder(Folder folder) {

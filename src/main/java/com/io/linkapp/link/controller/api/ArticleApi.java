@@ -24,10 +24,8 @@ public class ArticleApi {
 
     @ApiOperation("링크 저장")
     @PostMapping("/article")
-    public void add(@RequestBody @Valid ArticleRequest articleRequest, @AuthenticationPrincipal
-        PrincipalDetails principalDetails) {
-        User user = principalDetails.getUser();
-        articleService.add(articleRequest, user);
+    public void add(@RequestBody @Valid ArticleRequest articleRequest) {
+        articleService.add(articleRequest);
     }
 
     @ApiOperation("링크 전체 조회")
