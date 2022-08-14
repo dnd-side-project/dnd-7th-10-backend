@@ -39,11 +39,11 @@ public class FolderApi {
         return folderService.get(id);
     }
 
+    //TODO : 폴더 내부의 아티클 카운트로 정렬되도록 수정
     @ApiOperation("유저가 작성한 폴더 전체 조회")
     @GetMapping("/folders")
     public List<FolderResponse> getAll(@AuthenticationPrincipal PrincipalDetails principalDetails){
-        User user = principalDetails.getUser();
-        return folderService.getFoldersByUser(user);
+        return folderService.getFoldersByUser(principalDetails.getUser());
     }
 
     @ApiOperation("폴더 등록")
