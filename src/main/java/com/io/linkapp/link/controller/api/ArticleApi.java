@@ -1,11 +1,14 @@
 package com.io.linkapp.link.controller.api;
 
+import com.io.linkapp.config.security.auth.PrincipalDetails;
 import com.io.linkapp.link.request.ArticleRequest;
 import com.io.linkapp.link.response.ArticleResponse;
 import com.io.linkapp.link.service.ArticleService;
+import com.io.linkapp.user.domain.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

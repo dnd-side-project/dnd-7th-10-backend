@@ -43,4 +43,8 @@ public class Folder {
         this.folderId = folderId;
         this.folderTitle = folderTitle;
     }
+
+    public void changeFolderTitle(String folderTitle) {
+        this.folderTitle = folderTitle;
+    }
 }
