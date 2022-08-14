@@ -1,5 +1,7 @@
 package com.io.linkapp.link.service;
 
+import com.io.linkapp.exception.CustomGlobalException;
+import com.io.linkapp.exception.form.ErrorCode;
 import com.io.linkapp.link.domain.Remind;
 import com.io.linkapp.link.repository.RemindRepository;
 import com.querydsl.core.types.Predicate;
