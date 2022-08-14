@@ -1,6 +1,8 @@
 package com.io.linkapp.link.controller.api;
 
 
+import com.io.linkapp.exception.CustomGlobalException;
+import com.io.linkapp.exception.form.ErrorCode;
 import com.io.linkapp.link.controller.mapper.RemindFormMapper;
 import com.io.linkapp.link.controller.predicate.RemindFormPredicate;
 import com.io.linkapp.link.domain.Remind;
@@ -40,6 +42,8 @@ public class RemindApi {
     @GetMapping("/get-page")
     public Page<RemindResponse.GetAll> getPage(RemindRequest.GetAll in,
         @PageableDefault(size = 20, direction = Sort.Direction.DESC) Pageable page ){
+        
+        //throw new CustomGlobalException(ErrorCode.POSTS_NOT_FOUND);
         
         return service.getPage(RemindFormPredicate.search(in),page).map(formMapper::toGetAll);
     }
