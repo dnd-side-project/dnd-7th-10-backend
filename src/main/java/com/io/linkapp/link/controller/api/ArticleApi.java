@@ -37,14 +37,14 @@ public class ArticleApi {
     }
 
     @ApiOperation("링크 조회")
-    @GetMapping("/article/{id}")
-    public ArticleResponse get(@PathVariable("id") UUID uuid) {
+    @GetMapping("/article")
+    public ArticleResponse get(@RequestBody UUID uuid) {
         return articleService.findById(uuid);
     }
 
     @ApiOperation("링크 삭제")
-    @DeleteMapping("/article/{id}")
-    public void remove(@PathVariable("id") UUID uuid) {
+    @DeleteMapping("/article")
+    public void remove(@RequestBody UUID uuid) {
         articleService.remove(uuid);
     }
 
