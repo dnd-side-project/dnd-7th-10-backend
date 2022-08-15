@@ -1,8 +1,7 @@
 package com.io.linkapp.config.security;
 
-import com.io.linkapp.exception.UnAuthorizedException;
-import java.io.IOException;
-import javax.servlet.ServletException;
+import com.io.linkapp.exception.CustomGlobalException;
+import com.io.linkapp.exception.ErrorCode;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
@@ -15,6 +14,6 @@ public class AuthenticationExceptionHandler implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException authException){
-        throw new UnAuthorizedException();
+        throw new CustomGlobalException(ErrorCode.UNAUTHORIZED);
     }
 }
