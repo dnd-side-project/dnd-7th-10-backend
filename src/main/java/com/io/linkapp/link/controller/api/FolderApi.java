@@ -62,5 +62,4 @@ public class FolderApi {
     public void remove(@PathVariable UUID id) {
         folderService.remove(id);
     }
-
 }

@@ -1,11 +1,8 @@
 package com.io.linkapp.link.controller.api;
 
 
-import com.io.linkapp.exception.CustomGlobalException;
-import com.io.linkapp.exception.form.ErrorCode;
 import com.io.linkapp.link.controller.mapper.RemindFormMapper;
 import com.io.linkapp.link.controller.predicate.RemindFormPredicate;
-import com.io.linkapp.link.domain.Remind;
 import com.io.linkapp.link.request.RemindRequest;
 import com.io.linkapp.link.response.RemindResponse;
 import com.io.linkapp.link.service.RemindService;

@@ -1,6 +1,7 @@
 package com.io.linkapp.user.service;
 
-import com.io.linkapp.exception.UserNotFoundException;
+import com.io.linkapp.exception.CustomGlobalException;
+import com.io.linkapp.exception.ErrorCode;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.mapper.UserMapper;
 import com.io.linkapp.user.repository.UserRepository;
@@ -25,7 +26,7 @@ public class UserService {
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.USER_NOT_FOUND));
     }
 
     public Optional<User> findOauthUser(String username) {

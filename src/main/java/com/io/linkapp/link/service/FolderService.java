@@ -1,6 +1,7 @@
 package com.io.linkapp.link.service;
 
-import com.io.linkapp.exception.FolderNotFoundException;
+import com.io.linkapp.exception.CustomGlobalException;
+import com.io.linkapp.exception.ErrorCode;
 import com.io.linkapp.link.domain.Folder;
 import com.io.linkapp.link.mapper.FolderMapper;
 import com.io.linkapp.link.repository.FolderRepository;
@@ -23,7 +24,7 @@ public class FolderService {
 
     public FolderResponse get(UUID uuid) {
         return FolderMapper.INSTANCE.toResponseDto(folderRepository.findById(uuid)
-            .orElseThrow(FolderNotFoundException::new));
+            .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND)));
     }
 
     public FolderResponse add(FolderRequest folderRequest, User user) {
@@ -44,7 +45,7 @@ public class FolderService {
 
     public FolderResponse edit(UUID uuid, FolderRequest folderRequest) {
         Folder folder = folderRepository.findById(uuid)
-            .orElseThrow(FolderNotFoundException::new);
+            .orElseThrow(() -> new CustomGlobalException(ErrorCode.POSTS_NOT_FOUND));
 
         folder.changeFolderTitle(folderRequest.getFolderTitle());
         return FolderMapper.INSTANCE.toResponseDto(folderRepository.save(folder));
