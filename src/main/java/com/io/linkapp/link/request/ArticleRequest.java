@@ -14,15 +14,13 @@ import lombok.Getter;
 public class ArticleRequest extends BaseTimeEntity {
 
     private UUID folderId;
-    private String linkTitle;
-    private String linkContent;
+    private String linkUrl;
     private List<UUID> tagIds = new ArrayList<>();
 
     @Builder
-    public ArticleRequest(UUID folderId, String linkTitle, String linkContent, List<UUID> tagIds) {
+    public ArticleRequest(UUID folderId, String linkUrl, List<UUID> tagIds) {
         this.folderId = folderId;
-        this.linkTitle = linkTitle;
-        this.linkContent = linkContent;
+        this.linkUrl = linkUrl;
         this.tagIds = tagIds;
     }
 }

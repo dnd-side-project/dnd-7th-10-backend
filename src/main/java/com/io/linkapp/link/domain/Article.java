@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -34,8 +35,10 @@ public class Article extends BaseTimeEntity {
     @JsonBackReference(value = "folder-article")
     private Folder folder;
 
-    private String linkTitle;
-    private String linkContent;
+    private String linkUrl;
+
+    @Embedded
+    private OpenGraph openGraph;
 
     @OneToMany(mappedBy = "article")
     @JsonManagedReference("article-memo")
@@ -48,12 +51,12 @@ public class Article extends BaseTimeEntity {
     private boolean isBookmark = false;
 
     @Builder
-    public Article(Folder folder, UUID remindId, String linkTitle,
-        String linkContent, List<ArticleTag> tags) {
+    public Article(Folder folder, UUID remindId, String linkUrl,
+        OpenGraph openGraph, List<ArticleTag> tags) {
         this.folder = folder;
         this.remindId = remindId;
-        this.linkTitle = linkTitle;
-        this.linkContent = linkContent;
+        this.linkUrl = linkUrl;
+        this.openGraph = openGraph;
         this.articleTags = tags;
     }
 
