@@ -33,6 +33,8 @@ public class ArticleService {
         Folder folder = folderRepository.findById(articleRequest.getFolderId())
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND));
 
+
+
         Article article = Article.builder()
             .folder(folder)
             .linkContent(articleRequest.getLinkContent())
@@ -53,5 +55,18 @@ public class ArticleService {
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
 
         articleRepository.delete(article);
+    }
+
+    public ArticleResponse bookmark(UUID uuid) {
+        Article article = articleRepository.findById(uuid)
+            .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
+
+        if(article.isBookmark() == false) {
+            article.setBookmark(true);
+        }else {
+            article.setBookmark(false);
+        }
+
+        return ArticleMapper.INSTANCE.toResponseDto(articleRepository.save(article));
     }
 }

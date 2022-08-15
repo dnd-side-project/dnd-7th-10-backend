@@ -36,7 +36,7 @@ public class Article extends BaseTimeEntity {
     @JsonManagedReference("article-memo")
     private List<Memo> memos = new ArrayList<>();
 
-    private boolean isPin;
+    private boolean isBookmark = false;
     private boolean isMemo;
 
     @Builder
@@ -46,6 +46,10 @@ public class Article extends BaseTimeEntity {
         this.remindId = remindId;
         this.linkTitle = linkTitle;
         this.linkContent = linkContent;
+    }
+
+    public void setBookmark(boolean isBookmark){
+        this.isBookmark = isBookmark;
     }
 
     public void addArticleToFolder(Folder folder) {
