@@ -1,10 +1,12 @@
 package com.io.linkapp.link.service;
 
+import com.io.linkapp.common.OpenGraphParser;
 import com.io.linkapp.exception.CustomGlobalException;
 import com.io.linkapp.exception.ErrorCode;
 import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.ArticleTag;
 import com.io.linkapp.link.domain.Folder;
+import com.io.linkapp.link.domain.OpenGraph;
 import com.io.linkapp.link.domain.Tag;
 import com.io.linkapp.link.mapper.ArticleMapper;
 import com.io.linkapp.link.repository.ArticleRepository;
@@ -29,6 +31,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final TagRepository tagRepository;
     private final ArticleTagRepository articleTagRepository;
+    private final OpenGraphParser openGraphParser;
 
     public ArticleResponse findById(UUID id) {
         Article article = articleRepository.findById(id)
@@ -42,26 +45,30 @@ public class ArticleService {
         Folder folder = folderRepository.findById(articleRequest.getFolderId())
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND));
 
-        List<Tag> tags = articleRequest.getTagIds().stream()
-            .map(tagId -> tagRepository.findById(tagId)
-                .orElseThrow(() -> new CustomGlobalException(ErrorCode.TAG_NOT_FOUND)))
-            .collect(Collectors.toList());
+        OpenGraph openGraph = openGraphParser.parse(articleRequest.getLinkUrl());
 
         Article article = Article.builder()
             .folder(folder)
-            .linkContent(articleRequest.getLinkContent())
-            .linkTitle(articleRequest.getLinkTitle())
+            .linkUrl(articleRequest.getLinkUrl())
+            .openGraph(openGraph)
             .build();
 
         articleRepository.save(article);
 
-        for (Tag tag : tags) {
-            ArticleTag articleTag = ArticleTag.builder()
-                .tag(tag)
-                .article(article)
-                .build();
+        if(articleRequest.getTagIds() != null) {
+            List<Tag> tags = articleRequest.getTagIds().stream()
+                .map(tagId -> tagRepository.findById(tagId)
+                    .orElseThrow(() -> new CustomGlobalException(ErrorCode.TAG_NOT_FOUND)))
+                .collect(Collectors.toList());
 
-            articleTagRepository.save(articleTag);
+            for (Tag tag : tags) {
+                ArticleTag articleTag = ArticleTag.builder()
+                    .tag(tag)
+                    .article(article)
+                    .build();
+
+                articleTagRepository.save(articleTag);
+            }
         }
     }
 
