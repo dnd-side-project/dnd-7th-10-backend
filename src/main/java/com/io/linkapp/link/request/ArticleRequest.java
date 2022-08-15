@@ -2,6 +2,7 @@ package com.io.linkapp.link.request;
 
 import com.io.linkapp.common.BaseTimeEntity;
 import com.io.linkapp.link.domain.Folder;
+import com.io.linkapp.link.domain.Tag;
 import com.io.linkapp.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +16,13 @@ public class ArticleRequest extends BaseTimeEntity {
     private UUID folderId;
     private String linkTitle;
     private String linkContent;
-    private List<UUID> tags = new ArrayList<>();
+    private List<UUID> tagIds = new ArrayList<>();
 
     @Builder
-    public ArticleRequest(UUID folderId, String linkTitle, String linkContent, List<UUID> tags) {
+    public ArticleRequest(UUID folderId, String linkTitle, String linkContent, List<UUID> tagIds) {
         this.folderId = folderId;
         this.linkTitle = linkTitle;
         this.linkContent = linkContent;
-        this.tags = tags;
+        this.tagIds = tagIds;
     }
 }

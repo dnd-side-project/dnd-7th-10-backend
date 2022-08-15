@@ -1,27 +1,28 @@
 package com.io.linkapp.link.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
 @Entity
-@Table(name = "tag")
-@Data
-@Builder
+@Setter
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
-//@ToString(callSuper = true)
-@EqualsAndHashCode //(callSuper = true)
-public class Tag {
+public class Tag{
     
     /**
      * 태그 식별번호
@@ -31,12 +32,12 @@ public class Tag {
     @Column(name = "tag_id",nullable=false)
     private UUID tagId;
     
-    
-    @Column(name="article_id",nullable = false)
-    private UUID articleId;
-    
     @Column(name="tag_name")
     private String tagName;
-    
-    
+
+    private UUID articleId;
+
+    @OneToMany(mappedBy = "tag")
+    @JsonManagedReference("tag-article")
+    private List<ArticleTag> tagArticles = new ArrayList<>();
 }

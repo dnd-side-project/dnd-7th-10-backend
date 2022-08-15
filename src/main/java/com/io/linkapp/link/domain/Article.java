@@ -6,9 +6,14 @@ import com.io.linkapp.common.BaseTimeEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import javax.persistence.*;
-
-import com.io.linkapp.user.domain.User;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,16 +41,20 @@ public class Article extends BaseTimeEntity {
     @JsonManagedReference("article-memo")
     private List<Memo> memos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "article")
+    @JsonManagedReference("article-tag")
+    private List<ArticleTag> articleTags = new ArrayList<>();
+
     private boolean isBookmark = false;
-    private boolean isMemo;
 
     @Builder
     public Article(Folder folder, UUID remindId, String linkTitle,
-        String linkContent) {
+        String linkContent, List<ArticleTag> tags) {
         this.folder = folder;
         this.remindId = remindId;
         this.linkTitle = linkTitle;
         this.linkContent = linkContent;
+        this.articleTags = tags;
     }
 
     public void setBookmark(boolean isBookmark){

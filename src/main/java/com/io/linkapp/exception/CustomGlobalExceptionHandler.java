@@ -19,6 +19,8 @@ public class CustomGlobalExceptionHandler {
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(final HttpRequestMethodNotSupportedException e) {
+        System.out.println("ㅎㅇ");
+        e.printStackTrace();
         return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.getStatus().value())
             .body(new ErrorResponse(ErrorCode.METHOD_NOT_ALLOWED));
     }
@@ -31,6 +33,7 @@ public class CustomGlobalExceptionHandler {
     
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> handleException(Exception e) {
+        e.printStackTrace();
         return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.getStatus().value())
             .body(new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR));
     }

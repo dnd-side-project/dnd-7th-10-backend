@@ -28,8 +28,8 @@ public class FolderService {
     }
 
     public FolderResponse add(FolderRequest folderRequest, User user) {
-        folderRequest.setUser(user);
         Folder folder = FolderMapper.INSTANCE.toEntity(folderRequest);
+        folder.setUser(user);
         return FolderMapper.INSTANCE.toResponseDto(folderRepository.save(folder));
     }
 
