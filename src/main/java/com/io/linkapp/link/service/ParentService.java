@@ -3,7 +3,9 @@ package com.io.linkapp.link.service;
 import com.io.linkapp.exception.CustomGlobalException;
 import com.io.linkapp.exception.ErrorCode;
 import com.io.linkapp.link.domain.Article;
+import com.io.linkapp.link.domain.Parent;
 import com.io.linkapp.link.domain.Remind;
+import com.io.linkapp.link.repository.ParentRepository;
 import com.io.linkapp.link.repository.RemindRepository;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
@@ -17,31 +19,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class RemindService {
+public class ParentService {
     
-    private final RemindRepository repository;
+    private final ParentRepository repository;
     
-    /**
-     * 페이징 조회
-     *
-     * @param search 검색 조건
-     * @param page   페이징 조건
-     * @return 검색된 목록
-     */
-    public Page<Remind> getPage(Predicate search, Pageable page){
-        return repository.findAll(search, page);
+  
+    public List<Parent> getPage(){
+        return repository.findAll();
     }
     
     
-    /**
-     * 리마인드 등록
-     *
-     * @param remind
-     * @return
-     */
-    public Remind add(Remind remind) {
+    public Parent add(Parent parent) {
         
-        return repository.save(remind);
+        return repository.save(parent);
     }
     
     
