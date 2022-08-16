@@ -12,3 +12,8 @@ services:
       - "80:80"
     depends_on:
       - spring
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
