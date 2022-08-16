@@ -57,11 +57,11 @@ public class MemoService {
         memoRepository.delete(memo);
     }
 
-    public void modify(UUID uuid, MemoRequest memoRequest) {
+    public MemoResponse modify(UUID uuid, String memoContent) {
         Memo memo = memoRepository.findById(uuid)
                 .orElseThrow(() -> new CustomGlobalException(ErrorCode.MEMO_NOT_FOUND));
 
-        memo.modify(memoRequest.getContent());
-        memoRepository.save(memo);
+        memo.modify(memoContent);
+        return MemoMapper.INSTANCE.toResponseDto(memoRepository.save(memo));
     }
 }

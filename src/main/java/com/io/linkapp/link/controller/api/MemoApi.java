@@ -48,8 +48,8 @@ public class MemoApi {
 
     @ApiOperation("메모 수정")
     @PatchMapping("/memo/{id}")
-    public void modify(@PathVariable("id") UUID uuid, @RequestBody @Valid MemoRequest memoRequest) {
-        memoService.modify(uuid, memoRequest);
+    public MemoResponse modify(@PathVariable("id") UUID uuid, @RequestBody @Valid String memoContent) {
+        return memoService.modify(uuid, memoContent);
     }
 
     @ApiOperation("메모 삭제")
