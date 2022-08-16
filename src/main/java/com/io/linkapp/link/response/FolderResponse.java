@@ -11,4 +11,5 @@ public class FolderResponse {
 
     private UUID folderId;
     private String folderTitle;
+    private String folderColor;
 }

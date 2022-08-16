@@ -11,8 +11,11 @@ public class FolderRequest {
     @NotBlank(message = "폴더명을 입력해주세요")
     private String folderTitle;
 
+    private String folderColor;
+
     @Builder
-    public FolderRequest(String folderTitle){
+    public FolderRequest(String folderTitle, String folderColor){
         this.folderTitle = folderTitle;
+        this.folderColor = folderColor;
     }
 }
