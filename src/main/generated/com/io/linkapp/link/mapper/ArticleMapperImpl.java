@@ -12,7 +12,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-08-13T18:38:19+0900",
+    date = "2022-08-16T20:54:06+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 17.0.2 (Oracle Corporation)"
 )
 public class ArticleMapperImpl implements ArticleMapper {
@@ -25,9 +25,7 @@ public class ArticleMapperImpl implements ArticleMapper {
 
         ArticleBuilder article = Article.builder();
 
-        article.remindId( articleRequest.getRemindId() );
-        article.linkTitle( articleRequest.getLinkTitle() );
-        article.linkContent( articleRequest.getLinkContent() );
+        article.linkUrl( articleRequest.getLinkUrl() );
 
         return article.build();
     }
@@ -42,8 +40,8 @@ public class ArticleMapperImpl implements ArticleMapper {
 
         articleResponse.id( article.getId() );
         articleResponse.remindId( article.getRemindId() );
-        articleResponse.linkTitle( article.getLinkTitle() );
-        articleResponse.linkContent( article.getLinkContent() );
+        articleResponse.linkUrl( article.getLinkUrl() );
+        articleResponse.openGraph( article.getOpenGraph() );
         List<Memo> list = article.getMemos();
         if ( list != null ) {
             articleResponse.memos( new ArrayList<Memo>( list ) );

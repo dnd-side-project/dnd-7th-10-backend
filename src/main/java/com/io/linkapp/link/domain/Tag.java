@@ -16,8 +16,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Entity
+@Getter
 @Setter
 @NoArgsConstructor
 @Builder
@@ -28,7 +28,7 @@ public class Tag{
      * 태그 식별번호
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "uuid2")
     @Column(name = "tag_id",nullable=false)
     private UUID tagId;
     

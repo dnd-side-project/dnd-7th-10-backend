@@ -9,7 +9,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-08-13T18:38:19+0900",
+    date = "2022-08-16T20:54:06+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 17.0.2 (Oracle Corporation)"
 )
 public class MemoMapperImpl implements MemoMapper {
@@ -36,7 +36,6 @@ public class MemoMapperImpl implements MemoMapper {
         MemoResponseBuilder memoResponse = MemoResponse.builder();
 
         memoResponse.id( memo.getId() );
-        memoResponse.article( memo.getArticle() );
         memoResponse.content( memo.getContent() );
         memoResponse.registerDate( memo.getRegisterDate() );
         memoResponse.modifiedDate( memo.getModifiedDate() );

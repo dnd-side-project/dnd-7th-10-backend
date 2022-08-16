@@ -24,6 +24,8 @@ public class QFolder extends EntityPathBase<Folder> {
 
     public final ListPath<Article, QArticle> articles = this.<Article, QArticle>createList("articles", Article.class, QArticle.class, PathInits.DIRECT2);
 
+    public final StringPath folderColor = createString("folderColor");
+
     public final ComparablePath<java.util.UUID> folderId = createComparable("folderId", java.util.UUID.class);
 
     public final StringPath folderTitle = createString("folderTitle");

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-08-13T18:38:19+0900",
+    date = "2022-08-16T20:54:07+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 17.0.2 (Oracle Corporation)"
 )
 @Component
@@ -26,6 +26,7 @@ public class TagFormMapperImpl extends TagFormMapper {
         Tag tag = new Tag();
 
         tag.setTagName( in.getTagName() );
+        tag.setArticleId( in.getArticleId() );
 
         return tag;
     }
@@ -39,6 +40,7 @@ public class TagFormMapperImpl extends TagFormMapper {
         Tag tag = new Tag();
 
         tag.setTagName( in.getTagName() );
+        tag.setArticleId( in.getArticleId() );
 
         return tag;
     }
