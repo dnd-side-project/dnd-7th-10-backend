@@ -12,6 +12,8 @@ import com.io.linkapp.link.response.MemoResponse;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import com.io.linkapp.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +31,21 @@ public class MemoService {
         return MemoMapper.INSTANCE.toResponseDto(memo);
     }
 
-    public void add(MemoRequest memoRequest){
+    public MemoResponse add(MemoRequest memoRequest, User user){
         Article article = articleRepository.findById(memoRequest.getArticleId())
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
 
-        Memo memo = MemoMapper.INSTANCE.toEntity(memoRequest);
-        memo.addMemoToArticle(article);
+        Memo memo = Memo.builder()
+                .content(memoRequest.getContent())
+                .article(article)
+                .user(user)
+                .build();
 
-        memoRepository.save(memo);
+        return MemoMapper.INSTANCE.toResponseDto(memoRepository.save(memo));
     }
 
-    public List<MemoResponse> getList(){
-        return memoRepository.findAll().stream().map(
+    public List<MemoResponse> getList(User user){
+        return memoRepository.findByUser(user).stream().map(
             memo -> MemoMapper.INSTANCE.toResponseDto(memo))
             .collect(Collectors.toList());
     }

@@ -1,5 +1,6 @@
 package com.io.linkapp.link.controller.api;
 
+import com.io.linkapp.config.security.auth.PrincipalDetails;
 import com.io.linkapp.link.request.MemoRequest;
 import com.io.linkapp.link.response.MemoResponse;
 import com.io.linkapp.link.service.MemoService;
@@ -10,6 +11,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,22 +29,20 @@ public class MemoApi {
 
     @ApiOperation("메모 단건 조회")
     @GetMapping("/memo/{id}")
-    public ResponseEntity<MemoResponse> get(@PathVariable("id") UUID uuid){
-        MemoResponse memoResponse = memoService.findById(uuid);
-        return ResponseEntity.ok().body(memoResponse);
+    public MemoResponse get(@PathVariable("id") UUID uuid){
+        return memoService.findById(uuid);
     }
 
     @ApiOperation("메모 전체 조회")
     @GetMapping("/memos")
-    public ResponseEntity<List<MemoResponse>> getList(){
-        List<MemoResponse> memos = memoService.getList();
-        return ResponseEntity.ok(memos);
+    public List<MemoResponse> getList(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        return memoService.getList(principalDetails.getUser());
     }
 
     @ApiOperation("메모 등록")
     @PostMapping("/memo")
-    public void add(@RequestBody @Valid MemoRequest memoRequest) {
-        memoService.add(memoRequest);
+    public MemoResponse add(@RequestBody @Valid MemoRequest memoRequest, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        return memoService.add(memoRequest, principalDetails.getUser());
     }
 
     @ApiOperation("메모 수정")
