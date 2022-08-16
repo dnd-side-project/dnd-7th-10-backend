@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+//TODO : 일반 사용자 삭제 예정
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;

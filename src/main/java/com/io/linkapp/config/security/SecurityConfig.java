@@ -3,6 +3,7 @@ package com.io.linkapp.config.security;
 import com.io.linkapp.config.security.jwt.JwtAuthenticationFilter;
 import com.io.linkapp.config.security.jwt.JwtAuthorizationFilter;
 import com.io.linkapp.config.security.oauth.Oauth2SuccessHandler;
+import com.io.linkapp.user.service.RedisService;
 import com.io.linkapp.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ public class SecurityConfig {
     private final UserService userService;
     private final AuthenticationExceptionHandler jwtAuthenticationException;
     private final AuthenticationDeniedExceptionHandler jwtAccessDeniedException;
+    private final RedisService redisService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -57,8 +59,8 @@ public class SecurityConfig {
             AuthenticationManager authenticationManager = http.getSharedObject(
                 AuthenticationManager.class);
             http.addFilter(corsFilter)
-                .addFilter(new JwtAuthenticationFilter(authenticationManager))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager, userService));
+                .addFilter(new JwtAuthenticationFilter(authenticationManager, redisService))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager, userService, redisService));
         }
     }
 
