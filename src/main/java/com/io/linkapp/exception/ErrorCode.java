@@ -17,6 +17,8 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류입니다."),
 
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 아티클입니다."),
+    
+    REMIND_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 리마인드입니다."),
 
     FOLDER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 폴더입니다."),
 

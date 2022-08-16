@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,24 +18,37 @@ public class QRemind extends EntityPathBase<Remind> {
 
     private static final long serialVersionUID = -1994660323L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QRemind remind = new QRemind("remind");
+
+    public final ListPath<Article, QArticle> articleList = this.<Article, QArticle>createList("articleList", Article.class, QArticle.class, PathInits.DIRECT2);
 
     public final ComparablePath<java.util.UUID> remindId = createComparable("remindId", java.util.UUID.class);
 
     public final StringPath remindTitle = createString("remindTitle");
 
-    public final ComparablePath<java.util.UUID> userId = createComparable("userId", java.util.UUID.class);
+    public final com.io.linkapp.user.domain.QUser user;
 
     public QRemind(String variable) {
-        super(Remind.class, forVariable(variable));
+        this(Remind.class, forVariable(variable), INITS);
     }
 
     public QRemind(Path<? extends Remind> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QRemind(PathMetadata metadata) {
-        super(Remind.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QRemind(PathMetadata metadata, PathInits inits) {
+        this(Remind.class, metadata, inits);
+    }
+
+    public QRemind(Class<? extends Remind> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.user = inits.isInitialized("user") ? new com.io.linkapp.user.domain.QUser(forProperty("user")) : null;
     }
 
 }
