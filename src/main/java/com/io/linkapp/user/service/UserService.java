@@ -11,6 +11,9 @@ import com.io.linkapp.user.request.Oauth2UserRequest;
 import com.io.linkapp.user.request.UserRequest;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import com.io.linkapp.user.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,11 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id).get();
+    }
+
+    public UserResponse findUser(String username) {
+        return UserMapper.INSTANCE.toResponseDto(userRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.USER_NOT_FOUND)));
     }
 
     public User findByUsername(String username) {
@@ -56,7 +64,9 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserResponse> findAll() {
+        return userRepository.findAll().stream()
+                .map(user -> UserMapper.INSTANCE.toResponseDto(user))
+                .collect(Collectors.toList());
     }
 }
