@@ -26,7 +26,6 @@ public class Oauth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
             .withClaim("role", principalDetails.getUser().getRole().toString())
             .sign(Algorithm.HMAC512(JwtProperty.SECRET));
 
-        System.out.println(jwtToken);
         response.addHeader(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtToken);
         super.onAuthenticationSuccess(request, response, authentication);
     }
