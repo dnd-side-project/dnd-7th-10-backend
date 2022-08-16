@@ -2,6 +2,8 @@ package com.io.linkapp.user.service;
 
 import com.io.linkapp.exception.CustomGlobalException;
 import com.io.linkapp.exception.ErrorCode;
+import com.io.linkapp.link.domain.Folder;
+import com.io.linkapp.link.repository.FolderRepository;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.mapper.UserMapper;
 import com.io.linkapp.user.repository.UserRepository;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
+    private final FolderRepository folderRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
 
@@ -36,7 +39,16 @@ public class UserService {
     public User join(UserRequest userRequest) {
         userRequest.encodePassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
         User user = UserMapper.INSTANCE.toEntity(userRequest);
-        return userRepository.save(user);
+
+        Folder defaultFolder = Folder.builder()
+                .folderTitle("기본 폴더")
+                .user(user)
+                .build();
+
+        User savedUser = userRepository.save(user);
+        folderRepository.save(defaultFolder);
+
+        return savedUser;
     }
 
     public void oauth2Signup(Oauth2UserRequest userRequest) {
