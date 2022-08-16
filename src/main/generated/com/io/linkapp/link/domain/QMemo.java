@@ -36,6 +36,8 @@ public class QMemo extends EntityPathBase<Memo> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> registerDate = _super.registerDate;
 
+    public final com.io.linkapp.user.domain.QUser user;
+
     public QMemo(String variable) {
         this(Memo.class, forVariable(variable), INITS);
     }
@@ -55,6 +57,7 @@ public class QMemo extends EntityPathBase<Memo> {
     public QMemo(Class<? extends Memo> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.article = inits.isInitialized("article") ? new QArticle(forProperty("article"), inits.get("article")) : null;
+        this.user = inits.isInitialized("user") ? new com.io.linkapp.user.domain.QUser(forProperty("user")) : null;
     }
 
 }

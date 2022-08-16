@@ -5,11 +5,13 @@ import com.io.linkapp.link.domain.Folder.FolderBuilder;
 import com.io.linkapp.link.request.FolderRequest;
 import com.io.linkapp.link.response.FolderResponse;
 import com.io.linkapp.link.response.FolderResponse.FolderResponseBuilder;
+import com.io.linkapp.link.response.FolderResponse.GetAll;
+import com.io.linkapp.link.response.FolderResponse.GetAll.GetAllBuilder;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-08-13T18:38:19+0900",
+    date = "2022-08-16T20:54:06+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 17.0.2 (Oracle Corporation)"
 )
 public class FolderMapperImpl implements FolderMapper {
@@ -22,8 +24,8 @@ public class FolderMapperImpl implements FolderMapper {
 
         FolderBuilder folder = Folder.builder();
 
-        folder.user( folderRequest.getUser() );
         folder.folderTitle( folderRequest.getFolderTitle() );
+        folder.folderColor( folderRequest.getFolderColor() );
 
         return folder.build();
     }
@@ -38,7 +40,23 @@ public class FolderMapperImpl implements FolderMapper {
 
         folderResponse.folderId( folder.getFolderId() );
         folderResponse.folderTitle( folder.getFolderTitle() );
+        folderResponse.folderColor( folder.getFolderColor() );
 
         return folderResponse.build();
+    }
+
+    @Override
+    public GetAll toResponseAll(Folder folder) {
+        if ( folder == null ) {
+            return null;
+        }
+
+        GetAllBuilder getAll = GetAll.builder();
+
+        getAll.folderId( folder.getFolderId() );
+        getAll.folderTitle( folder.getFolderTitle() );
+        getAll.folderColor( folder.getFolderColor() );
+
+        return getAll.build();
     }
 }

@@ -1,5 +1,7 @@
 package com.io.linkapp.link.service;
 
+import com.io.linkapp.exception.CustomGlobalException;
+import com.io.linkapp.exception.ErrorCode;
 import com.io.linkapp.link.domain.QTag;
 import com.io.linkapp.link.domain.Tag;
 import com.io.linkapp.link.mapper.TagMapper;
@@ -21,18 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class TagService {
 
     private final TagRepository repository;
-    private final TagMapper mapper;
-    
-    /**
-     * 목록 조회
-     *
-     * @param search 검색 조건
-     * @return 검색된 목록
-     */
-    @Transactional(readOnly = true, isolation = Isolation.READ_UNCOMMITTED)
-    public List<Tag> getList(Predicate search){
-        return (List<Tag>)repository.findAll(search);
-    }
     
     /**
      * 페이징 조회
@@ -41,7 +31,6 @@ public class TagService {
      * @param page   페이징 조건
      * @return 검색된 목록
      */
-    @Transactional(readOnly = true, isolation = Isolation.READ_UNCOMMITTED)
     public Page<Tag> getPage(Predicate search, Pageable page){
         return repository.findAll(search, page);
     }
@@ -49,12 +38,12 @@ public class TagService {
     /**
      * 조회
      *
-     * @param id 식별번호
+     * @param id 태그 식별번호
      * @return
      */
-    @Transactional(readOnly = true)
     public Tag get(UUID id){
-        return repository.findOne(new BooleanBuilder(QTag.tag.tagId.eq(id))).orElse(null);
+        return repository.findOne(new BooleanBuilder(QTag.tag.tagId.eq(id))).orElseThrow(()->new CustomGlobalException(
+            ErrorCode.TAG_NOT_FOUND));
     }
     
     /**
@@ -70,12 +59,22 @@ public class TagService {
     /**
      * 수정
      *
-     * @param entity
+     * @param entity 수정본
      * @return
      */
     public Tag modify(UUID id, Tag entity){
-        entity.setTagId(id);
-        return mapper.modify(entity,get(entity.getTagId()));
+    
+        if(entity == null){
+            return null;
+        }
+        
+        Tag out = repository.findById(id).orElseThrow(()->new CustomGlobalException(ErrorCode.TAG_NOT_FOUND)); // 일단 지금 현재 db에 저장된 정보를 가져옴
+        
+        //그리고 정보를 수정
+        out.setArticleId(entity.getArticleId());
+        out.setTagName(entity.getTagName());
+        
+        return out;
     }
     
     

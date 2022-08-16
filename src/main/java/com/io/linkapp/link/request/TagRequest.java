@@ -1,6 +1,7 @@
 package com.io.linkapp.link.request;
 
 import io.swagger.annotations.ApiModelProperty;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +32,9 @@ public class TagRequest {
         
         @ApiModelProperty(value = "태그명")
         private String tagName;
+    
+        @ApiModelProperty(value = "아티클 식별번호")
+        private UUID articleId;
         
     }
     
@@ -44,24 +48,11 @@ public class TagRequest {
         
         @ApiModelProperty(value = "태그명")
         private String tagName;
+    
+        @ApiModelProperty(value = "아티클 식별번호")
+        private UUID articleId;
         
     }
-    
-    
-    
-    @Data
-    @Builder
-    @ToString
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Remove {
-    
-        @ApiModelProperty(value = "태그명")
-        private String tagName;
-        
-    }
-    
-    
     
     
 }

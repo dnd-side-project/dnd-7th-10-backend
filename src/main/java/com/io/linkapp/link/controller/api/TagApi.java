@@ -9,7 +9,6 @@ import com.io.linkapp.link.response.TagResponse;
 import com.io.linkapp.link.response.TagResponse.GetAll;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,23 +37,16 @@ public class TagApi {
     private final TagService service;
     
     @SneakyThrows
-    @ApiOperation("목록 조회")
-    @GetMapping("/get-list")
-    public List<GetAll> getList(@Valid TagRequest.GetAll in){
-        return formMapper.toGetAllList(service.getList(TagFormPredicate.search(in)));
-    }
-    
-    @SneakyThrows
     @ApiOperation("페이징 조회")
-    @GetMapping("/get-page")
+    @GetMapping
     public Page<GetAll> getPage(@Valid TagRequest.GetAll in,
-        @PageableDefault(size = 20, sort = "regDt", direction = Sort.Direction.DESC) Pageable page){
+        @PageableDefault(size = 20) Pageable page){
         return service.getPage(TagFormPredicate.search(in),page).map(formMapper::toGetAll);
     }
     
     @SneakyThrows
     @ApiOperation("조회")
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public TagResponse.GetAll get(@PathVariable UUID id){
         return formMapper.toGetAll(service.get(id));
     }
@@ -61,7 +54,7 @@ public class TagApi {
     
     @SneakyThrows
     @ApiOperation("등록")
-    @PostMapping("/add")
+    @PostMapping
     public TagResponse.GetAll add(@Valid @RequestBody TagRequest.Add in){
         Tag newTag = formMapper.toTag(in);
         return formMapper.toGetAll(service.add(newTag));
@@ -70,14 +63,14 @@ public class TagApi {
     
     @SneakyThrows
     @ApiOperation("수정")
-    @PostMapping("/modify/{id}")
+    @PostMapping("/{id}")
     public TagResponse.GetAll modify(@PathVariable UUID id,@Valid @RequestBody TagRequest.Modify in){
         return formMapper.toGetAll(service.modify(id, formMapper.toTag(in)));
     }
     
     @SneakyThrows
     @ApiOperation("삭제")
-    @PostMapping("/remove/{id}")
+    @DeleteMapping("/{id}")
     public void remove(@PathVariable UUID id) {
         service.remove(id);
     }

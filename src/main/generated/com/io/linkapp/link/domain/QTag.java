@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -20,6 +21,8 @@ public class QTag extends EntityPathBase<Tag> {
     public static final QTag tag = new QTag("tag");
 
     public final ComparablePath<java.util.UUID> articleId = createComparable("articleId", java.util.UUID.class);
+
+    public final ListPath<ArticleTag, QArticleTag> tagArticles = this.<ArticleTag, QArticleTag>createList("tagArticles", ArticleTag.class, QArticleTag.class, PathInits.DIRECT2);
 
     public final ComparablePath<java.util.UUID> tagId = createComparable("tagId", java.util.UUID.class);
 
