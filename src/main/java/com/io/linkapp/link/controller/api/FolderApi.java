@@ -32,10 +32,10 @@ public class FolderApi {
         return folderService.get(id);
     }
 
-    //TODO : 폴더 내부의 아티클 카운트로 정렬되도록 수정
+    //TODO : 폴더 내부의 아티클 카운트로 정렬되도록 수정?
     @ApiOperation("유저가 작성한 폴더 전체 조회")
     @GetMapping("/folders")
-    public List<FolderResponse> getAll(@AuthenticationPrincipal PrincipalDetails principalDetails){
+    public List<FolderResponse.GetAll> getAll(@AuthenticationPrincipal PrincipalDetails principalDetails){
         return folderService.getFoldersByUser(principalDetails.getUser());
     }
 

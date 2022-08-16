@@ -11,4 +11,5 @@ public interface FolderMapper {
     FolderMapper INSTANCE = Mappers.getMapper(FolderMapper.class);
     Folder toEntity(FolderRequest folderRequest);
     FolderResponse toResponseDto(Folder folder);
+    FolderResponse.GetAll toResponseAll(Folder folder);
 }
