@@ -1,5 +1,6 @@
 package com.io.linkapp.config;
 
+import com.io.linkapp.config.security.auth.PrincipalDetails;
 import springfox.documentation.service.Tag;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +25,7 @@ public class SwaggerConfig {
         Docket docket = new Docket(DocumentationType.SWAGGER_2);
         //  docket.useDefaultResponseMessages(false); - 확인해보기
         
-        docket.ignoredParameterTypes(Pageable.class)
+        docket.ignoredParameterTypes(Pageable.class, PrincipalDetails.class)
             .select().apis(RequestHandlerSelectors.any())
             .paths(PathSelectors.any())
             .build()
