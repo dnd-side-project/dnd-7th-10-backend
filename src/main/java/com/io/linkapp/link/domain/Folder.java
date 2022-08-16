@@ -24,6 +24,8 @@ public class Folder {
 
     private String folderTitle;
 
+    private String folderColor;
+
     @OneToMany(mappedBy = "folder")
     @JsonManagedReference(value = "folder-article")
     private List<Article> articles = new ArrayList<>();
@@ -38,10 +40,15 @@ public class Folder {
     }
 
     @Builder
-    public Folder(User user, UUID folderId, String folderTitle){
+    public Folder(User user, UUID folderId, String folderTitle, String folderColor){
         this.user = user;
         this.folderId = folderId;
         this.folderTitle = folderTitle;
+        this.folderColor = folderColor;
+    }
+
+    public void setUser(User user){
+        this.user = user;
     }
 
     public void changeFolderTitle(String folderTitle) {

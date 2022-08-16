@@ -64,7 +64,6 @@ public class TagApi {
     @PostMapping("/add")
     public TagResponse.GetAll add(@Valid @RequestBody TagRequest.Add in){
         Tag newTag = formMapper.toTag(in);
-        newTag.setArticleId(UUID.randomUUID()); //임시 더미 데이터
         return formMapper.toGetAll(service.add(newTag));
     }
     

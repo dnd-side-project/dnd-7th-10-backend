@@ -8,11 +8,15 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
       show-sql: true
+
+  redis:
+    host: ec2-13-125-200-177.ap-northeast-2.compute.amazonaws.com
+    port: 6379
 
   security:
     oauth2:

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.io.linkapp.common.BaseTimeEntity;
 import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.Folder;
+import com.io.linkapp.link.domain.Memo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,10 @@ public class User extends BaseTimeEntity {
     @JsonManagedReference(value = "user-folder")
     private List<Folder> folders = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference(value = "user-memo")
+    private List<Memo> memos = new ArrayList<>();
+
     @Enumerated(value = EnumType.STRING)
     private Role role = Role.BASIC;
 
@@ -41,5 +46,12 @@ public class User extends BaseTimeEntity {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    @Builder
+    public User(UUID id, String username, Role role) {
+        this.id = id;
+        this.username = username;
+        this.role = role;
     }
 }

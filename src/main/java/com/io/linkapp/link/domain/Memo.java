@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.io.linkapp.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,24 +32,24 @@ public class Memo extends BaseTimeEntity {
     @JsonBackReference(value = "article-memo")
     private Article article;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "user-memo")
+    private User user;
+
     @Column(name = "memo_content")
     private String content;
 
     @Builder
-    public Memo(UUID id, Article article, String content) {
+    public Memo(UUID id, Article article, String content, User user) {
         this.id = id;
         this.article = article;
         this.content = content;
+        this.user = user;
     }
 
     public void modify(String content){
         this.content = content;
     }
 
-    public void addMemoToArticle(Article article) {
-        this.article = article;
-        if(!article.getMemos().contains(this)) {
-            article.getMemos().add(this);
-        }
-    }
 }

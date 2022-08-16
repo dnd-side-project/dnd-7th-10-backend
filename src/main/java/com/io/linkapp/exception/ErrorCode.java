@@ -26,8 +26,12 @@ public enum ErrorCode {
 
     AUTHORIZE_FORBIDDEN(HttpStatus.FORBIDDEN, "권한이 없습니다."),
 
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인이 실패하였습니다.");
-    
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인이 실패하였습니다."),
+
+    TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 태그입니다."),
+
+    PARSE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "URL 정보가 잘못되었습니다.");
+
     private final HttpStatus status;
     private final String message;
 }

@@ -11,4 +11,14 @@ public class FolderResponse {
 
     private UUID folderId;
     private String folderTitle;
+    private String folderColor;
+
+    @Getter
+    @Builder
+    public static class GetAll{
+        private UUID folderId;
+        private String folderTitle;
+        private String folderColor;
+        private Integer articleCount;
+    }
 }

@@ -1,8 +1,6 @@
 package com.io.linkapp.link.controller.api;
 
 import com.io.linkapp.config.security.auth.PrincipalDetails;
-import com.io.linkapp.link.controller.predicate.FolderFormPredicate;
-import com.io.linkapp.link.mapper.FolderMapper;
 import com.io.linkapp.link.request.FolderRequest;
 import com.io.linkapp.link.response.FolderResponse;
 import com.io.linkapp.link.service.FolderService;
@@ -12,10 +10,6 @@ import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,10 +32,10 @@ public class FolderApi {
         return folderService.get(id);
     }
 
-    //TODO : 폴더 내부의 아티클 카운트로 정렬되도록 수정
+    //TODO : 폴더 내부의 아티클 카운트로 정렬되도록 수정?
     @ApiOperation("유저가 작성한 폴더 전체 조회")
     @GetMapping("/folders")
-    public List<FolderResponse> getAll(@AuthenticationPrincipal PrincipalDetails principalDetails){
+    public List<FolderResponse.GetAll> getAll(@AuthenticationPrincipal PrincipalDetails principalDetails){
         return folderService.getFoldersByUser(principalDetails.getUser());
     }
 
@@ -53,7 +47,7 @@ public class FolderApi {
 
     @ApiOperation("폴더 수정")
     @PatchMapping("/folder/{id}")
-    public FolderResponse modify(@PathVariable UUID uuid,@Valid @RequestBody FolderRequest folderRequest){
+    public FolderResponse modify(@PathVariable("id") UUID uuid,@Valid @RequestBody FolderRequest folderRequest){
         return folderService.edit(uuid, folderRequest);
     }
 
