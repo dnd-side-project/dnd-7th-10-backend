@@ -9,11 +9,13 @@ import com.io.linkapp.exception.RefreshTokenNotValidateException;
 import com.io.linkapp.user.service.RedisService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
+@Slf4j
 @RequiredArgsConstructor
 @Getter
 public class JwtTokenProvider {
@@ -38,6 +40,7 @@ public class JwtTokenProvider {
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperty.REFRESH_TOKEN_EXPIRATION))
                 .sign(Algorithm.HMAC512(JwtProperty.SECRET));
 
+        log.info("Set Redis");
         redisService.setValues(username, refreshToken);
         return refreshToken;
     }
