@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ArticleRepository extends JpaRepository<Article, UUID> {
 
+    //TODO : N+1 제대로 처리
 //    @Query("SELECT article FROM Article article join fetch article.memos")
     List<Article> findByUser(User user);
 }
