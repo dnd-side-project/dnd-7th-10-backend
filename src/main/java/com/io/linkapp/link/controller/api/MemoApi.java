@@ -28,8 +28,8 @@ public class MemoApi {
 
     @ApiOperation("메모 단건 조회")
     @GetMapping("/memo/{memoId}")
-    public MemoResponse get(@PathVariable("memoId") UUID uuid){
-        return memoService.findById(uuid);
+    public MemoResponse get(@PathVariable UUID memoId){
+        return memoService.findById(memoId);
     }
 
     @ApiOperation("메모 전체 조회")
@@ -46,13 +46,13 @@ public class MemoApi {
 
     @ApiOperation("메모 수정")
     @PatchMapping("/memo/{memoId}")
-    public MemoResponse modify(@PathVariable("memoId") UUID uuid, @RequestBody @Valid String memoContent) {
-        return memoService.modify(uuid, memoContent);
+    public MemoResponse modify(@PathVariable UUID memoId, @RequestBody @Valid String memoContent) {
+        return memoService.modify(memoId, memoContent);
     }
 
     @ApiOperation("메모 삭제")
     @DeleteMapping("memo/{memoId}")
-    public void remove(@PathVariable("memoId") UUID uuid) {
-        memoService.remove(uuid);
+    public void remove(@PathVariable UUID memoId) {
+        memoService.remove(memoId);
     }
 }

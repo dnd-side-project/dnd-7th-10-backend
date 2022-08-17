@@ -28,8 +28,8 @@ public class FolderApi {
 
     @ApiOperation("폴더 조회")
     @GetMapping("/folder/{folderId}")
-    public FolderResponse.GetArticles get(@PathVariable UUID id) {
-        return folderService.get(id);
+    public FolderResponse.GetArticles get(@PathVariable UUID folderId) {
+        return folderService.get(folderId);
     }
 
     //TODO : 폴더 내부의 아티클 카운트로 정렬되도록 수정?
@@ -47,13 +47,13 @@ public class FolderApi {
 
     @ApiOperation("폴더 이름 수정")
     @PatchMapping("/folder/{folderId}")
-    public FolderResponse modify(@PathVariable("folderId") UUID uuid,@Valid @RequestBody FolderRequest folderRequest){
-        return folderService.edit(uuid, folderRequest);
+    public FolderResponse modify(@PathVariable UUID folderId,@Valid @RequestBody FolderRequest folderRequest){
+        return folderService.edit(folderId, folderRequest);
     }
 
     @ApiOperation("폴더 삭제")
     @DeleteMapping("/folder/{folderId}")
-    public void remove(@PathVariable("folderId") UUID id) {
-        folderService.remove(id);
+    public void remove(@PathVariable UUID folderId) {
+        folderService.remove(folderId);
     }
 }

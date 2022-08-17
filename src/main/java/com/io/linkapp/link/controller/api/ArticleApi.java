@@ -39,7 +39,7 @@ public class ArticleApi {
     }
 
     @ApiOperation("링크 조회")
-    @GetMapping("/article/{articleid}")
+    @GetMapping("/article/{articleId}")
     public ArticleResponse get(@PathVariable("articleId") UUID uuid) {
         return articleService.findById(uuid);
     }
