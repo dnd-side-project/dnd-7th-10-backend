@@ -98,6 +98,7 @@ public class ArticleService {
             article.setBookmark(true);
         }else {
             article.setBookmark(false);
+            article.setRemindId(UUID.fromString( "00000000-0000-0000-0000-000000000000"));
         }
 
         return ArticleMapper.INSTANCE.toResponseDto(articleRepository.save(article));
