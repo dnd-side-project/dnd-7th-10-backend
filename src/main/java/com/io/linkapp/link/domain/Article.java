@@ -61,12 +61,13 @@ public class Article extends BaseTimeEntity {
 
     @Builder
     public Article(Folder folder, UUID remindId, String linkUrl,
-        OpenGraph openGraph, List<ArticleTag> tags) {
+        OpenGraph openGraph, List<ArticleTag> tags, User user) {
         this.folder = folder;
         this.remindId = remindId;
         this.linkUrl = linkUrl;
         this.openGraph = openGraph;
         this.articleTags = tags;
+        this.user = user;
     }
 
     public void setBookmark(boolean isBookmark){

@@ -2,18 +2,15 @@ package com.io.linkapp.link.service;
 
 import com.io.linkapp.exception.CustomGlobalException;
 import com.io.linkapp.exception.ErrorCode;
-import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.Folder;
 import com.io.linkapp.link.mapper.FolderMapper;
 import com.io.linkapp.link.repository.FolderRepository;
 import com.io.linkapp.link.request.FolderRequest;
 import com.io.linkapp.link.response.FolderResponse;
 import com.io.linkapp.user.domain.User;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +21,7 @@ public class FolderService {
 
     private final FolderRepository folderRepository;
 
-
+    //TODO QueryDSL로 N+1 풀기
     public FolderResponse.GetArticles get(UUID uuid) {
         return FolderMapper.INSTANCE.toFolderArticles(folderRepository.findById(uuid)
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND)));
@@ -37,7 +34,6 @@ public class FolderService {
     }
 
     public List<FolderResponse.GetAll> getFoldersByUser(User user) {
-
         List<Folder> folders = folderRepository.findByUser(user);
         List<FolderResponse.GetAll> folderResponses = new ArrayList<>();
 

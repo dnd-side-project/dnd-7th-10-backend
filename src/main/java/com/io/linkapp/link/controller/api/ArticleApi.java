@@ -28,8 +28,8 @@ public class ArticleApi {
 
     @ApiOperation("링크 저장")
     @PostMapping("/article")
-    public ArticleResponse add(@RequestBody @Valid ArticleRequest articleRequest) {
-        return articleService.add(articleRequest);
+    public ArticleResponse add(@RequestBody @Valid ArticleRequest articleRequest, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        return articleService.add(articleRequest, principalDetails.getUser());
     }
 
     @ApiOperation("링크 전체 조회")
