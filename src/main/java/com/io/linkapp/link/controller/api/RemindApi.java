@@ -53,9 +53,9 @@ public class RemindApi {
     
     @SneakyThrows
     @ApiOperation("삭제")
-    @DeleteMapping("/{remindId}")
-    public void remove(@PathVariable UUID remindId) {
-        service.remove(remindId);
+    @DeleteMapping("/{id}")
+    public void remove(@PathVariable UUID id) {
+        service.remove(id);
     }
     
     

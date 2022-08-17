@@ -19,6 +19,9 @@ public class TagResponse {
     
         @ApiModelProperty(value = "태그 식별번호")
         private UUID tagId;
+    
+        @ApiModelProperty(value = "아티클 식별번호")
+        private UUID articleId;
         
         @ApiModelProperty(value = "태그명")
         private String tagName;
