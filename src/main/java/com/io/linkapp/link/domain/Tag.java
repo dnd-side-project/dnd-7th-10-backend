@@ -35,7 +35,6 @@ public class Tag{
     @Column(name="tag_name")
     private String tagName;
 
-    private UUID articleId;
 
     @OneToMany(mappedBy = "tag")
     @JsonManagedReference("tag-article")

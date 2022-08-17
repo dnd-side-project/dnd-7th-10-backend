@@ -1,5 +1,6 @@
 package com.io.linkapp.link.mapper;
 
+import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.Folder;
 import com.io.linkapp.link.domain.Folder.FolderBuilder;
 import com.io.linkapp.link.request.FolderRequest;
@@ -7,11 +8,15 @@ import com.io.linkapp.link.response.FolderResponse;
 import com.io.linkapp.link.response.FolderResponse.FolderResponseBuilder;
 import com.io.linkapp.link.response.FolderResponse.GetAll;
 import com.io.linkapp.link.response.FolderResponse.GetAll.GetAllBuilder;
+import com.io.linkapp.link.response.FolderResponse.GetArticles;
+import com.io.linkapp.link.response.FolderResponse.GetArticles.GetArticlesBuilder;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-08-17T02:13:49+0900",
+    date = "2022-08-17T20:34:35+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 17.0.2 (Oracle Corporation)"
 )
 public class FolderMapperImpl implements FolderMapper {
@@ -58,5 +63,24 @@ public class FolderMapperImpl implements FolderMapper {
         getAll.folderColor( folder.getFolderColor() );
 
         return getAll.build();
+    }
+
+    @Override
+    public GetArticles toFolderArticles(Folder folder) {
+        if ( folder == null ) {
+            return null;
+        }
+
+        GetArticlesBuilder getArticles = GetArticles.builder();
+
+        getArticles.folderId( folder.getFolderId() );
+        getArticles.folderTitle( folder.getFolderTitle() );
+        getArticles.folderColor( folder.getFolderColor() );
+        List<Article> list = folder.getArticles();
+        if ( list != null ) {
+            getArticles.articles( new ArrayList<Article>( list ) );
+        }
+
+        return getArticles.build();
     }
 }

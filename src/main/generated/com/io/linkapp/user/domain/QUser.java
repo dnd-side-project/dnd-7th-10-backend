@@ -22,6 +22,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final com.io.linkapp.common.QBaseTimeEntity _super = new com.io.linkapp.common.QBaseTimeEntity(this);
 
+    public final ListPath<com.io.linkapp.link.domain.Article, com.io.linkapp.link.domain.QArticle> articles = this.<com.io.linkapp.link.domain.Article, com.io.linkapp.link.domain.QArticle>createList("articles", com.io.linkapp.link.domain.Article.class, com.io.linkapp.link.domain.QArticle.class, PathInits.DIRECT2);
+
     public final ListPath<com.io.linkapp.link.domain.Folder, com.io.linkapp.link.domain.QFolder> folders = this.<com.io.linkapp.link.domain.Folder, com.io.linkapp.link.domain.QFolder>createList("folders", com.io.linkapp.link.domain.Folder.class, com.io.linkapp.link.domain.QFolder.class, PathInits.DIRECT2);
 
     public final ComparablePath<java.util.UUID> id = createComparable("id", java.util.UUID.class);
