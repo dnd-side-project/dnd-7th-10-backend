@@ -16,7 +16,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-      show-sql: true
+        show_sql: false
 
   redis:
     host: ec2-13-125-200-177.ap-northeast-2.compute.amazonaws.com

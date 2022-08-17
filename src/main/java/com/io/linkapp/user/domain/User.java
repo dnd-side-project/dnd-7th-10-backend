@@ -39,6 +39,10 @@ public class User extends BaseTimeEntity {
     @JsonManagedReference(value = "user-memo")
     private List<Memo> memos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference(value = "user-article")
+    private List<Article> articles = new ArrayList<>();
+
     @Enumerated(value = EnumType.STRING)
     private Role role = Role.BASIC;
 

@@ -19,6 +19,13 @@ public class ErrorResponse {
         this.message = errorCode.getMessage();
     }
 
+    @Builder(builderClassName = "CustomErrorResponseBuilder", builderMethodName = "customBuilder")
+    public ErrorResponse(int status, String error, String message) {
+        this.status = status;
+        this.error = error;
+        this.message = message;
+    }
+
     public ErrorResponse(String defaultMessage) {
         this.message = defaultMessage;
     }
