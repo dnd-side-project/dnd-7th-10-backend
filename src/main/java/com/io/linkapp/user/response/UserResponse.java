@@ -1,5 +1,6 @@
 package com.io.linkapp.user.response;
 
+import com.io.linkapp.link.domain.Remind;
 import com.io.linkapp.user.domain.Role;
 import lombok.Builder;
 import lombok.Getter;

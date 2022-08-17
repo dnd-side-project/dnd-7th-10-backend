@@ -73,6 +73,10 @@ public class Article extends BaseTimeEntity {
     public void setBookmark(boolean isBookmark){
         this.isBookmark = isBookmark;
     }
+    
+    public void setRemindId(UUID id){
+        this.remindId = id;
+    }
 
     public void addArticleToFolder(Folder folder) {
         this.folder = folder;

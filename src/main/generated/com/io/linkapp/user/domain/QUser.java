@@ -38,6 +38,8 @@ public class QUser extends EntityPathBase<User> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> registerDate = _super.registerDate;
 
+    public final ListPath<com.io.linkapp.link.domain.Remind, com.io.linkapp.link.domain.QRemind> remind = this.<com.io.linkapp.link.domain.Remind, com.io.linkapp.link.domain.QRemind>createList("remind", com.io.linkapp.link.domain.Remind.class, com.io.linkapp.link.domain.QRemind.class, PathInits.DIRECT2);
+
     public final EnumPath<Role> role = createEnum("role", Role.class);
 
     public final StringPath username = createString("username");

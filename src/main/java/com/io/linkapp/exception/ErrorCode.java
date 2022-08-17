@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
+    
+    REMIND_NO_MORE(HttpStatus.BAD_REQUEST, "사용자 한 명당 한 개의 리마인드만 가질 수 있습니다"),
 
     POSTS_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 요청의 리소스를 찾을 수 없습니다."),
     

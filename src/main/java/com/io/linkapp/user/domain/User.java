@@ -5,6 +5,7 @@ import com.io.linkapp.common.BaseTimeEntity;
 import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.Folder;
 import com.io.linkapp.link.domain.Memo;
+import com.io.linkapp.link.domain.Remind;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,7 +43,16 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference(value = "user-article")
     private List<Article> articles = new ArrayList<>();
-
+    
+    
+    //다대일[N:1] 양방향 매핑 처럼 외래키(==참조키. 즉 상대방에서 어떤 컬럼을 기준으로 할지)가 있는 곳이 연관관계의 주인
+    // 따라서 얘는 주인이 아님 == 조회만 가능함
+    // 주 테이블에 외래키가 없는 경우에는 onetoone 단방향을 지원하지 않음
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",referencedColumnName = "user_id")
+    private List<Remind> remind;
+    
+    
     @Enumerated(value = EnumType.STRING)
     private Role role = Role.BASIC;
 
