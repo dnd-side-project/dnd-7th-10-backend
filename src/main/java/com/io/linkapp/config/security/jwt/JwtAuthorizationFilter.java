@@ -42,7 +42,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             if(jwtTokenProvider.isTokenExpired(jwtToken)){
                 try {
 
-                    String accessToken = jwtTokenProvider.findRefreshToken(request, response)
+                    String accessToken = jwtTokenProvider.findRefreshToken(request)
                             .validateRefreshToken()
                             .regenerateAccessToken();
 
@@ -86,7 +86,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                         principalDetails, null, principalDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String redisRefreshToken = redisService.getValues(username);
-                redisService.setValues(username, redisRefreshToken);
+                if(redisRefreshToken != null) {
+                    redisService.setValues(username, redisRefreshToken);
+                }
             }
         }
         chain.doFilter(request, response);
