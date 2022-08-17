@@ -11,6 +11,7 @@ import com.io.linkapp.user.request.Oauth2UserRequest;
 import com.io.linkapp.user.request.UserRequest;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.io.linkapp.user.response.UserResponse;
@@ -29,6 +30,10 @@ public class UserService {
     public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new CustomGlobalException(ErrorCode.USER_NOT_FOUND));
+    }
+    
+    public User findUserById(UUID id){
+        return userRepository.findUserById(id);
     }
 
     public UserResponse findUser(String username) {
@@ -70,4 +75,5 @@ public class UserService {
                 .map(user -> UserMapper.INSTANCE.toResponseDto(user))
                 .collect(Collectors.toList());
     }
+    
 }

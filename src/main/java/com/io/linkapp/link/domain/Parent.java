@@ -46,7 +46,7 @@ public class Parent {
     @JoinColumn(name = "parent_id",referencedColumnName="parent_id") //, referencedColumnName 을 생략하면 조인 기준을 대상 테이블의 pk로 자동 지정한다.
     // 나는 현재 article_id로 조인하는 것이 아니므로 referenced를 remind_id로 지정해줌
     private List<Child> childList = new ArrayList<>(); //북마크 된 것만 최종 결과로 보내줘야 함
-    //name : 매핑할 외래키 이름. 즉 현재 해당 엔티티의 조인 기준이 되는 컬럼명 . 만약 해당되는 컬럼이 없다면 spring에서 자동으로 생성해줌
+    //name : 매핑할 외래키 이름. 즉 현재 해당 엔티티(==parent)의 조인 기준이 되는 컬럼명 . 만약 해당되는 컬럼이 없다면 spring에서 자동으로 생성해줌
     // child 쪽(다)에 parent_id 컬럼(일)이 없어도 @JoinColumn(name = "parent_id")라고 되어 있다면 child 테이블에 parent_id라는 fk칼럼이 생깁니다.
     // - 위의 레퍼런스에 나와있음
     //referencedColumnName : 쉽게 말해 반대편 테이블의 조인 기준이 되는 컬럼명

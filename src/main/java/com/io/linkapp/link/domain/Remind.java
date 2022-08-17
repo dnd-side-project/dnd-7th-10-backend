@@ -33,12 +33,10 @@ public class Remind {
     @Column(name = "remind_title",nullable=false)
     private String remindTitle;
     
-    
-    @OneToOne(fetch = FetchType.LAZY)
-    //name : 매핑할 외래키 이름. 즉 현재 해당 엔티티의 조인 기준이 되는 컬럼명 . 만약 해당되는 컬럼이 없다면 spring에서 자동으로 생성해줌 - 아래 아티클 쪽 설명 참고
-    @JoinColumn(name = "user_id") // referencedColumnName 을 생략하면 조인 기준을 대상 테이블의 pk로 자동 지정한다.
-    private User user;
-    
+    // 외래키(==참조키. 즉 상대방에서 어떤 컬럼을 기준으로 할지)가 있는 곳이 연관관계의 주인
+    //[연관 관계의 주인 설정 기준] 연관 관계의 주인만이 등록, 수정을 할 수 있고 주인이 아닌 쪽은 조회만 할 수 있다
+    @Column(name = "user_id",nullable=false)
+    private UUID userId;
     
     //https://www.inflearn.com/questions/480533 - 완전 좋음. 특히 하단의 Child 클래스 나오는 질문
     //https://www.inflearn.com/questions/113969
@@ -50,7 +48,7 @@ public class Remind {
     @JoinColumn(name = "remind_id",referencedColumnName="remind_id") //, referencedColumnName 을 생략하면 조인 기준을 대상 테이블의 pk로 자동 지정한다.
     // 나는 현재 article_id로 조인하는 것이 아니므로 referenced를 remind_id로 지정해줌
     private List<Article> articleList = new ArrayList<>(); //북마크 된 것만 최종 결과로 보내줘야 함
-    //name : 매핑할 외래키 이름. 즉 현재 해당 엔티티의 조인 기준이 되는 컬럼명 . 만약 해당되는 컬럼이 없다면 spring에서 자동으로 생성해줌
+    //name : 매핑할 컬럼 이름. 즉 현재 해당 엔티티(== remind)의 조인 기준이 되는 컬럼명 . 만약 해당되는 컬럼이 없다면 spring에서 자동으로 생성해줌
     // child 쪽(다)에 parent_id 컬럼(일)이 없어도 @JoinColumn(name = "parent_id")라고 되어 있다면 child 테이블에 parent_id라는 fk칼럼이 생깁니다.
     // - 위의 레퍼런스에 나와있음
     //referencedColumnName : 쉽게 말해 반대편 테이블의 조인 기준이 되는 컬럼명
