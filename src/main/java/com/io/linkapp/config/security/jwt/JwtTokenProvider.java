@@ -9,6 +9,7 @@ import com.io.linkapp.exception.RefreshTokenNotValidateException;
 import com.io.linkapp.user.service.RedisService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
 
@@ -37,10 +38,7 @@ public class JwtTokenProvider {
 
     public String generateRefreshToken(String username) {
         String refreshToken = JWT.create()
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperty.REFRESH_TOKEN_EXPIRATION))
                 .sign(Algorithm.HMAC512(JwtProperty.SECRET));
-
-        log.info("Set Redis");
         redisService.setValues(username, refreshToken);
         return refreshToken;
     }
@@ -54,6 +52,7 @@ public class JwtTokenProvider {
     public boolean isTokenExpired(String jwtToken) {
         Date expiresAt = JWT.decode(jwtToken).getExpiresAt();
         Date now = new Date(System.currentTimeMillis());
+        this.jwtToken = jwtToken;
         if(now.after(expiresAt)){
             return true;
         } else {
@@ -61,6 +60,7 @@ public class JwtTokenProvider {
         }
     }
 
+    @SneakyThrows
     public JwtTokenProvider findRefreshToken(HttpServletRequest request){
         boolean empty = ObjectUtils.isEmpty(request.getHeader(JwtProperty.REFRESH_HEADER));
         if(empty) {

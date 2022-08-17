@@ -12,4 +12,5 @@ public interface FolderMapper {
     Folder toEntity(FolderRequest folderRequest);
     FolderResponse toResponseDto(Folder folder);
     FolderResponse.GetAll toResponseAll(Folder folder);
+    FolderResponse.GetArticles toFolderArticles(Folder folder);
 }

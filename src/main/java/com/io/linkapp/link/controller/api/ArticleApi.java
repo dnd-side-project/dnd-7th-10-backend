@@ -1,5 +1,6 @@
 package com.io.linkapp.link.controller.api;
 
+import com.io.linkapp.config.security.auth.PrincipalDetails;
 import com.io.linkapp.link.request.ArticleRequest;
 import com.io.linkapp.link.response.ArticleResponse;
 import com.io.linkapp.link.service.ArticleService;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,14 +28,14 @@ public class ArticleApi {
 
     @ApiOperation("링크 저장")
     @PostMapping("/article")
-    public void add(@RequestBody @Valid ArticleRequest articleRequest) {
-        articleService.add(articleRequest);
+    public ArticleResponse add(@RequestBody @Valid ArticleRequest articleRequest) {
+        return articleService.add(articleRequest);
     }
 
     @ApiOperation("링크 전체 조회")
     @GetMapping("/articles")
-    public List<ArticleResponse> getList() {
-        return articleService.getList();
+    public List<ArticleResponse> getList(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        return articleService.getList(principalDetails.getUser());
     }
 
     @ApiOperation("링크 조회")

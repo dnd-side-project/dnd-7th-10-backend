@@ -18,6 +18,8 @@ import com.io.linkapp.link.response.ArticleResponse;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import com.io.linkapp.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -41,7 +43,7 @@ public class ArticleService {
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public void add(ArticleRequest articleRequest){
+    public ArticleResponse add(ArticleRequest articleRequest){
         Folder folder = folderRepository.findById(articleRequest.getFolderId())
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND));
 
@@ -53,7 +55,7 @@ public class ArticleService {
             .openGraph(openGraph)
             .build();
 
-        articleRepository.save(article);
+        article = articleRepository.save(article);
 
         if(articleRequest.getTagIds() != null) {
             List<Tag> tags = articleRequest.getTagIds().stream()
@@ -70,10 +72,12 @@ public class ArticleService {
                 articleTagRepository.save(articleTag);
             }
         }
+
+        return ArticleMapper.INSTANCE.toResponseDto(article);
     }
 
-    public List<ArticleResponse> getList(){
-        return articleRepository.findAll().stream().map(
+    public List<ArticleResponse> getList(User user){
+        return articleRepository.findByUser(user).stream().map(
             article -> ArticleMapper.INSTANCE.toResponseDto(article)
         ).collect(Collectors.toList());
     }
