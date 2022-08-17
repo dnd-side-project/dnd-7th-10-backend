@@ -46,9 +46,9 @@ public class TagApi {
     
     @SneakyThrows
     @ApiOperation("조회")
-    @GetMapping("/{id}")
-    public TagResponse.GetAll get(@PathVariable UUID id){
-        return formMapper.toGetAll(service.get(id));
+    @GetMapping("/{tagId}")
+    public TagResponse.GetAll get(@PathVariable UUID tagId){
+        return formMapper.toGetAll(service.get(tagId));
     }
     
     
@@ -63,16 +63,16 @@ public class TagApi {
     
     @SneakyThrows
     @ApiOperation("수정")
-    @PostMapping("/{id}")
-    public TagResponse.GetAll modify(@PathVariable UUID id,@Valid @RequestBody TagRequest.Modify in){
-        return formMapper.toGetAll(service.modify(id, formMapper.toTag(in)));
+    @PostMapping("/{tagId}")
+    public TagResponse.GetAll modify(@PathVariable UUID tagId,@Valid @RequestBody TagRequest.Modify in){
+        return formMapper.toGetAll(service.modify(tagId, formMapper.toTag(in)));
     }
     
     @SneakyThrows
     @ApiOperation("삭제")
-    @DeleteMapping("/{id}")
-    public void remove(@PathVariable UUID id) {
-        service.remove(id);
+    @DeleteMapping("/{tagId}")
+    public void remove(@PathVariable UUID tagId) {
+        service.remove(tagId);
     }
     
     
