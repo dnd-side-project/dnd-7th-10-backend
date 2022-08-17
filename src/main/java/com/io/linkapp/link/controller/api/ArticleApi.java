@@ -39,20 +39,20 @@ public class ArticleApi {
     }
 
     @ApiOperation("링크 조회")
-    @GetMapping("/article/{id}")
-    public ArticleResponse get(@PathVariable("id") UUID uuid) {
+    @GetMapping("/article/{articleid}")
+    public ArticleResponse get(@PathVariable("articleId") UUID uuid) {
         return articleService.findById(uuid);
     }
 
     @ApiOperation("링크 삭제")
-    @DeleteMapping("/article/{id}")
-    public void remove(@PathVariable("id") UUID uuid) {
+    @DeleteMapping("/article/{articleId}")
+    public void remove(@PathVariable("articleId") UUID uuid) {
         articleService.remove(uuid);
     }
 
     @ApiOperation(value = "북마크 등록/해제", notes = "등록 상태에서 요청 시 해제, 해제 상태에서 요청 시 등록")
-    @PatchMapping("/article/mark/{id}")
-    public ArticleResponse bookmark(@PathVariable("id") UUID uuid){
+    @PatchMapping("/article/mark/{articleId}")
+    public ArticleResponse bookmark(@PathVariable("articleId") UUID uuid){
         return articleService.bookmark(uuid);
     }
 }

@@ -27,7 +27,7 @@ public class FolderApi {
     private final FolderService folderService;
 
     @ApiOperation("폴더 조회")
-    @GetMapping("/folder/{id}")
+    @GetMapping("/folder/{folderId}")
     public FolderResponse.GetArticles get(@PathVariable UUID id) {
         return folderService.get(id);
     }
@@ -46,14 +46,14 @@ public class FolderApi {
     }
 
     @ApiOperation("폴더 이름 수정")
-    @PatchMapping("/folder/{id}")
-    public FolderResponse modify(@PathVariable("id") UUID uuid,@Valid @RequestBody FolderRequest folderRequest){
+    @PatchMapping("/folder/{folderId}")
+    public FolderResponse modify(@PathVariable("folderId") UUID uuid,@Valid @RequestBody FolderRequest folderRequest){
         return folderService.edit(uuid, folderRequest);
     }
 
     @ApiOperation("폴더 삭제")
-    @DeleteMapping("/folder/{id}")
-    public void remove(@PathVariable UUID id) {
+    @DeleteMapping("/folder/{folderId}")
+    public void remove(@PathVariable("folderId") UUID id) {
         folderService.remove(id);
     }
 }
