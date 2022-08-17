@@ -39,10 +39,7 @@ public class JwtTokenProvider {
 
     public String generateRefreshToken(String username) {
         String refreshToken = JWT.create()
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperty.REFRESH_TOKEN_EXPIRATION))
                 .sign(Algorithm.HMAC512(JwtProperty.SECRET));
-
-        log.info("Set Redis");
         redisService.setValues(username, refreshToken);
         return refreshToken;
     }
