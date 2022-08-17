@@ -32,10 +32,6 @@ public class TagRequest {
         
         @ApiModelProperty(value = "태그명")
         private String tagName;
-    
-        @ApiModelProperty(value = "아티클 식별번호")
-        private UUID articleId;
-        
     }
     
     
@@ -49,8 +45,6 @@ public class TagRequest {
         @ApiModelProperty(value = "태그명")
         private String tagName;
     
-        @ApiModelProperty(value = "아티클 식별번호")
-        private UUID articleId;
         
     }
     

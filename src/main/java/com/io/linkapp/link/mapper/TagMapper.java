@@ -17,9 +17,7 @@ public abstract class TagMapper {
         if(in == null){
             return null;
         }
-
         
-        out.setArticleId(in.getArticleId());
         out.setTagName(in.getTagName());
         
         return out;
