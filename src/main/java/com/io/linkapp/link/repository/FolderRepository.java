@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface FolderRepository extends JpaRepository<Folder, UUID>{
 
-    @Query("SELECT folder FROM Folder folder join fetch folder.articles")
+    //TODO: N+1 해결
+//    @Query("SELECT folder FROM Folder folder join fetch folder.articles")
     List<Folder> findByUser(User user);
 }
