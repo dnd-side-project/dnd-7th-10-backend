@@ -27,7 +27,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User findById(Long id) {
-        return userRepository.findById(id).get();
+        return userRepository.findById(id)
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.USER_NOT_FOUND));
     }
 
     public UserResponse findUser(String username) {
@@ -36,8 +37,8 @@ public class UserService {
     }
 
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new CustomGlobalException(ErrorCode.USER_NOT_FOUND));
+        return userRepository.findByUsername(username).
+                orElseThrow(() -> new CustomGlobalException(ErrorCode.USER_NOT_FOUND));
     }
 
     public Optional<User> findOauthUser(String username) {

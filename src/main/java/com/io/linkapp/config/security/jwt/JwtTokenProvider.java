@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @Slf4j
@@ -62,7 +61,7 @@ public class JwtTokenProvider {
     }
 
     @SneakyThrows
-    public JwtTokenProvider findRefreshToken(HttpServletRequest request, HttpServletResponse response){
+    public JwtTokenProvider findRefreshToken(HttpServletRequest request){
         boolean empty = ObjectUtils.isEmpty(request.getHeader(JwtProperty.REFRESH_HEADER));
         if(empty) {
             throw new RefreshTokenNotFoundException();
