@@ -28,11 +28,10 @@ public class TagService {
      * 페이징 조회
      *
      * @param search 검색 조건
-     * @param page   페이징 조건
      * @return 검색된 목록
      */
-    public Page<Tag> getPage(Predicate search, Pageable page){
-        return repository.findAll(search, page);
+    public List<Tag> getList(Predicate search){
+        return (List<Tag>)repository.findAll(search);
     }
     
     /**
@@ -70,8 +69,6 @@ public class TagService {
         
         Tag out = repository.findById(id).orElseThrow(()->new CustomGlobalException(ErrorCode.TAG_NOT_FOUND)); // 일단 지금 현재 db에 저장된 정보를 가져옴
         
-        //그리고 정보를 수정
-        out.setArticleId(entity.getArticleId());
         out.setTagName(entity.getTagName());
         
         return out;

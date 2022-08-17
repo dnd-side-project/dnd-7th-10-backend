@@ -46,6 +46,8 @@ public class QArticle extends EntityPathBase<Article> {
 
     public final ComparablePath<java.util.UUID> remindId = createComparable("remindId", java.util.UUID.class);
 
+    public final com.io.linkapp.user.domain.QUser user;
+
     public QArticle(String variable) {
         this(Article.class, forVariable(variable), INITS);
     }
@@ -66,6 +68,7 @@ public class QArticle extends EntityPathBase<Article> {
         super(type, metadata, inits);
         this.folder = inits.isInitialized("folder") ? new QFolder(forProperty("folder"), inits.get("folder")) : null;
         this.openGraph = inits.isInitialized("openGraph") ? new QOpenGraph(forProperty("openGraph")) : null;
+        this.user = inits.isInitialized("user") ? new com.io.linkapp.user.domain.QUser(forProperty("user")) : null;
     }
 
 }

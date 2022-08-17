@@ -9,6 +9,7 @@ import com.io.linkapp.link.response.TagResponse;
 import com.io.linkapp.link.response.TagResponse.GetAll;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,11 +38,10 @@ public class TagApi {
     private final TagService service;
     
     @SneakyThrows
-    @ApiOperation("페이징 조회")
+    @ApiOperation("전체 목록 조회")
     @GetMapping
-    public Page<GetAll> getPage(@Valid TagRequest.GetAll in,
-        @PageableDefault(size = 20) Pageable page){
-        return service.getPage(TagFormPredicate.search(in),page).map(formMapper::toGetAll);
+    public List<GetAll> getList(@Valid TagRequest.GetAll in){
+        return formMapper.toGetAllList(service.getList(TagFormPredicate.search(in)));
     }
     
     @SneakyThrows
