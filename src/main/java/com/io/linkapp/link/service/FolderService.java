@@ -25,8 +25,8 @@ public class FolderService {
     private final FolderRepository folderRepository;
 
 
-    public FolderResponse get(UUID uuid) {
-        return FolderMapper.INSTANCE.toResponseDto(folderRepository.findById(uuid)
+    public FolderResponse.GetArticles get(UUID uuid) {
+        return FolderMapper.INSTANCE.toFolderArticles(folderRepository.findById(uuid)
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND)));
     }
 

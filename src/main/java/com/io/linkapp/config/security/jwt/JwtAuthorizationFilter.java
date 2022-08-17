@@ -86,9 +86,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                         principalDetails, null, principalDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String redisRefreshToken = redisService.getValues(username);
-                if(redisRefreshToken != null) {
-                    redisService.setValues(username, redisRefreshToken);
-                }
+                redisService.setValues(username, redisRefreshToken);
             }
         }
         chain.doFilter(request, response);
