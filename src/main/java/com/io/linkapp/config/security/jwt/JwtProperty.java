@@ -7,5 +7,4 @@ public interface JwtProperty {
     public static final String HEADER = "Authorization";
     public static final String REFRESH_HEADER = "Refresh";
     public static final String TOKEN_PREFIX = "Bearer ";
-    public static final int REFRESH_TOKEN_EXPIRATION = 1209600000;
 }
