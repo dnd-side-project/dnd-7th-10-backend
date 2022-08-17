@@ -27,8 +27,8 @@ public class MemoApi {
     private final MemoService memoService;
 
     @ApiOperation("메모 단건 조회")
-    @GetMapping("/memo/{id}")
-    public MemoResponse get(@PathVariable("id") UUID uuid){
+    @GetMapping("/memo/{memoId}")
+    public MemoResponse get(@PathVariable("memoId") UUID uuid){
         return memoService.findById(uuid);
     }
 
@@ -45,14 +45,14 @@ public class MemoApi {
     }
 
     @ApiOperation("메모 수정")
-    @PatchMapping("/memo/{id}")
-    public MemoResponse modify(@PathVariable("id") UUID uuid, @RequestBody @Valid String memoContent) {
+    @PatchMapping("/memo/{memoId}")
+    public MemoResponse modify(@PathVariable("memoId") UUID uuid, @RequestBody @Valid String memoContent) {
         return memoService.modify(uuid, memoContent);
     }
 
     @ApiOperation("메모 삭제")
-    @DeleteMapping("memo/{id}")
-    public void remove(@PathVariable("id") UUID uuid) {
+    @DeleteMapping("memo/{memoId}")
+    public void remove(@PathVariable("memoId") UUID uuid) {
         memoService.remove(uuid);
     }
 }

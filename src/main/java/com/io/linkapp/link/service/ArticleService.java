@@ -43,13 +43,14 @@ public class ArticleService {
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public ArticleResponse add(ArticleRequest articleRequest){
+    public ArticleResponse add(ArticleRequest articleRequest, User user){
         Folder folder = folderRepository.findById(articleRequest.getFolderId())
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND));
 
         OpenGraph openGraph = openGraphParser.parse(articleRequest.getLinkUrl());
 
         Article article = Article.builder()
+            .user(user)
             .folder(folder)
             .linkUrl(articleRequest.getLinkUrl())
             .openGraph(openGraph)

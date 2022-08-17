@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.jpa.repository.Query;
 
 public interface ArticleRepository extends JpaRepository<Article, UUID> {
 
+//    @Query("SELECT article FROM Article article join fetch article.memos")
     List<Article> findByUser(User user);
 }
