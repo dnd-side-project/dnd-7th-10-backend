@@ -12,6 +12,7 @@ import com.io.linkapp.link.mapper.ArticleMapper;
 import com.io.linkapp.link.repository.ArticleRepository;
 import com.io.linkapp.link.repository.ArticleTagRepository;
 import com.io.linkapp.link.repository.FolderRepository;
+import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.repository.TagRepository;
 import com.io.linkapp.link.request.ArticleRequest;
 import com.io.linkapp.link.response.ArticleResponse;
@@ -102,9 +103,10 @@ public class ArticleService {
 
         if(article.isBookmark() == false) {
             article.setBookmark(true);
+            article.setRemindId(UUID.fromString( "00000000-0000-0000-0000-000000000000"));
         }else {
             article.setBookmark(false);
-            article.setRemindId(UUID.fromString( "00000000-0000-0000-0000-000000000000"));
+            article.setRemindId(null);
         }
 
         return ArticleMapper.INSTANCE.toResponseDto(articleRepository.save(article));

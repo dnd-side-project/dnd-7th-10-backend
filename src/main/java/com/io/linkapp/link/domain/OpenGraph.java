@@ -42,12 +42,6 @@ public class OpenGraph {
         if (this.linkTitle == null) {
             this.linkTitle = title;
         }
-
-        System.out.println(title);
-        System.out.println(title);
-        System.out.println(title);
-        System.out.println(title);
-        System.out.println(title);
         return this;
     }
 
@@ -58,15 +52,23 @@ public class OpenGraph {
                 this.linkImage = openGraphTag.attr("content");
             }
         }
+
+        if (this.linkImage == null) {
+            this.linkImage = "";
+        }
         return this;
     }
 
-    public OpenGraph openGraphDescription(){
+    public OpenGraph openGraphDescription(Elements descriptionTag){
         for (Element openGraphTag : this.openGraphTags) {
             String property = openGraphTag.attr("property");
             if(property.equals("og:description")){
-                this.linkTitle = openGraphTag.attr("content");
+                this.linkDescription = openGraphTag.attr("content");
             }
+        }
+
+        if (this.linkDescription == null) {
+            this.linkDescription = descriptionTag.attr("content");
         }
         return this;
     }
