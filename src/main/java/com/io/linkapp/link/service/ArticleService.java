@@ -109,36 +109,7 @@ public class ArticleService {
     public List<ArticleResponse.Tags> getList(User user){
         List<Article> articles = articleRepository.findByUser(user);
 
-        List<ArticleResponse.Tags> responseList = new ArrayList<>();
-        for (Article article : articles) {
-            TagsBuilder articleTagResponseBuilder = Tags.builder()
-                .id(article.getId())
-                .remindId(article.getRemindId())
-                .linkUrl(article.getLinkUrl())
-                .openGraph(article.getOpenGraph())
-                .memos(article.getMemos())
-                .registerDate(article.getRegisterDate())
-                .modifiedDate(article.getModifiedDate());
-
-            List<ArticleTag> articleTags = article.getArticleTags();
-            List<ArticleTagResponse> tagsResponse = new ArrayList<>();
-            for (ArticleTag articleTag : articleTags) {
-                ArticleTagResponse tagResponse = ArticleTagResponse.builder()
-                    .tagId(articleTag.getTag().getTagId())
-                    .tagName(articleTag.getTag().getTagName())
-                    .build();
-
-                tagsResponse.add(tagResponse);
-            }
-
-            Tags tagResponse = articleTagResponseBuilder
-                .tags(tagsResponse)
-                .build();
-
-            responseList.add(tagResponse);
-        }
-
-        return responseList;
+        return ArticleResponse.Tags.articleTagBuilder(articles);
     }
 
     public SuccessResponse remove(UUID uuid){

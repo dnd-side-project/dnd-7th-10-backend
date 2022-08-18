@@ -2,11 +2,20 @@ package com.io.linkapp.link.service;
 
 import com.io.linkapp.exception.CustomGlobalException;
 import com.io.linkapp.exception.ErrorCode;
+import com.io.linkapp.link.domain.Article;
+import com.io.linkapp.link.domain.ArticleTag;
 import com.io.linkapp.link.domain.Folder;
+import com.io.linkapp.link.mapper.ArticleMapper;
 import com.io.linkapp.link.mapper.FolderMapper;
 import com.io.linkapp.link.repository.FolderRepository;
 import com.io.linkapp.link.request.FolderRequest;
+import com.io.linkapp.link.response.ArticleResponse;
+import com.io.linkapp.link.response.ArticleResponse.Tags;
+import com.io.linkapp.link.response.ArticleResponse.Tags.TagsBuilder;
+import com.io.linkapp.link.response.ArticleTagResponse;
 import com.io.linkapp.link.response.FolderResponse;
+import com.io.linkapp.link.response.FolderResponse.GetArticles;
+import com.io.linkapp.link.response.FolderResponse.GetArticles.GetArticlesBuilder;
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
 import java.util.ArrayList;
@@ -24,8 +33,20 @@ public class FolderService {
 
     //TODO QueryDSL로 N+1 풀기
     public FolderResponse.GetArticles get(UUID uuid) {
-        return FolderMapper.INSTANCE.toFolderArticles(folderRepository.findById(uuid)
-            .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND)));
+        Folder folder = folderRepository.findById(uuid)
+            .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND));
+
+        List<Article> articles = folder.getArticles();
+
+        GetArticlesBuilder getArticlesBuilder = GetArticles.builder()
+            .folderId(folder.getFolderId())
+            .folderColor(folder.getFolderColor())
+            .folderTitle(folder.getFolderTitle());
+
+        List<Tags> articleTags = Tags.articleTagBuilder(articles);
+
+        return getArticlesBuilder.articles(articleTags)
+            .build();
     }
 
     public FolderResponse add(FolderRequest folderRequest, User user) {

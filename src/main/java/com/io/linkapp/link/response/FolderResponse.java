@@ -30,6 +30,6 @@ public class FolderResponse {
         private UUID folderId;
         private String folderTitle;
         private String folderColor;
-        private List<Article> articles;
+        private List<ArticleResponse.Tags> articles;
     }
 }
