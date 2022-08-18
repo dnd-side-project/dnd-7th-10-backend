@@ -36,6 +36,8 @@ public class OpenGraphParser {
 
     public OpenGraph getOpenGraph(Connection connection, Document doc) throws IOException {
         Elements openGraphTags = connection.get().select("meta[property^=og:]");
+        //TODO 타이틀 핸들
+        connection.get().title();
         String title = doc.title();
         OpenGraph openGraph = new OpenGraph();
 
