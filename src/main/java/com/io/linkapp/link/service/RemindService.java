@@ -5,6 +5,7 @@ import com.io.linkapp.exception.ErrorCode;
 import com.io.linkapp.link.domain.QRemind;
 import com.io.linkapp.link.domain.Remind;
 import com.io.linkapp.link.repository.RemindRepository;
+import com.io.linkapp.link.response.SuccessResponse;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
@@ -72,8 +73,13 @@ public class RemindService {
      *
      * @param id 식별번호
      */
-    public void remove(UUID id){
+    public SuccessResponse remove(UUID id){
         repository.deleteById(id);
+
+        return SuccessResponse.builder()
+                .status(200)
+                .message("Remind Remove Success.")
+                .build();
     }
 
 }

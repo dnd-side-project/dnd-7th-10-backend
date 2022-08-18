@@ -3,11 +3,9 @@ package com.io.linkapp.common;
 import com.io.linkapp.exception.CustomGlobalException;
 import com.io.linkapp.exception.ErrorCode;
 import com.io.linkapp.link.domain.OpenGraph;
-import com.io.linkapp.link.domain.OpenGraph.OpenGraphBuilder;
 import java.io.IOException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
@@ -33,21 +31,16 @@ public class OpenGraphParser {
     }
 
     public OpenGraph getOpenGraph(Connection connection) throws IOException {
-        Elements ogTags = connection.get().select("meta[property^=og:]");
+        Elements openGraphTags = connection.get().select("meta[property^=og:]");
+        String title = connection.get().title();
+        Elements descriptionTag = connection.get().select("meta[name=description]");
 
-        OpenGraphBuilder openGraphBuilder = OpenGraph.builder();
+        OpenGraph openGraph = new OpenGraph();
 
-        for (Element ogTag : ogTags) {
-            String property = ogTag.attr("property");
-            if (property.equals("og:title")) {
-                openGraphBuilder.linkTitle(ogTag.attr("content"));
-            } else if (property.equals("og:image")) {
-                openGraphBuilder.linkImage(ogTag.attr("content"));
-            } else if (property.equals("og:description")) {
-                openGraphBuilder.linkDescription(ogTag.attr("content"));
-            }
-        }
+        openGraph = openGraph.openGraphTitle(openGraphTags, title)
+                .openGraphImage()
+                .openGraphDescription(descriptionTag);
 
-        return openGraphBuilder.build();
-    }
+        return openGraph;
+}
 }

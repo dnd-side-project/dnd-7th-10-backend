@@ -1,19 +1,15 @@
 package com.io.linkapp.link.request;
 
-import com.io.linkapp.common.BaseTimeEntity;
-import com.io.linkapp.link.domain.Folder;
-import com.io.linkapp.link.domain.Tag;
-import com.io.linkapp.user.domain.User;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 @Getter
-@NoArgsConstructor
-public class ArticleRequest extends BaseTimeEntity {
+public class ArticleRequest {
 
     private UUID folderId;
     private String linkUrl;

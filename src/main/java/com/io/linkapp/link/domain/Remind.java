@@ -1,8 +1,5 @@
 package com.io.linkapp.link.domain;
 
-import com.io.linkapp.exception.CustomGlobalException;
-import com.io.linkapp.exception.ErrorCode;
-import com.io.linkapp.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,10 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

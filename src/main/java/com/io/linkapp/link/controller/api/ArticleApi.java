@@ -1,8 +1,11 @@
 package com.io.linkapp.link.controller.api;
 
 import com.io.linkapp.config.security.auth.PrincipalDetails;
+import com.io.linkapp.link.domain.ArticleTag;
 import com.io.linkapp.link.request.ArticleRequest;
+import com.io.linkapp.link.request.ArticleTagRequest;
 import com.io.linkapp.link.response.ArticleResponse;
+import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.link.service.ArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,20 +37,20 @@ public class ArticleApi {
 
     @ApiOperation("링크 전체 조회")
     @GetMapping("/articles")
-    public List<ArticleResponse> getList(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public List<ArticleResponse.Tags> getList(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         return articleService.getList(principalDetails.getUser());
     }
 
     @ApiOperation("링크 조회")
     @GetMapping("/article/{articleId}")
-    public ArticleResponse get(@PathVariable("articleId") UUID uuid) {
+    public ArticleResponse.Tags get(@PathVariable("articleId") UUID uuid) {
         return articleService.findById(uuid);
     }
 
     @ApiOperation("링크 삭제")
     @DeleteMapping("/article/{articleId}")
-    public void remove(@PathVariable("articleId") UUID uuid) {
-        articleService.remove(uuid);
+    public SuccessResponse remove(@PathVariable("articleId") UUID uuid) {
+        return articleService.remove(uuid);
     }
 
     @ApiOperation(value = "북마크 등록/해제", notes = "등록 상태에서 요청 시 해제, 해제 상태에서 요청 시 등록")
@@ -56,5 +59,11 @@ public class ArticleApi {
         System.out.println(principalDetails.getUser().getId()); //현재 유저 아이디 알 수 있음
         UUID userId = principalDetails.getUser().getId();
         return articleService.bookmark(uuid,userId);
+    }
+
+    @ApiOperation(value = "아티클에 태그 등록")
+    @PostMapping("/article/tag")
+    public SuccessResponse tag(@RequestBody ArticleTagRequest articleTag) {
+        return articleService.setTagInArticle(articleTag);
     }
 }

@@ -18,14 +18,19 @@ import com.io.linkapp.link.repository.FolderRepository;
 import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.repository.TagRepository;
 import com.io.linkapp.link.request.ArticleRequest;
+import com.io.linkapp.link.request.ArticleTagRequest;
 import com.io.linkapp.link.response.ArticleResponse;
+import com.io.linkapp.link.response.ArticleResponse.Tags;
+import com.io.linkapp.link.response.ArticleResponse.Tags.TagsBuilder;
+import com.io.linkapp.link.response.ArticleTagResponse;
+import com.io.linkapp.link.response.SuccessResponse;
+import com.io.linkapp.user.domain.User;
+import java.util.ArrayList;
 import com.querydsl.core.BooleanBuilder;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import com.io.linkapp.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.hql.internal.QueryExecutionRequestException;
 import org.springframework.stereotype.Service;
@@ -43,11 +48,34 @@ public class ArticleService {
     private final ArticleTagRepository articleTagRepository;
     private final OpenGraphParser openGraphParser;
 
-    public ArticleResponse findById(UUID id) {
-        Article article = articleRepository.findById(id)
+    public ArticleResponse.Tags findById(UUID id) {
+        Article article = articleRepository.findByIdWithTag(id)
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
 
-        return ArticleMapper.INSTANCE.toResponseDto(article);
+        TagsBuilder articleTagResponseBuilder = Tags.builder()
+            .id(article.getId())
+            .remindId(article.getRemindId())
+            .linkUrl(article.getLinkUrl())
+            .openGraph(article.getOpenGraph())
+            .memos(article.getMemos())
+            .registerDate(article.getRegisterDate())
+            .modifiedDate(article.getModifiedDate());
+
+        List<ArticleTag> articleTags = article.getArticleTags();
+        List<ArticleTagResponse> tagsResponse = new ArrayList<>();
+
+        for (ArticleTag articleTag : articleTags) {
+            ArticleTagResponse tags = ArticleTagResponse.builder()
+                .tagId(articleTag.getTag().getTagId())
+                .tagName(articleTag.getTag().getTagName())
+                .build();
+
+            tagsResponse.add(tags);
+        }
+
+        return articleTagResponseBuilder
+            .tags(tagsResponse)
+            .build();
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -85,17 +113,22 @@ public class ArticleService {
         return ArticleMapper.INSTANCE.toResponseDto(article);
     }
 
-    public List<ArticleResponse> getList(User user){
-        return articleRepository.findByUser(user).stream().map(
-            article -> ArticleMapper.INSTANCE.toResponseDto(article)
-        ).collect(Collectors.toList());
+    public List<ArticleResponse.Tags> getList(User user){
+        List<Article> articles = articleRepository.findByUser(user);
+
+        return ArticleResponse.Tags.articleTagBuilder(articles);
     }
 
-    public void remove(UUID uuid){
+    public SuccessResponse remove(UUID uuid){
         Article article = articleRepository.findById(uuid)
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
 
         articleRepository.delete(article);
+
+        return SuccessResponse.builder()
+                .status(200)
+                .message("Article Remove Success.")
+                .build();
     }
 
     public ArticleResponse bookmark(UUID uuid,UUID userId) {
@@ -115,6 +148,30 @@ public class ArticleService {
             article.setRemindId(null); //그럼 리마인드 아이디를 가지지 않게 됨
         }
 
-        return ArticleMapper.INSTANCE.toResponseDto(articleRepository.save(article));
+        ArticleResponse articleResponse = ArticleMapper.INSTANCE.toResponseDto(
+            articleRepository.save(article));
+        articleResponse.setBookmark(article.isBookmark());
+
+        return articleResponse;
+    }
+
+    public SuccessResponse setTagInArticle(ArticleTagRequest articleTagRequest) {
+        Tag tag = tagRepository.findById(articleTagRequest.getTagId())
+            .orElseThrow(() -> new CustomGlobalException(ErrorCode.TAG_NOT_FOUND));
+
+        Article article = articleRepository.findById(articleTagRequest.getArticleId())
+            .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
+
+        ArticleTag articleTag = ArticleTag.builder()
+            .article(article)
+            .tag(tag)
+            .build();
+
+        articleTagRepository.save(articleTag);
+
+        return SuccessResponse.builder()
+            .status(200)
+            .message("Set Tag Success")
+            .build();
     }
 }
