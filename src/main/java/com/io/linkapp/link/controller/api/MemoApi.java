@@ -3,6 +3,7 @@ package com.io.linkapp.link.controller.api;
 import com.io.linkapp.config.security.auth.PrincipalDetails;
 import com.io.linkapp.link.request.MemoRequest;
 import com.io.linkapp.link.response.MemoResponse;
+import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.link.service.MemoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -52,7 +53,7 @@ public class MemoApi {
 
     @ApiOperation("메모 삭제")
     @DeleteMapping("memo/{memoId}")
-    public void remove(@PathVariable UUID memoId) {
-        memoService.remove(memoId);
+    public SuccessResponse remove(@PathVariable UUID memoId) {
+        return memoService.remove(memoId);
     }
 }

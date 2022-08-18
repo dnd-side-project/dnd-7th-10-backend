@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -50,11 +51,16 @@ public class MemoService {
             .collect(Collectors.toList());
     }
 
-    public void remove(UUID id){
+    public SuccessResponse remove(UUID id){
         Memo memo = memoRepository.findById(id)
                 .orElseThrow(() -> new CustomGlobalException(ErrorCode.MEMO_NOT_FOUND));
 
         memoRepository.delete(memo);
+
+        return SuccessResponse.builder()
+                .status(200)
+                .message("Memo Remove Success.")
+                .build();
     }
 
     public MemoResponse modify(UUID uuid, String memoContent) {

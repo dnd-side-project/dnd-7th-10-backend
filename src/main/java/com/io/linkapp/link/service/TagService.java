@@ -6,6 +6,7 @@ import com.io.linkapp.link.domain.QTag;
 import com.io.linkapp.link.domain.Tag;
 import com.io.linkapp.link.mapper.TagMapper;
 import com.io.linkapp.link.repository.TagRepository;
+import com.io.linkapp.link.response.SuccessResponse;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
@@ -80,8 +81,13 @@ public class TagService {
      *
      * @param id 식별번호
      */
-    public void remove(UUID id){
+    public SuccessResponse remove(UUID id){
         repository.deleteById(id);
+
+        return SuccessResponse.builder()
+                .status(200)
+                .message("Tag Remove Success.")
+                .build();
     }
     
     

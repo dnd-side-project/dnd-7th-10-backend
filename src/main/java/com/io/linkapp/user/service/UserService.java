@@ -27,13 +27,9 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
 
-    public User findById(Long id) {
+    public User findUserById(UUID id){
         return userRepository.findById(id)
                 .orElseThrow(() -> new CustomGlobalException(ErrorCode.USER_NOT_FOUND));
-    }
-    
-    public User findUserById(UUID id){
-        return userRepository.findUserById(id);
     }
 
     public UserResponse findUser(String username) {

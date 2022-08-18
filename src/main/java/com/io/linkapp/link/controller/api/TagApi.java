@@ -3,6 +3,7 @@ package com.io.linkapp.link.controller.api;
 import com.io.linkapp.link.controller.mapper.TagFormMapper;
 import com.io.linkapp.link.controller.predicate.TagFormPredicate;
 import com.io.linkapp.link.domain.Tag;
+import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.link.service.TagService;
 import com.io.linkapp.link.request.TagRequest;
 import com.io.linkapp.link.response.TagResponse;
@@ -71,9 +72,7 @@ public class TagApi {
     @SneakyThrows
     @ApiOperation("삭제")
     @DeleteMapping("/{tagId}")
-    public void remove(@PathVariable UUID tagId) {
-        service.remove(tagId);
+    public SuccessResponse remove(@PathVariable UUID tagId) {
+        return service.remove(tagId);
     }
-    
-    
 }
