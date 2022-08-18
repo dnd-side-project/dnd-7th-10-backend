@@ -18,7 +18,6 @@ public interface ArticleRepository extends JpaRepository<Article, UUID> {
 
     Optional<Article> findById(UUID id);
 
-//    @EntityGraph(attributePaths = "articleTags")
     @Query("SELECT article FROM Article article LEFT JOIN article.articleTags articleTags LEFT JOIN articleTags.tag where article.id=:uuid")
     Optional<Article> findByIdWithTag(UUID uuid);
 }

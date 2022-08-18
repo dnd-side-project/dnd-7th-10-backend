@@ -37,13 +37,13 @@ public class ArticleApi {
 
     @ApiOperation("링크 전체 조회")
     @GetMapping("/articles")
-    public List<ArticleResponse> getList(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public List<ArticleResponse.Tags> getList(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         return articleService.getList(principalDetails.getUser());
     }
 
     @ApiOperation("링크 조회")
     @GetMapping("/article/{articleId}")
-    public ArticleResponse get(@PathVariable("articleId") UUID uuid) {
+    public ArticleResponse.Tags get(@PathVariable("articleId") UUID uuid) {
         return articleService.findById(uuid);
     }
 

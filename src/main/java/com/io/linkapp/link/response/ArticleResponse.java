@@ -17,10 +17,23 @@ public class ArticleResponse {
     private String linkUrl;
     private OpenGraph openGraph;
     private List<Memo> memos;
-    private List<ArticleTagResponse> tags;
     private boolean isBookmark;
     private LocalDateTime registerDate;
     private LocalDateTime modifiedDate;
+
+    @Builder
+    @Getter
+    public static class Tags {
+        private UUID id;
+        private UUID remindId;
+        private String linkUrl;
+        private OpenGraph openGraph;
+        private List<Memo> memos;
+        private List<ArticleTagResponse> tags;
+        private boolean isBookmark;
+        private LocalDateTime registerDate;
+        private LocalDateTime modifiedDate;
+    }
 
     public void setBookmark(boolean isBookmark){
         this.isBookmark = isBookmark;

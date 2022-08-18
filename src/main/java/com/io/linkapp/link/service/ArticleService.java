@@ -12,20 +12,20 @@ import com.io.linkapp.link.mapper.ArticleMapper;
 import com.io.linkapp.link.repository.ArticleRepository;
 import com.io.linkapp.link.repository.ArticleTagRepository;
 import com.io.linkapp.link.repository.FolderRepository;
-import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.repository.TagRepository;
 import com.io.linkapp.link.request.ArticleRequest;
 import com.io.linkapp.link.request.ArticleTagRequest;
 import com.io.linkapp.link.response.ArticleResponse;
 import com.io.linkapp.link.response.ArticleResponse.ArticleResponseBuilder;
+import com.io.linkapp.link.response.ArticleResponse.Tags;
+import com.io.linkapp.link.response.ArticleResponse.Tags.TagsBuilder;
 import com.io.linkapp.link.response.ArticleTagResponse;
+import com.io.linkapp.link.response.SuccessResponse;
+import com.io.linkapp.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import com.io.linkapp.link.response.SuccessResponse;
-import com.io.linkapp.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -41,11 +41,11 @@ public class ArticleService {
     private final ArticleTagRepository articleTagRepository;
     private final OpenGraphParser openGraphParser;
 
-    public ArticleResponse findById(UUID id) {
+    public ArticleResponse.Tags findById(UUID id) {
         Article article = articleRepository.findByIdWithTag(id)
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
 
-        ArticleResponseBuilder articleResponseBuilder = ArticleResponse.builder()
+        TagsBuilder articleTagResponseBuilder = Tags.builder()
             .id(article.getId())
             .remindId(article.getRemindId())
             .linkUrl(article.getLinkUrl())
@@ -55,7 +55,6 @@ public class ArticleService {
             .modifiedDate(article.getModifiedDate());
 
         List<ArticleTag> articleTags = article.getArticleTags();
-
         List<ArticleTagResponse> tagsResponse = new ArrayList<>();
 
         for (ArticleTag articleTag : articleTags) {
@@ -67,7 +66,7 @@ public class ArticleService {
             tagsResponse.add(tags);
         }
 
-        return articleResponseBuilder
+        return articleTagResponseBuilder
             .tags(tagsResponse)
             .build();
     }
@@ -107,10 +106,39 @@ public class ArticleService {
         return ArticleMapper.INSTANCE.toResponseDto(article);
     }
 
-    public List<ArticleResponse> getList(User user){
-        return articleRepository.findByUser(user).stream().map(
-            article -> ArticleMapper.INSTANCE.toResponseDto(article)
-        ).collect(Collectors.toList());
+    public List<ArticleResponse.Tags> getList(User user){
+        List<Article> articles = articleRepository.findByUser(user);
+
+        List<ArticleResponse.Tags> responseList = new ArrayList<>();
+        for (Article article : articles) {
+            TagsBuilder articleTagResponseBuilder = Tags.builder()
+                .id(article.getId())
+                .remindId(article.getRemindId())
+                .linkUrl(article.getLinkUrl())
+                .openGraph(article.getOpenGraph())
+                .memos(article.getMemos())
+                .registerDate(article.getRegisterDate())
+                .modifiedDate(article.getModifiedDate());
+
+            List<ArticleTag> articleTags = article.getArticleTags();
+            List<ArticleTagResponse> tagsResponse = new ArrayList<>();
+            for (ArticleTag articleTag : articleTags) {
+                ArticleTagResponse tagResponse = ArticleTagResponse.builder()
+                    .tagId(articleTag.getTag().getTagId())
+                    .tagName(articleTag.getTag().getTagName())
+                    .build();
+
+                tagsResponse.add(tagResponse);
+            }
+
+            Tags tagResponse = articleTagResponseBuilder
+                .tags(tagsResponse)
+                .build();
+
+            responseList.add(tagResponse);
+        }
+
+        return responseList;
     }
 
     public SuccessResponse remove(UUID uuid){
