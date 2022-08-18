@@ -45,7 +45,6 @@ public class RemindApi {
     @ApiOperation("목록 조회")
     @GetMapping
     public List<GetAll> getList(RemindRequest.GetAll in){
-        
         return formMapper.toGetAllList(service.getList(RemindFormPredicate.search(in)));
     }
     

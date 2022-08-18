@@ -31,7 +31,7 @@ public class Article extends BaseTimeEntity {
     @Column(name = "article_id")
     private UUID id;
     
-    @Column(name = "remind_ids")
+    @Column(name = "remind_id")
     private UUID remindId;
 
     @ManyToOne(fetch = FetchType.LAZY)

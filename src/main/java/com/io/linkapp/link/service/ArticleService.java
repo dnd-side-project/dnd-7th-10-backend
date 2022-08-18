@@ -16,7 +16,6 @@ import com.io.linkapp.link.repository.TagRepository;
 import com.io.linkapp.link.request.ArticleRequest;
 import com.io.linkapp.link.request.ArticleTagRequest;
 import com.io.linkapp.link.response.ArticleResponse;
-import com.io.linkapp.link.response.ArticleResponse.ArticleResponseBuilder;
 import com.io.linkapp.link.response.ArticleResponse.Tags;
 import com.io.linkapp.link.response.ArticleResponse.Tags.TagsBuilder;
 import com.io.linkapp.link.response.ArticleTagResponse;
@@ -130,10 +129,9 @@ public class ArticleService {
 
         if(article.isBookmark() == false) {
             article.setBookmark(true);
-            article.setRemindId(UUID.fromString( "00000000-0000-0000-0000-000000000000"));
         }else {
             article.setBookmark(false);
-            article.setRemindId(null);
+            article.setRemindId(UUID.fromString("00000000-0000-0000-0000-000000000000"));
         }
 
         ArticleResponse articleResponse = ArticleMapper.INSTANCE.toResponseDto(
