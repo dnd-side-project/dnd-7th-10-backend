@@ -3,6 +3,7 @@ package com.io.linkapp.link.controller.api;
 import com.io.linkapp.config.security.auth.PrincipalDetails;
 import com.io.linkapp.link.request.FolderRequest;
 import com.io.linkapp.link.response.FolderResponse;
+import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.link.service.FolderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,7 +54,7 @@ public class FolderApi {
 
     @ApiOperation("폴더 삭제")
     @DeleteMapping("/folder/{folderId}")
-    public void remove(@PathVariable UUID folderId) {
-        folderService.remove(folderId);
+    public SuccessResponse remove(@PathVariable UUID folderId) {
+        return folderService.remove(folderId);
     }
 }

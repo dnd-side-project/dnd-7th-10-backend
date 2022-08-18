@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -83,11 +84,16 @@ public class ArticleService {
         ).collect(Collectors.toList());
     }
 
-    public void remove(UUID uuid){
+    public SuccessResponse remove(UUID uuid){
         Article article = articleRepository.findById(uuid)
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
 
         articleRepository.delete(article);
+
+        return SuccessResponse.builder()
+                .status(200)
+                .message("Article Remove Success.")
+                .build();
     }
 
     public ArticleResponse bookmark(UUID uuid) {

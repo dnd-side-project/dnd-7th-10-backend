@@ -7,6 +7,7 @@ import com.io.linkapp.link.mapper.FolderMapper;
 import com.io.linkapp.link.repository.FolderRepository;
 import com.io.linkapp.link.request.FolderRequest;
 import com.io.linkapp.link.response.FolderResponse;
+import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +52,16 @@ public class FolderService {
         return folderResponses;
     }
 
-    public void remove(UUID uuid){
-        folderRepository.deleteById(uuid);
+    public SuccessResponse remove(UUID uuid){
+        Folder folder = folderRepository.findById(uuid)
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND));
+
+        folderRepository.delete(folder);
+
+        return SuccessResponse.builder()
+                .status(200)
+                .message("Folder Remove Success.")
+                .build();
     }
 
     public FolderResponse edit(UUID uuid, FolderRequest folderRequest) {

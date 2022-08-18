@@ -7,6 +7,7 @@ import com.io.linkapp.link.domain.Remind;
 import com.io.linkapp.link.request.RemindRequest;
 import com.io.linkapp.link.response.RemindResponse;
 import com.io.linkapp.link.response.RemindResponse.GetAll;
+import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.link.service.RemindService;
 import com.io.linkapp.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -66,8 +67,8 @@ public class RemindApi {
     @SneakyThrows
     @ApiOperation("삭제")
     @DeleteMapping("/{remindId}")
-    public void remove(@PathVariable UUID remindId) {
-        service.remove(remindId);
+    public SuccessResponse remove(@PathVariable UUID remindId) {
+        return service.remove(remindId);
     }
     
     
