@@ -7,11 +7,15 @@ import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.ArticleTag;
 import com.io.linkapp.link.domain.Folder;
 import com.io.linkapp.link.domain.OpenGraph;
+import com.io.linkapp.link.domain.QArticle;
+import com.io.linkapp.link.domain.QRemind;
+import com.io.linkapp.link.domain.Remind;
 import com.io.linkapp.link.domain.Tag;
 import com.io.linkapp.link.mapper.ArticleMapper;
 import com.io.linkapp.link.repository.ArticleRepository;
 import com.io.linkapp.link.repository.ArticleTagRepository;
 import com.io.linkapp.link.repository.FolderRepository;
+import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.repository.TagRepository;
 import com.io.linkapp.link.request.ArticleRequest;
 import com.io.linkapp.link.request.ArticleTagRequest;
@@ -22,10 +26,13 @@ import com.io.linkapp.link.response.ArticleTagResponse;
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
 import java.util.ArrayList;
+import com.querydsl.core.BooleanBuilder;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.hql.internal.QueryExecutionRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +44,7 @@ public class ArticleService {
     private final FolderRepository folderRepository;
     private final ArticleRepository articleRepository;
     private final TagRepository tagRepository;
+    private final RemindRepository remindRepository;
     private final ArticleTagRepository articleTagRepository;
     private final OpenGraphParser openGraphParser;
 
@@ -123,15 +131,21 @@ public class ArticleService {
                 .build();
     }
 
-    public ArticleResponse bookmark(UUID uuid) {
+    public ArticleResponse bookmark(UUID uuid,UUID userId) {
         Article article = articleRepository.findById(uuid)
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
-
+        
+        QRemind qremind = QRemind.remind;
+        //해당 유저가 가지고 있는 리마인드 객체
+        Optional<Remind> remind = remindRepository.findOne(new BooleanBuilder(qremind.userId.eq(userId)));
+        
         if(article.isBookmark() == false) {
             article.setBookmark(true);
+            article.setRemindId(remind.get().getRemindId()); //유저가 가지고 있는 리마인드 아이디로 등록
         }else {
             article.setBookmark(false);
-            article.setRemindId(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+            // 해당되는 리마인드가 없도록 하고 싶음
+            article.setRemindId(null); //그럼 리마인드 아이디를 가지지 않게 됨
         }
 
         ArticleResponse articleResponse = ArticleMapper.INSTANCE.toResponseDto(
