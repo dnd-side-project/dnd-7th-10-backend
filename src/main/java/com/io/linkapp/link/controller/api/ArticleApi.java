@@ -1,7 +1,9 @@
 package com.io.linkapp.link.controller.api;
 
 import com.io.linkapp.config.security.auth.PrincipalDetails;
+import com.io.linkapp.link.domain.ArticleTag;
 import com.io.linkapp.link.request.ArticleRequest;
+import com.io.linkapp.link.request.ArticleTagRequest;
 import com.io.linkapp.link.response.ArticleResponse;
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.link.service.ArticleService;
@@ -55,5 +57,11 @@ public class ArticleApi {
     @PatchMapping("/article/mark/{articleId}")
     public ArticleResponse bookmark(@PathVariable("articleId") UUID uuid){
         return articleService.bookmark(uuid);
+    }
+
+    @ApiOperation(value = "아티클에 태그 등록")
+    @PostMapping("/article/tag")
+    public SuccessResponse tag(@RequestBody ArticleTagRequest articleTag) {
+        return articleService.setTagInArticle(articleTag);
     }
 }

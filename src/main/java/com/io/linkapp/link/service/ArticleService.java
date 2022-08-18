@@ -15,7 +15,11 @@ import com.io.linkapp.link.repository.FolderRepository;
 import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.repository.TagRepository;
 import com.io.linkapp.link.request.ArticleRequest;
+import com.io.linkapp.link.request.ArticleTagRequest;
 import com.io.linkapp.link.response.ArticleResponse;
+import com.io.linkapp.link.response.ArticleResponse.ArticleResponseBuilder;
+import com.io.linkapp.link.response.ArticleTagResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -38,10 +42,34 @@ public class ArticleService {
     private final OpenGraphParser openGraphParser;
 
     public ArticleResponse findById(UUID id) {
-        Article article = articleRepository.findById(id)
+        Article article = articleRepository.findByIdWithTag(id)
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
 
-        return ArticleMapper.INSTANCE.toResponseDto(article);
+        ArticleResponseBuilder articleResponseBuilder = ArticleResponse.builder()
+            .id(article.getId())
+            .remindId(article.getRemindId())
+            .linkUrl(article.getLinkUrl())
+            .openGraph(article.getOpenGraph())
+            .memos(article.getMemos())
+            .registerDate(article.getRegisterDate())
+            .modifiedDate(article.getModifiedDate());
+
+        List<ArticleTag> articleTags = article.getArticleTags();
+
+        List<ArticleTagResponse> tagsResponse = new ArrayList<>();
+
+        for (ArticleTag articleTag : articleTags) {
+            ArticleTagResponse tags = ArticleTagResponse.builder()
+                .tagId(articleTag.getTag().getTagId())
+                .tagName(articleTag.getTag().getTagName())
+                .build();
+
+            tagsResponse.add(tags);
+        }
+
+        return articleResponseBuilder
+            .tags(tagsResponse)
+            .build();
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -109,6 +137,30 @@ public class ArticleService {
             article.setRemindId(null);
         }
 
-        return ArticleMapper.INSTANCE.toResponseDto(articleRepository.save(article));
+        ArticleResponse articleResponse = ArticleMapper.INSTANCE.toResponseDto(
+            articleRepository.save(article));
+        articleResponse.setBookmark(article.isBookmark());
+
+        return articleResponse;
+    }
+
+    public SuccessResponse setTagInArticle(ArticleTagRequest articleTagRequest) {
+        Tag tag = tagRepository.findById(articleTagRequest.getTagId())
+            .orElseThrow(() -> new CustomGlobalException(ErrorCode.TAG_NOT_FOUND));
+
+        Article article = articleRepository.findById(articleTagRequest.getArticleId())
+            .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
+
+        ArticleTag articleTag = ArticleTag.builder()
+            .article(article)
+            .tag(tag)
+            .build();
+
+        articleTagRepository.save(articleTag);
+
+        return SuccessResponse.builder()
+            .status(200)
+            .message("Set Tag Success")
+            .build();
     }
 }
