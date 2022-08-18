@@ -58,7 +58,7 @@ public class RemindApi {
         
         //확인용 - 유저에서 해당 리마인드 정상 조인 되어서 가지고 있는지
         // "com.io.linkapp.user.domain.User.getRemind()" is null...
-        System.out.println(userService.findUserById(in.getUserId()).getRemind());
+        //System.out.println(userService.findUserById(in.getUserId()).getRemind());
         
         return formMapper.toGetAll(remind);
     }

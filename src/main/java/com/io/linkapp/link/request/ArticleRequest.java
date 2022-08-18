@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class ArticleRequest extends BaseTimeEntity {
 
     private UUID folderId;

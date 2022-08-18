@@ -52,7 +52,9 @@ public class ArticleApi {
 
     @ApiOperation(value = "북마크 등록/해제", notes = "등록 상태에서 요청 시 해제, 해제 상태에서 요청 시 등록")
     @PatchMapping("/article/mark/{articleId}")
-    public ArticleResponse bookmark(@PathVariable("articleId") UUID uuid){
-        return articleService.bookmark(uuid);
+    public ArticleResponse bookmark(@PathVariable("articleId") UUID uuid,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        System.out.println(principalDetails.getUser().getId()); //현재 유저 아이디 알 수 있음
+        UUID userId = principalDetails.getUser().getId();
+        return articleService.bookmark(uuid,userId);
     }
 }
