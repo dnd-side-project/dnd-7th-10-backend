@@ -7,6 +7,7 @@ import com.io.linkapp.link.domain.OpenGraph.OpenGraphBuilder;
 import java.io.IOException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
@@ -21,10 +22,11 @@ public class OpenGraphParser {
         }
 
         Connection connect = Jsoup.connect(linkUrl);
+        Document doc = Jsoup.parse(linkUrl);
         OpenGraph openGraph;
 
         try {
-             openGraph = getOpenGraph(connect);
+             openGraph = getOpenGraph(connect, doc);
         } catch (IOException e) {
             throw new CustomGlobalException(ErrorCode.PARSE_ERROR);
         }
@@ -32,22 +34,23 @@ public class OpenGraphParser {
         return openGraph;
     }
 
-    public OpenGraph getOpenGraph(Connection connection) throws IOException {
-        Elements ogTags = connection.get().select("meta[property^=og:]");
+    public OpenGraph getOpenGraph(Connection connection, Document doc) throws IOException {
+        Elements openGraphTags = connection.get().select("meta[property^=og:]");
+        String title = doc.title();
+        OpenGraph openGraph = new OpenGraph();
 
-        OpenGraphBuilder openGraphBuilder = OpenGraph.builder();
+        System.out.println(title);
+        System.out.println(title);
+        System.out.println(title);
+        System.out.println(title);
+        System.out.println(title);
+        System.out.println(title);
+        System.out.println(title);
 
-        for (Element ogTag : ogTags) {
-            String property = ogTag.attr("property");
-            if (property.equals("og:title")) {
-                openGraphBuilder.linkTitle(ogTag.attr("content"));
-            } else if (property.equals("og:image")) {
-                openGraphBuilder.linkImage(ogTag.attr("content"));
-            } else if (property.equals("og:description")) {
-                openGraphBuilder.linkDescription(ogTag.attr("content"));
-            }
-        }
+        openGraph = openGraph.openGraphTitle(openGraphTags, title)
+                .openGraphImage()
+                .openGraphDescription();
 
-        return openGraphBuilder.build();
-    }
+        return openGraph;
+}
 }
