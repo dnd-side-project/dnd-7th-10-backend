@@ -6,6 +6,7 @@ import com.io.linkapp.common.BaseTimeEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -53,7 +54,7 @@ public class Article extends BaseTimeEntity {
     @JsonManagedReference("article-memo")
     private List<Memo> memos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
     @JsonManagedReference("article-tag")
     private List<ArticleTag> articleTags = new ArrayList<>();
 

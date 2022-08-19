@@ -1,7 +1,6 @@
 package com.io.linkapp.link.controller.api;
 
 import com.io.linkapp.config.security.auth.PrincipalDetails;
-import com.io.linkapp.link.domain.ArticleTag;
 import com.io.linkapp.link.request.ArticleRequest;
 import com.io.linkapp.link.request.ArticleTagRequest;
 import com.io.linkapp.link.response.ArticleResponse;
