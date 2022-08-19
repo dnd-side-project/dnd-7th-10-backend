@@ -24,6 +24,6 @@ public class QuartzJobListener implements JobListener {
     
     @Override
     public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
-        System.out.println("jog 수행 완료 후");
+        System.out.println("job 수행 완료 후");
     }
 }

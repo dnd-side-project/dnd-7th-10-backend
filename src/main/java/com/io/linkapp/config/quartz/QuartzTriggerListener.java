@@ -20,7 +20,8 @@ public class QuartzTriggerListener implements TriggerListener {
     }
     
     /**
-     * vetoJobExecution의 결과가 true이면 JobListener의 jobExecutionVetoed 실행. 즉 중단
+     * vetoJobExecution의 결과가 true이면 JobListener의 jobExecutionVetoed 실행.
+     * 일단 그냥 중단 없이 쭉 진행되도록 false 리턴
      * @param trigger
      *          The <code>Trigger</code> that has fired.
      * @param context
@@ -41,7 +42,7 @@ public class QuartzTriggerListener implements TriggerListener {
             executeCount=(int)map.get("executeCount");
         }
         
-        return executeCount>=2;
+        return executeCount>=4; //false면 중단 없는 것 , true이면 job 중단
     }
     
     @Override

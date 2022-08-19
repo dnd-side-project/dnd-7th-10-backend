@@ -28,6 +28,7 @@ public class QuartzJob implements Job {
         System.out.println("Quartz Job Executed");
     
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
+        
         System.out.println("dataMap date: "+dataMap.get("date"));
         System.out.println("dataMap executeCount: "+dataMap.get("executeCount"));
     
