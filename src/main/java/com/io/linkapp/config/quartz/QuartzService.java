@@ -38,7 +38,7 @@ public class QuartzService {
             paramsMap.put("date", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             
             //job 생성 및 Scheduler에 등록
-            addJob(QuartzJob.class,"QuartzJob","Quartz Job입니다",paramsMap,"0/5 * * * * ?");
+            addJob(QuartzJob.class,"QuartzJob","Quartz Job입니다",paramsMap,"0/5 * * * * ?"); //5분마다
             
             
         }catch(Exception e){

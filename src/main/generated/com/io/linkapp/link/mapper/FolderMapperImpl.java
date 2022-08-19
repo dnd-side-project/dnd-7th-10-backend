@@ -3,7 +3,10 @@ package com.io.linkapp.link.mapper;
 import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.Folder;
 import com.io.linkapp.link.domain.Folder.FolderBuilder;
+import com.io.linkapp.link.domain.Memo;
 import com.io.linkapp.link.request.FolderRequest;
+import com.io.linkapp.link.response.ArticleResponse.Tags;
+import com.io.linkapp.link.response.ArticleResponse.Tags.TagsBuilder;
 import com.io.linkapp.link.response.FolderResponse;
 import com.io.linkapp.link.response.FolderResponse.FolderResponseBuilder;
 import com.io.linkapp.link.response.FolderResponse.GetAll;
@@ -16,7 +19,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-08-18T03:11:20+0900",
+    date = "2022-08-19T21:19:47+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 17.0.2 (Oracle Corporation)"
 )
 public class FolderMapperImpl implements FolderMapper {
@@ -76,11 +79,42 @@ public class FolderMapperImpl implements FolderMapper {
         getArticles.folderId( folder.getFolderId() );
         getArticles.folderTitle( folder.getFolderTitle() );
         getArticles.folderColor( folder.getFolderColor() );
-        List<Article> list = folder.getArticles();
-        if ( list != null ) {
-            getArticles.articles( new ArrayList<Article>( list ) );
-        }
+        getArticles.articles( articleListToTagsList( folder.getArticles() ) );
 
         return getArticles.build();
+    }
+
+    protected Tags articleToTags(Article article) {
+        if ( article == null ) {
+            return null;
+        }
+
+        TagsBuilder tags = Tags.builder();
+
+        tags.id( article.getId() );
+        tags.remindId( article.getRemindId() );
+        tags.linkUrl( article.getLinkUrl() );
+        tags.openGraph( article.getOpenGraph() );
+        List<Memo> list = article.getMemos();
+        if ( list != null ) {
+            tags.memos( new ArrayList<Memo>( list ) );
+        }
+        tags.registerDate( article.getRegisterDate() );
+        tags.modifiedDate( article.getModifiedDate() );
+
+        return tags.build();
+    }
+
+    protected List<Tags> articleListToTagsList(List<Article> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<Tags> list1 = new ArrayList<Tags>( list.size() );
+        for ( Article article : list ) {
+            list1.add( articleToTags( article ) );
+        }
+
+        return list1;
     }
 }
