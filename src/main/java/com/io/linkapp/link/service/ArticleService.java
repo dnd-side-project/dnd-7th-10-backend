@@ -136,16 +136,14 @@ public class ArticleService {
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
         
         QRemind qremind = QRemind.remind;
-        //해당 유저가 가지고 있는 리마인드 객체
         Optional<Remind> remind = remindRepository.findOne(new BooleanBuilder(qremind.userId.eq(userId)));
         
         if(article.isBookmark() == false) {
             article.setBookmark(true);
-            article.setRemindId(remind.get().getRemindId()); //유저가 가지고 있는 리마인드 아이디로 등록
+            article.setRemindId(remind.get().getRemindId());
         }else {
             article.setBookmark(false);
-            // 해당되는 리마인드가 없도록 하고 싶음
-            article.setRemindId(null); //그럼 리마인드 아이디를 가지지 않게 됨
+            article.setRemindId(null);
         }
 
         ArticleResponse articleResponse = ArticleMapper.INSTANCE.toResponseDto(
