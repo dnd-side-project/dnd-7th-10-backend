@@ -9,6 +9,7 @@ import com.io.linkapp.link.repository.ArticleRepository;
 import com.io.linkapp.link.repository.MemoRepository;
 import com.io.linkapp.link.request.MemoRequest;
 import com.io.linkapp.link.response.MemoResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,7 +30,16 @@ public class MemoService {
         Memo memo = memoRepository.findById(id)
                 .orElseThrow(() -> new CustomGlobalException(ErrorCode.MEMO_NOT_FOUND));
 
-        return MemoMapper.INSTANCE.toResponseDto(memo);
+        Article article = memo.getArticle();
+
+        return MemoResponse.builder()
+            .id(memo.getId())
+            .content(memo.getContent())
+            .modifiedDate(memo.getModifiedDate())
+            .registerDate(memo.getRegisterDate())
+            .openGraph(article.getOpenGraph())
+            .folderTitle(article.getFolder().getFolderTitle())
+            .build();
     }
 
     public MemoResponse add(MemoRequest memoRequest, User user){
@@ -46,9 +56,24 @@ public class MemoService {
     }
 
     public List<MemoResponse> getList(User user){
-        return memoRepository.findByUser(user).stream().map(
-            memo -> MemoMapper.INSTANCE.toResponseDto(memo))
-            .collect(Collectors.toList());
+        List<Memo> memos = memoRepository.findByUser(user);
+        List<MemoResponse> memoResponses = new ArrayList<>();
+
+        for (Memo memo : memos) {
+            Article article = memo.getArticle();
+            MemoResponse memoResponse = MemoResponse.builder()
+                .id(memo.getId())
+                .content(memo.getContent())
+                .modifiedDate(memo.getModifiedDate())
+                .registerDate(memo.getRegisterDate())
+                .openGraph(article.getOpenGraph())
+                .folderTitle(article.getFolder().getFolderTitle())
+                .build();
+
+            memoResponses.add(memoResponse);
+        }
+
+        return memoResponses;
     }
 
     public SuccessResponse remove(UUID id){
