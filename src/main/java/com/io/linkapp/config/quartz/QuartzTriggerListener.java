@@ -34,15 +34,15 @@ public class QuartzTriggerListener implements TriggerListener {
     
         System.out.println("trigger 상태 체크");
     
-        JobDataMap map = context.getJobDetail().getJobDataMap();
+//        JobDataMap map = context.getJobDetail().getJobDataMap();
+//
+//        int executeCount = 1;
+//
+//        if(map.containsKey("executeCount")){
+//            executeCount=(int)map.get("executeCount");
+//        }
         
-        int executeCount = 1;
-        
-        if(map.containsKey("executeCount")){
-            executeCount=(int)map.get("executeCount");
-        }
-        
-        return executeCount>=4; //false면 중단 없는 것 , true이면 job 중단
+        return false; //false면 중단 없는 것 , true이면 job 중단
     }
     
     @Override

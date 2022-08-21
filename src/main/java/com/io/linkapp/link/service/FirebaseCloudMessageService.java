@@ -5,9 +5,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.common.net.HttpHeaders;
+import com.io.linkapp.exception.CustomGlobalException;
+import com.io.linkapp.exception.ErrorCode;
+import com.io.linkapp.link.domain.Article;
+import com.io.linkapp.link.domain.QArticle;
+import com.io.linkapp.link.domain.QRemind;
+import com.io.linkapp.link.domain.Remind;
+import com.io.linkapp.link.repository.ArticleRepository;
+import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.response.FcmMessage;
+import com.io.linkapp.user.domain.User;
+import com.querydsl.core.BooleanBuilder;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -21,11 +33,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FirebaseCloudMessageService {
     
-    private final String API_URL = "https://fcm.googleapis.com/v1/projects/android-****/messages:send";
+    private final RemindRepository remindRepository;
+    
+    //메시지 전송을 위해 요청하는 주소
+    private final String API_URL = "https://fcm.googleapis.com/v1/projects/linkkle-b8413/messages:send";
     private final ObjectMapper objectMapper;
     
-    public void sendMessageTo(String targetToken, String title, String body) throws IOException {
-        String message = makeMessage(targetToken, title, body);
+    public void sendMessageTo(UUID userId,String targetToken) throws IOException {
+        // 실제로 전달하는 메시지
+        String message = makeMessage(userId,targetToken);
         
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(message,
@@ -33,25 +49,49 @@ public class FirebaseCloudMessageService {
         Request request = new Request.Builder()
             .url(API_URL)
             .post(requestBody)
-            .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+            .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())// fcm 서버에 대한 접근 jwt
             .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
             .build();
         
-        Response response = client.newCall(request).execute();
+        Response response = client.newCall(request).execute(); //요청 후 돌아오는 응답
         
         System.out.println(response.body().string());
     }
     
-    private String makeMessage(String targetToken, String title, String body) throws JsonParseException, JsonProcessingException {
+    private String makeMessage(UUID userId, String targetToken) throws JsonParseException, JsonProcessingException {
+        
+        //현재 유저에 해당되는 리마인드 찾기
+        QRemind qRemind = QRemind.remind;
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(qRemind.userId.eq(userId));
+        Remind remind = remindRepository.findOne(builder).orElseThrow(()->{
+            throw new CustomGlobalException(ErrorCode.REMIND_NOT_FOUND);
+        });
+        
+        
+        //그리고 찾은 리마인드 안의 아티클들 찾기 = 즉 북마크된 애들, 리마인딩 후보인 애들
+        List<Article> articles = remind.getArticleList();
+        if(articles.size() ==0){
+            throw new CustomGlobalException(ErrorCode.NO_ARTICLES_FOR_REMIND);
+        }
+        //그리고 아티클 리스트에서 푸시할 아티클 하나 임의 추출
+        //랜덤으로 추출된 아티클의 인덱스
+        int idx = (int)((Math.random()*10000)%(articles.size()-1));
+        Article article = articles.get(idx);
+        
         FcmMessage fcmMessage = FcmMessage.builder()
             .message(FcmMessage.Message.builder()
                 .token(targetToken)
                 .notification(FcmMessage.Notification.builder()
-                    .title(title)
-                    .body(body)
-                    .image(null)
+                    .title("push title")
+                    .body("push body")
                     .build()
-                ).build()).validateOnly(false).build();
+                )
+                .data(FcmMessage.Data.builder()
+                    .articleId(article.getId())
+                    .remindId(remind.getRemindId())
+                    .build())
+                .build()).validateOnly(false).build();
         
         return objectMapper.writeValueAsString(fcmMessage);
     }

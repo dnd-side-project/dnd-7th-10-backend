@@ -1,15 +1,15 @@
 package com.io.linkapp.config.quartz;
 
-import com.io.linkapp.link.domain.Market;
-import com.io.linkapp.link.repository.MarketRepository;
-import com.io.linkapp.link.repository.TagRepository;
-import lombok.RequiredArgsConstructor;
+import com.io.linkapp.link.service.FirebaseCloudMessageService;
+import java.io.IOException;
+import java.util.UUID;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.PersistJobDataAfterExecution;
+import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,27 +20,32 @@ import org.springframework.stereotype.Component;
 public class QuartzJob implements Job {
     
     @Autowired
-    private MarketRepository marketRepository;
+    private FirebaseCloudMessageService firebaseCloudMessageService;
+    
+    @Autowired
+    private Scheduler scheduler;
     
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
     
         System.out.println("Quartz Job Executed");
-    
+        
+        //jobDetail에서 생성해준 parmasMap
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-        
-        System.out.println("dataMap date: "+dataMap.get("date"));
-        System.out.println("dataMap executeCount: "+dataMap.get("executeCount"));
     
-        //JobDataMap을 통해 job의 실행 횟수를 받아서 그 횟수+1을 해준다
-        int cnt = (int) dataMap.get("executeCount");
-        dataMap.put("executeCount",++cnt);
+        //단순 확인용 - 나중에 아래의 4줄은 없애야 함
+        UUID userId = (UUID) dataMap.get("userId");
+        String targetToken = (String) dataMap.get("targetToken");
+        System.out.println("dataMap targetToken: "+targetToken);
+        System.out.println("dataMap userId: "+userId);
         
-        //marekt 테이블에 insert
-        Market market = new Market();
-        market.setMarketName(dataMap.get("date").toString());
-        market.setMarketPrice("3000");
-        marketRepository.save(market);
+
+        try {
+            firebaseCloudMessageService.sendMessageTo(userId,targetToken);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+//
         
     }
 }
