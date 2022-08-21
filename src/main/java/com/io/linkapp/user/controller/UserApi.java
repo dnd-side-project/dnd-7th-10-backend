@@ -44,7 +44,7 @@ public class UserApi {
         return userService.findAll();
     }
 
-    @ApiOperation(value = "로그인", notes = "로그인 시 실제 요청은 Spring Security 가 수행함. 클라이언트 확인을 위한 API")
+    @ApiOperation(value = "카카오 로그인", notes = "첫 요청 시 회원가입 후 로그인, 이후 요청은 로그인")
     @PostMapping("/kakao")
     public JwtResponse kakaoLogin(@RequestBody KakaoRequest kakaoRequest) {
         return userService.kakaoLogin(kakaoRequest);
