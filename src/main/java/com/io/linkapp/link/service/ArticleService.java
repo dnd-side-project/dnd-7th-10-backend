@@ -7,7 +7,6 @@ import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.ArticleTag;
 import com.io.linkapp.link.domain.Folder;
 import com.io.linkapp.link.domain.OpenGraph;
-import com.io.linkapp.link.domain.QArticle;
 import com.io.linkapp.link.domain.QRemind;
 import com.io.linkapp.link.domain.Remind;
 import com.io.linkapp.link.domain.Tag;
@@ -25,14 +24,14 @@ import com.io.linkapp.link.response.ArticleResponse.Tags.TagsBuilder;
 import com.io.linkapp.link.response.ArticleTagResponse;
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
-import java.util.ArrayList;
+import com.io.linkapp.user.repository.UserRepository;
 import com.querydsl.core.BooleanBuilder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.hql.internal.QueryExecutionRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +46,7 @@ public class ArticleService {
     private final RemindRepository remindRepository;
     private final ArticleTagRepository articleTagRepository;
     private final OpenGraphParser openGraphParser;
+    private final UserRepository userRepository;
 
     public ArticleResponse.Tags findById(UUID id) {
         Article article = articleRepository.findByIdWithTag(id)
@@ -134,13 +134,13 @@ public class ArticleService {
     public ArticleResponse bookmark(UUID uuid,UUID userId) {
         Article article = articleRepository.findById(uuid)
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
-        
-        QRemind qremind = QRemind.remind;
-        Optional<Remind> remind = remindRepository.findOne(new BooleanBuilder(qremind.userId.eq(userId)));
-        
+
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new CustomGlobalException(ErrorCode.USER_NOT_FOUND));
+
         if(article.isBookmark() == false) {
             article.setBookmark(true);
-            article.setRemindId(remind.get().getRemindId());
+            article.setRemindId(user.getRemind().getRemindId());
         }else {
             article.setBookmark(false);
             article.setRemindId(null);

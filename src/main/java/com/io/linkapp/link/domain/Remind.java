@@ -1,5 +1,7 @@
 package com.io.linkapp.link.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.io.linkapp.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,10 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -30,8 +35,8 @@ public class Remind {
     
     // 외래키(==참조키. 즉 상대방에서 어떤 컬럼을 기준으로 할지)가 있는 곳이 연관관계의 주인
     //[연관 관계의 주인 설정 기준] 연관 관계의 주인만이 등록, 수정을 할 수 있고 주인이 아닌 쪽은 조회만 할 수 있다
-    @Column(name = "user_id")
-    private UUID userId;
+    @OneToOne(mappedBy = "remind")
+    private User user;
     
     //https://www.inflearn.com/questions/480533 - 완전 좋음. 특히 하단의 Child 클래스 나오는 질문
     //https://www.inflearn.com/questions/113969
