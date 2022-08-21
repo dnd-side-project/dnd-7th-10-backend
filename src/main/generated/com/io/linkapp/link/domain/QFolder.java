@@ -50,7 +50,7 @@ public class QFolder extends EntityPathBase<Folder> {
 
     public QFolder(Class<? extends Folder> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.user = inits.isInitialized("user") ? new com.io.linkapp.user.domain.QUser(forProperty("user"), inits.get("user")) : null;
+        this.user = inits.isInitialized("user") ? new com.io.linkapp.user.domain.QUser(forProperty("user")) : null;
     }
 
 }

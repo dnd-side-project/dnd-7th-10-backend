@@ -57,7 +57,7 @@ public class QMemo extends EntityPathBase<Memo> {
     public QMemo(Class<? extends Memo> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.article = inits.isInitialized("article") ? new QArticle(forProperty("article"), inits.get("article")) : null;
-        this.user = inits.isInitialized("user") ? new com.io.linkapp.user.domain.QUser(forProperty("user"), inits.get("user")) : null;
+        this.user = inits.isInitialized("user") ? new com.io.linkapp.user.domain.QUser(forProperty("user")) : null;
     }
 
 }
