@@ -39,9 +39,9 @@ public class FirebaseCloudMessageService {
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/linkkle-b8413/messages:send";
     private final ObjectMapper objectMapper;
     
-    public void sendMessageTo(UUID userId,String targetToken) throws IOException {
+    public void sendMessageTo(UUID userId,String targetToken,List<UUID> articleIds) throws IOException {
         // 실제로 전달하는 메시지
-        String message = makeMessage(userId,targetToken);
+        String message = makeMessage(userId,targetToken,articleIds);
         
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(message,
@@ -58,7 +58,7 @@ public class FirebaseCloudMessageService {
         System.out.println(response.body().string());
     }
     
-    private String makeMessage(UUID userId, String targetToken) throws JsonParseException, JsonProcessingException {
+    private String makeMessage(UUID userId, String targetToken,List<UUID> articleIds) throws JsonParseException, JsonProcessingException {
         
         //현재 유저에 해당되는 리마인드 찾기
         QRemind qRemind = QRemind.remind;
@@ -67,17 +67,17 @@ public class FirebaseCloudMessageService {
         Remind remind = remindRepository.findOne(builder).orElseThrow(()->{
             throw new CustomGlobalException(ErrorCode.REMIND_NOT_FOUND);
         });
-        
-        
-        //그리고 찾은 리마인드 안의 아티클들 찾기 = 즉 북마크된 애들, 리마인딩 후보인 애들
-        List<Article> articles = remind.getArticleList();
-        if(articles.size() ==0){
-            throw new CustomGlobalException(ErrorCode.NO_ARTICLES_FOR_REMIND);
-        }
+//
+//
+//        //그리고 찾은 리마인드 안의 아티클들 찾기 = 즉 북마크된 애들, 리마인딩 후보인 애들
+//        List<Article> articles = remind.getArticleList();
+//        if(articles.size() ==0){
+//            throw new CustomGlobalException(ErrorCode.NO_ARTICLES_FOR_REMIND);
+//        }
         //그리고 아티클 리스트에서 푸시할 아티클 하나 임의 추출
         //랜덤으로 추출된 아티클의 인덱스
-        int idx = (int)((Math.random()*10000)%(articles.size()-1));
-        Article article = articles.get(idx);
+        int idx = (int)((Math.random()*10000)%(articleIds.size()-1));
+        UUID articleId = articleIds.get(idx);
         
         FcmMessage fcmMessage = FcmMessage.builder()
             .message(FcmMessage.Message.builder()
@@ -88,7 +88,7 @@ public class FirebaseCloudMessageService {
                     .build()
                 )
                 .data(FcmMessage.Data.builder()
-                    .articleId(article.getId())
+                    .articleId(articleId)
                     .remindId(remind.getRemindId())
                     .build())
                 .build()).validateOnly(false).build();
