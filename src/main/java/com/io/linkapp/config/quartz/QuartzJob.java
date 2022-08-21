@@ -40,12 +40,12 @@ public class QuartzJob implements Job {
         System.out.println("dataMap articleIds: "+articleIds);
         
 
-//        try {
-//            firebaseCloudMessageService.sendMessageTo(userId,targetToken,articleIds);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
+        try {
+            firebaseCloudMessageService.sendMessageTo(userId,targetToken,articleIds);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         
     }
 }

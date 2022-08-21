@@ -14,7 +14,9 @@ import com.io.linkapp.link.domain.Remind;
 import com.io.linkapp.link.repository.ArticleRepository;
 import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.response.FcmMessage;
+import com.io.linkapp.user.domain.QUser;
 import com.io.linkapp.user.domain.User;
+import com.io.linkapp.user.repository.UserRepository;
 import com.querydsl.core.BooleanBuilder;
 import java.io.IOException;
 import java.util.List;
@@ -33,7 +35,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FirebaseCloudMessageService {
     
-    private final RemindRepository remindRepository;
+    private final UserRepository userRepository;
     
     //메시지 전송을 위해 요청하는 주소
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/linkkle-b8413/messages:send";
@@ -61,19 +63,10 @@ public class FirebaseCloudMessageService {
     private String makeMessage(UUID userId, String targetToken,List<UUID> articleIds) throws JsonParseException, JsonProcessingException {
         
         //현재 유저에 해당되는 리마인드 찾기
-        QRemind qRemind = QRemind.remind;
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(qRemind.userId.eq(userId));
-        Remind remind = remindRepository.findOne(builder).orElseThrow(()->{
-            throw new CustomGlobalException(ErrorCode.REMIND_NOT_FOUND);
+        User user = userRepository.findById(userId).orElseThrow(()->{
+            throw new CustomGlobalException(ErrorCode.USER_NOT_FOUND);
         });
-//
-//
-//        //그리고 찾은 리마인드 안의 아티클들 찾기 = 즉 북마크된 애들, 리마인딩 후보인 애들
-//        List<Article> articles = remind.getArticleList();
-//        if(articles.size() ==0){
-//            throw new CustomGlobalException(ErrorCode.NO_ARTICLES_FOR_REMIND);
-//        }
+
         //그리고 아티클 리스트에서 푸시할 아티클 하나 임의 추출
         //랜덤으로 추출된 아티클의 인덱스
         int idx = (int)((Math.random()*10000)%(articleIds.size()-1));
@@ -89,7 +82,7 @@ public class FirebaseCloudMessageService {
                 )
                 .data(FcmMessage.Data.builder()
                     .articleId(articleId)
-                    .remindId(remind.getRemindId())
+                    .remindId(user.getRemind().getRemindId())
                     .build())
                 .build()).validateOnly(false).build();
         

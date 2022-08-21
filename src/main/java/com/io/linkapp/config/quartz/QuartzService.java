@@ -152,6 +152,7 @@ public class QuartzService {
         }
         
         scheduler.scheduleJob(jobDetail,trigger);
+        scheduler.start();
         System.out.println("schedule created job");
     }
     
