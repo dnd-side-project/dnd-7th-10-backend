@@ -44,7 +44,7 @@ jobs:
         with:
           name: "firebase_service_key.json"
           json: ${{ secrets.FIREBASE_SERVICE_KEY }}
-          dir: "./src/main/resources/firebase/"
+          dir: "/src/main/resources/firebase/"
         
       - name: Build Gradle
         run: ./gradlew clean build
