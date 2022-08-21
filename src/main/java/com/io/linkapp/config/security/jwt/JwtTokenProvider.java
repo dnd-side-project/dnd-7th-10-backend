@@ -89,4 +89,15 @@ public class JwtTokenProvider {
     public String regenerateAccessToken(){
         return generateAccessToken(this.username);
     }
+
+    public JwtResponse provideToken(String username){
+        String accessToken = this.generateAccessToken(username);
+        String refreshToken = this.generateRefreshToken(username);
+
+        return JwtResponse.builder()
+            .header(JwtProperty.HEADER)
+            .accessToken(JwtProperty.TOKEN_PREFIX + accessToken)
+            .refreshToken(JwtProperty.TOKEN_PREFIX + refreshToken)
+            .build();
+    }
 }
