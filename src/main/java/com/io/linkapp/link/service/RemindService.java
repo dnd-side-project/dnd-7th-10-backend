@@ -52,17 +52,6 @@ public class RemindService {
      * @return
      */
     public Remind add(Remind remind) {
-    
-        QRemind qRemind = QRemind.remind;
-        
-//        if(remind.getUserId()!=null){
-//            UUID userId = remind.getUserId();
-//            List<Remind> list = (List<Remind>) repository.findAll(new BooleanBuilder(qRemind.userId.eq(userId)));
-//            if(list.size()==1){
-//                throw new CustomGlobalException(ErrorCode.REMIND_NO_MORE);
-//            }
-//        }
-        
         return repository.save(remind);
     }
     
