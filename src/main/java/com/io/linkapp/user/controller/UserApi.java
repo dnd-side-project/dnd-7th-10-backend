@@ -49,9 +49,4 @@ public class UserApi {
     public JwtResponse kakaoLogin(@RequestBody KakaoRequest kakaoRequest) {
         return userService.kakaoLogin(kakaoRequest);
     }
-
-    @ApiOperation(value = "카카오 로그인 주소", notes = "동작하지 않음. 요청 주소 확인을 위한 API")
-    @GetMapping("/oauth2/authorization/kakao")
-    public void kakaoLoginDummyApi(){
-    }
 }
