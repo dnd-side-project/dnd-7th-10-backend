@@ -2,6 +2,7 @@ package com.io.linkapp.config.quartz;
 
 import com.io.linkapp.link.service.FirebaseCloudMessageService;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
@@ -22,9 +23,6 @@ public class QuartzJob implements Job {
     @Autowired
     private FirebaseCloudMessageService firebaseCloudMessageService;
     
-    @Autowired
-    private Scheduler scheduler;
-    
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
     
@@ -36,16 +34,18 @@ public class QuartzJob implements Job {
         //단순 확인용 - 나중에 아래의 4줄은 없애야 함
         UUID userId = (UUID) dataMap.get("userId");
         String targetToken = (String) dataMap.get("targetToken");
+        List<UUID> articleIds = (List<UUID>) dataMap.get("articleIds");
         System.out.println("dataMap targetToken: "+targetToken);
         System.out.println("dataMap userId: "+userId);
+        System.out.println("dataMap articleIds: "+articleIds);
         
 
         try {
-            firebaseCloudMessageService.sendMessageTo(userId,targetToken);
+            firebaseCloudMessageService.sendMessageTo(userId,targetToken,articleIds);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-//
+
         
     }
 }
