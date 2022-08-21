@@ -58,19 +58,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             String username = principalDetails.getUsername();
 
             JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(redisService);
+        JwtResponse jwtResponse = jwtTokenProvider.provideToken(username);
 
-            String accessToken = jwtTokenProvider.generateAccessToken(username);
-            String refreshToken = jwtTokenProvider.generateRefreshToken(username);
-
-            JwtResponse jwtResponse = JwtResponse.builder()
-                    .header(JwtProperty.HEADER)
-                    .accessToken(JwtProperty.TOKEN_PREFIX + accessToken)
-                    .refreshToken(JwtProperty.TOKEN_PREFIX + refreshToken)
-                    .build();
-
-            ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
             String jwtAccessToken = objectMapper.writeValueAsString(jwtResponse);
             response.getWriter().write(jwtAccessToken);
-            response.addHeader(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + accessToken);
+            response.addHeader(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtResponse.getAccessToken());
         }
 }
