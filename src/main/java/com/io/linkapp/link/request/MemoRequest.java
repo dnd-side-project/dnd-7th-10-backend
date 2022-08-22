@@ -2,6 +2,8 @@ package com.io.linkapp.link.request;
 
 import java.util.UUID;
 import javax.validation.constraints.NotBlank;
+
+import com.io.linkapp.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,5 +18,12 @@ public class MemoRequest {
     public MemoRequest(String content, UUID articleId) {
         this.content = content;
         this.articleId = articleId;
+    }
+
+    @Getter
+    @Builder
+    public static class Search {
+        private User user;
+        private String content;
     }
 }

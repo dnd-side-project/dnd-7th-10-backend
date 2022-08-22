@@ -33,7 +33,6 @@ public class FolderApi {
         return folderService.get(folderId);
     }
 
-    //TODO : 폴더 내부의 아티클 카운트로 정렬되도록 수정?
     @ApiOperation("유저가 작성한 폴더 전체 조회")
     @GetMapping("/folders")
     public List<FolderResponse.GetAll> getAll(@AuthenticationPrincipal PrincipalDetails principalDetails){

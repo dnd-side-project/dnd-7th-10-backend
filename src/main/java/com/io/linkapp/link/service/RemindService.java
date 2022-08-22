@@ -1,21 +1,15 @@
 package com.io.linkapp.link.service;
 
-import com.io.linkapp.exception.CustomGlobalException;
-import com.io.linkapp.exception.ErrorCode;
-import com.io.linkapp.link.domain.QRemind;
 import com.io.linkapp.link.domain.Remind;
 import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.response.SuccessResponse;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import java.util.List;
-import java.util.UUID;
-import javax.persistence.Id;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional

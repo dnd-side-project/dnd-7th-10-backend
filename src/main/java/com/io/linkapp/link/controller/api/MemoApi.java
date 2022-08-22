@@ -1,24 +1,21 @@
 package com.io.linkapp.link.controller.api;
 
 import com.io.linkapp.config.security.auth.PrincipalDetails;
+import com.io.linkapp.link.controller.predicate.MemoFormPredicate;
 import com.io.linkapp.link.request.MemoRequest;
 import com.io.linkapp.link.response.MemoResponse;
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.link.service.MemoService;
+import com.io.linkapp.user.domain.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
-import java.util.UUID;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.UUID;
 
 @Api(value = "Memo", tags = {"Memo"})
 @RequiredArgsConstructor
@@ -33,10 +30,15 @@ public class MemoApi {
         return memoService.findById(memoId);
     }
 
-    @ApiOperation("메모 전체 조회")
+    @ApiOperation(value = "메모 전체 조회 및 검색", notes = "조회 시 파라미터 없이, 검색 시 쿼리 스트링으로 요청")
     @GetMapping("/memos")
-    public List<MemoResponse> getList(@AuthenticationPrincipal PrincipalDetails principalDetails){
-        return memoService.getList(principalDetails.getUser());
+    public List<MemoResponse> searchByContent(String content, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        User user = principalDetails.getUser();
+        MemoRequest.Search searchInput = MemoRequest.Search.builder()
+                .content(content)
+                .user(user)
+                .build();
+        return memoService.searchMemo(MemoFormPredicate.search(searchInput));
     }
 
     @ApiOperation("메모 등록")

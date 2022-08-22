@@ -3,19 +3,9 @@ package com.io.linkapp.link.service;
 import com.io.linkapp.common.OpenGraphParser;
 import com.io.linkapp.exception.CustomGlobalException;
 import com.io.linkapp.exception.ErrorCode;
-import com.io.linkapp.link.domain.Article;
-import com.io.linkapp.link.domain.ArticleTag;
-import com.io.linkapp.link.domain.Folder;
-import com.io.linkapp.link.domain.OpenGraph;
-import com.io.linkapp.link.domain.QRemind;
-import com.io.linkapp.link.domain.Remind;
-import com.io.linkapp.link.domain.Tag;
+import com.io.linkapp.link.domain.*;
 import com.io.linkapp.link.mapper.ArticleMapper;
-import com.io.linkapp.link.repository.ArticleRepository;
-import com.io.linkapp.link.repository.ArticleTagRepository;
-import com.io.linkapp.link.repository.FolderRepository;
-import com.io.linkapp.link.repository.RemindRepository;
-import com.io.linkapp.link.repository.TagRepository;
+import com.io.linkapp.link.repository.*;
 import com.io.linkapp.link.request.ArticleRequest;
 import com.io.linkapp.link.request.ArticleTagRequest;
 import com.io.linkapp.link.response.ArticleResponse;
@@ -25,16 +15,17 @@ import com.io.linkapp.link.response.ArticleTagResponse;
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.repository.UserRepository;
-import com.querydsl.core.BooleanBuilder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -113,9 +104,8 @@ public class ArticleService {
         return ArticleMapper.INSTANCE.toResponseDto(article);
     }
 
-    public List<ArticleResponse.Tags> getList(User user){
-        List<Article> articles = articleRepository.findByUser(user);
-
+    public List<ArticleResponse.Tags> searchArticle(Predicate search){
+        List<Article> articles = (List<Article>) articleRepository.findAll(search, Sort.by(Sort.Direction.DESC, "modifiedDate"));
         return ArticleResponse.Tags.articleTagBuilder(articles);
     }
 

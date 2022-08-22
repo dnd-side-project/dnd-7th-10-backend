@@ -1,8 +1,8 @@
 package com.io.linkapp.link.request;
 
+import com.io.linkapp.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,5 +20,14 @@ public class ArticleRequest {
         this.folderId = folderId;
         this.linkUrl = linkUrl;
         this.tagIds = tagIds;
+    }
+
+    @Getter
+    @Builder
+    public static class Search {
+        private User user;
+        private String title;
+        private String description;
+        private String tag;
     }
 }
