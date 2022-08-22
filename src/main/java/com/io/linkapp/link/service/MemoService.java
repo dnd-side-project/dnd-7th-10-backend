@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,35 +34,6 @@ public class MemoService {
         Article article = memo.getArticle();
 
         return MemoResponse.builder()
-            .id(memo.getId())
-            .content(memo.getContent())
-            .modifiedDate(memo.getModifiedDate())
-            .registerDate(memo.getRegisterDate())
-            .openGraph(article.getOpenGraph())
-            .folderTitle(article.getFolder().getFolderTitle())
-            .build();
-    }
-
-    public MemoResponse add(MemoRequest memoRequest, User user){
-        Article article = articleRepository.findById(memoRequest.getArticleId())
-            .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
-
-        Memo memo = Memo.builder()
-                .content(memoRequest.getContent())
-                .article(article)
-                .user(user)
-                .build();
-
-        return MemoMapper.INSTANCE.toResponseDto(memoRepository.save(memo));
-    }
-
-    public List<MemoResponse> getList(User user){
-        List<Memo> memos = memoRepository.findByUser(user);
-        List<MemoResponse> memoResponses = new ArrayList<>();
-
-        for (Memo memo : memos) {
-            Article article = memo.getArticle();
-            MemoResponse memoResponse = MemoResponse.builder()
                 .id(memo.getId())
                 .content(memo.getContent())
                 .modifiedDate(memo.getModifiedDate())
@@ -69,6 +41,53 @@ public class MemoService {
                 .openGraph(article.getOpenGraph())
                 .folderTitle(article.getFolder().getFolderTitle())
                 .build();
+    }
+
+    public MemoResponse add(MemoRequest memoRequest, User user){
+        Article article = articleRepository.findById(memoRequest.getArticleId())
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
+
+        Memo memo = Memo.builder()
+                .content(memoRequest.getContent())
+                .article(article)
+                .user(user)
+                .build();
+
+        memo = memoRepository.save(memo);
+
+        return MemoResponse.builder()
+                .id(memo.getId())
+                .content(memo.getContent())
+                .folderTitle(memo.getArticle().getFolder().getFolderTitle())
+                .openGraph(memo.getArticle().getOpenGraph())
+                .modifiedDate(memo.getModifiedDate())
+                .registerDate(memo.getRegisterDate())
+                .build();
+    }
+
+    public List<MemoResponse> getSearchList(Predicate search) {
+        List<Memo> memos = (List<Memo>) memoRepository.findAll(search);
+        return getMemoResponses(memos);
+    }
+
+    public List<MemoResponse> getList(User user){
+        List<Memo> memos = memoRepository.findByUser(user);
+        return getMemoResponses(memos);
+    }
+
+    private List<MemoResponse> getMemoResponses(List<Memo> memos) {
+        List<MemoResponse> memoResponses = new ArrayList<>();
+
+        for (Memo memo : memos) {
+            Article article = memo.getArticle();
+            MemoResponse memoResponse = MemoResponse.builder()
+                    .id(memo.getId())
+                    .content(memo.getContent())
+                    .modifiedDate(memo.getModifiedDate())
+                    .registerDate(memo.getRegisterDate())
+                    .openGraph(article.getOpenGraph())
+                    .folderTitle(article.getFolder().getFolderTitle())
+                    .build();
 
             memoResponses.add(memoResponse);
         }
