@@ -4,16 +4,18 @@ import com.io.linkapp.link.domain.QMemo;
 import com.io.linkapp.link.request.MemoRequest;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import org.springframework.util.ObjectUtils;
 
 public class MemoFormPredicate {
 
-    public static Predicate search(MemoRequest.SearchMemo memoContentSearchCondition){
+    public static Predicate search(MemoRequest.Search memoContentSearchCondition){
         BooleanBuilder builder = new BooleanBuilder();
         QMemo qMemo = QMemo.memo;
-
         builder.and(qMemo.user.eq(memoContentSearchCondition.getUser()));
-        builder.and(qMemo.content.contains(memoContentSearchCondition.getContent()));
-        builder.or(qMemo.content.toUpperCase().contains(memoContentSearchCondition.getContent().toUpperCase()));
+
+        if(!ObjectUtils.isEmpty(memoContentSearchCondition.getContent())) {
+            builder.and(qMemo.content.toUpperCase().contains(memoContentSearchCondition.getContent().toUpperCase()));
+        }
 
         return builder;
     }

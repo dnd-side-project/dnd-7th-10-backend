@@ -30,7 +30,7 @@ public class ArticleApi {
         return articleService.add(articleRequest, principalDetails.getUser());
     }
 
-    @ApiOperation(value = "링크 검색", notes = "쿼리 스트링으로 요청, 모두 미입력 시 유저 작성 아티클 전체 검색, 값이 있는 필드에 대해 검색 조건(or) 처리 됨")
+    @ApiOperation(value = "링크 검색", notes = "조회 시 파라미터 없이, 검색 시 쿼리 스트링으로 요청 값이 있는 필드에 대해 검색 조건(or) 처리 됨")
     @GetMapping("/articles")
     public List<ArticleResponse.Tags> getList(String title, String description, String tag, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         ArticleRequest.Search search = ArticleRequest.Search.builder()
@@ -40,7 +40,7 @@ public class ArticleApi {
                 .tag(tag)
                 .build();
 
-        return articleService.getList(ArticleFormPredicate.searchArticle(search));
+        return articleService.searchArticle(ArticleFormPredicate.searchArticle(search));
     }
 
     @ApiOperation("링크 조회")

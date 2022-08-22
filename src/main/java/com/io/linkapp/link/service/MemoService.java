@@ -12,7 +12,6 @@ import com.io.linkapp.link.response.MemoResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
@@ -65,13 +64,8 @@ public class MemoService {
                 .build();
     }
 
-    public List<MemoResponse> getSearchList(Predicate search) {
+    public List<MemoResponse> searchMemo(Predicate search) {
         List<Memo> memos = (List<Memo>) memoRepository.findAll(search);
-        return getMemoResponses(memos);
-    }
-
-    public List<MemoResponse> getList(User user){
-        List<Memo> memos = memoRepository.findByUser(user);
         return getMemoResponses(memos);
     }
 

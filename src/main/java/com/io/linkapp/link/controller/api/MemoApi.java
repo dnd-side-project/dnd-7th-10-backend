@@ -30,21 +30,15 @@ public class MemoApi {
         return memoService.findById(memoId);
     }
 
-    @ApiOperation("메모 전체 조회")
+    @ApiOperation(value = "메모 전체 조회 및 검색", notes = "조회 시 파라미터 없이, 검색 시 쿼리 스트링으로 요청")
     @GetMapping("/memos")
-    public List<MemoResponse> getList(@AuthenticationPrincipal PrincipalDetails principalDetails){
-        return memoService.getList(principalDetails.getUser());
-    }
-
-    @ApiOperation("메모 검색")
-    @GetMapping("/memos/{content}")
-    public List<MemoResponse> getSearchMemoList(@PathVariable String content, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public List<MemoResponse> searchByContent(String content, @AuthenticationPrincipal PrincipalDetails principalDetails){
         User user = principalDetails.getUser();
-        MemoRequest.SearchMemo searchInput = MemoRequest.SearchMemo.builder()
+        MemoRequest.Search searchInput = MemoRequest.Search.builder()
                 .content(content)
                 .user(user)
                 .build();
-        return memoService.getSearchList(MemoFormPredicate.search(searchInput));
+        return memoService.searchMemo(MemoFormPredicate.search(searchInput));
     }
 
     @ApiOperation("메모 등록")

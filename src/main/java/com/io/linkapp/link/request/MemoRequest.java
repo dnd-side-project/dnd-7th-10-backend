@@ -22,7 +22,7 @@ public class MemoRequest {
 
     @Getter
     @Builder
-    public static class SearchMemo {
+    public static class Search {
         private User user;
         private String content;
     }

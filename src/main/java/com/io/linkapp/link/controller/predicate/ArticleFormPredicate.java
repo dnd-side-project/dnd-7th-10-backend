@@ -36,49 +36,37 @@ public class ArticleFormPredicate {
         if(searchByDescription){
             log.info("Search By Description");
             builder.and(qArticle.openGraph.linkDescription.toUpperCase().contains(description.toUpperCase()));
-
-            return builder;
         }
         else if (searchByTitle) {
             log.info("Search By Title");
             builder.and(qArticle.openGraph.linkTitle.toUpperCase().contains(title.toUpperCase()));
-
-            return builder;
         }
         else if (searchByTag) {
             log.info("Search By Tag");
             builder.and(qArticle.articleTags.any().tag.tagName.toUpperCase().contains(tag.toUpperCase()));
-
-            return builder;
         }
         else if (searchByDescriptionAndTitle) {
             log.info("Search By Description And Title");
             builder.and(qArticle.openGraph.linkTitle.toUpperCase().contains(title.toUpperCase())
                     .or(qArticle.openGraph.linkDescription.toUpperCase().contains(description.toUpperCase())));
-
-            return builder;
         }
         else if (searchByDescriptionAndTag){
             log.info("Search By Description And Tag");
             builder.and(qArticle.openGraph.linkDescription.toUpperCase().contains(description.toUpperCase())
                     .or(qArticle.articleTags.any().tag.tagName.toUpperCase().contains(tag.toUpperCase())));
-
-            return builder;
-        } else if (searchByTitleAndTag) {
+        }
+        else if (searchByTitleAndTag) {
             log.info("Search By Title And Tag");
             builder.and(qArticle.openGraph.linkTitle.toUpperCase().contains(title.toUpperCase())
                     .or(qArticle.articleTags.any().tag.tagName.toUpperCase().contains(tag.toUpperCase())));
-
-            return builder;
-        } else if (searchByAll) {
+        }
+        else if (searchByAll) {
             log.info("Search By All");
             builder.and(qArticle.openGraph.linkTitle.toUpperCase().contains(search.getTitle().toUpperCase())
                     .or(qArticle.openGraph.linkDescription.toUpperCase().contains(search.getDescription().toUpperCase()))
                     .or(qArticle.articleTags.any().tag.tagName.toUpperCase().contains(search.getTag().toUpperCase())));
-            return builder;
         }
 
-        log.info("Search By User");
         return builder;
     }
 }
