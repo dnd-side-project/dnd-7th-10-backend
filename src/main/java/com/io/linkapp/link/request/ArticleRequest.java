@@ -24,9 +24,10 @@ public class ArticleRequest {
 
     @Getter
     @Builder
-    public static class OpenGraphSearch {
+    public static class Search {
         private User user;
-        //오픈그래프 정보 중 Title, Description 을 받을 수 있는 문자열
-        private String openGraphTag;
+        private String title;
+        private String description;
+        private String tag;
     }
 }

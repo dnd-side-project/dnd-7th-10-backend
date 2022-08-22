@@ -15,8 +15,11 @@ import com.io.linkapp.link.response.ArticleTagResponse;
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.repository.UserRepository;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
+import io.lettuce.core.GeoArgs;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -103,9 +106,8 @@ public class ArticleService {
         return ArticleMapper.INSTANCE.toResponseDto(article);
     }
 
-    public List<ArticleResponse.Tags> getList(User user){
-        List<Article> articles = articleRepository.findByUser(user);
-
+    public List<ArticleResponse.Tags> getList(Predicate search){
+        List<Article> articles = (List<Article>) articleRepository.findAll(search, Sort.by(Sort.Direction.DESC, "modifiedDate"));
         return ArticleResponse.Tags.articleTagBuilder(articles);
     }
 
@@ -164,7 +166,12 @@ public class ArticleService {
     }
 
     public List<ArticleResponse.Tags> getListByDescription(Predicate search) {
-        List<Article> articles = (List<Article>) articleRepository.findAll(search);
+        List<Article> articles = (List<Article>) articleRepository.findAll(search, Sort.by(Sort.Direction.DESC, "modifiedDate"));
+        return ArticleResponse.Tags.articleTagBuilder(articles);
+    }
+
+    public List<ArticleResponse.Tags> searchArticle(Predicate search) {
+        List<Article> articles = (List<Article>) articleRepository.findAll(search, Sort.by(Sort.Direction.DESC, "modifiedDate"));
         return ArticleResponse.Tags.articleTagBuilder(articles);
     }
 }

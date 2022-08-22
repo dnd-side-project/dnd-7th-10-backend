@@ -4,6 +4,8 @@ import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.Tag;
 import com.io.linkapp.user.domain.User;
 import java.util.Optional;
+
+import com.querydsl.core.types.Predicate;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
