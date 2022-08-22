@@ -13,6 +13,7 @@ public class ArticleFormPredicate {
 
         builder.and(qArticle.user.eq(descriptionSearchCondition.getUser()));
         builder.and(qArticle.openGraph.linkDescription.contains(descriptionSearchCondition.getOpenGraphTag()));
+        builder.or(qArticle.openGraph.linkDescription.toUpperCase().contains(descriptionSearchCondition.getOpenGraphTag().toUpperCase()));
 
         return builder;
     }
@@ -23,6 +24,7 @@ public class ArticleFormPredicate {
 
         builder.and(qArticle.user.eq(titleSearchCondition.getUser()));
         builder.and(qArticle.openGraph.linkTitle.contains(titleSearchCondition.getOpenGraphTag()));
+        builder.or(qArticle.openGraph.linkTitle.toUpperCase().contains(titleSearchCondition.getOpenGraphTag().toUpperCase()));
 
         return builder;
     }

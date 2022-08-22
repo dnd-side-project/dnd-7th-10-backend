@@ -7,12 +7,13 @@ import com.querydsl.core.types.Predicate;
 
 public class MemoFormPredicate {
 
-    public static Predicate search(MemoRequest.SearchMemo in){
+    public static Predicate search(MemoRequest.SearchMemo memoContentSearchCondition){
         BooleanBuilder builder = new BooleanBuilder();
         QMemo qMemo = QMemo.memo;
 
-        builder.and(qMemo.user.eq(in.getUser()));
-        builder.and(qMemo.content.contains(in.getContent()));
+        builder.and(qMemo.user.eq(memoContentSearchCondition.getUser()));
+        builder.and(qMemo.content.contains(memoContentSearchCondition.getContent()));
+        builder.or(qMemo.content.toUpperCase().contains(memoContentSearchCondition.getContent().toUpperCase()));
 
         return builder;
     }
