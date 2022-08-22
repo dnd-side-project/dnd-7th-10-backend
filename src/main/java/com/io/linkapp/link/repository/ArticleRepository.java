@@ -12,7 +12,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-public interface ArticleRepository extends JpaRepository<Article, UUID>{
+public interface ArticleRepository extends JpaRepository<Article, UUID>, QuerydslPredicateExecutor<Article>{
 
     @EntityGraph(attributePaths = "memos")
     @Query("SELECT DISTINCT article FROM Article article WHERE article.user=:user")

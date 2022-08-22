@@ -1,11 +1,13 @@
 package com.io.linkapp.link.controller.api;
 
 import com.io.linkapp.config.security.auth.PrincipalDetails;
+import com.io.linkapp.link.controller.predicate.ArticleFormPredicate;
 import com.io.linkapp.link.request.ArticleRequest;
 import com.io.linkapp.link.request.ArticleTagRequest;
 import com.io.linkapp.link.response.ArticleResponse;
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.link.service.ArticleService;
+import com.io.linkapp.user.domain.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -38,6 +40,30 @@ public class ArticleApi {
     @GetMapping("/articles")
     public List<ArticleResponse.Tags> getList(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         return articleService.getList(principalDetails.getUser());
+    }
+
+    @ApiOperation("링크 Description 검색")
+    @GetMapping("/articles/description/{description}")
+    public List<ArticleResponse.Tags> searchArticleByDescription(@PathVariable String description, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        User user = principalDetails.getUser();
+        ArticleRequest.OpenGraphSearch searchCondition = ArticleRequest.OpenGraphSearch.builder()
+                .user(user)
+                .openGraphTag(description)
+                .build();
+
+       return articleService.getListByDescription(ArticleFormPredicate.descriptionSearch(searchCondition));
+    }
+
+    @ApiOperation("링크 Title 검색")
+    @GetMapping("/articles/title/{linkTitle}")
+    public List<ArticleResponse.Tags> searchArticleByLinkTitle(@PathVariable String linkTitle, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        User user = principalDetails.getUser();
+        ArticleRequest.OpenGraphSearch searchCondition = ArticleRequest.OpenGraphSearch.builder()
+                .user(user)
+                .openGraphTag(linkTitle)
+                .build();
+
+        return articleService.getListByDescription(ArticleFormPredicate.titleSearch(searchCondition));
     }
 
     @ApiOperation("링크 조회")

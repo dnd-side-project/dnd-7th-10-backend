@@ -1,8 +1,8 @@
 package com.io.linkapp.link.request;
 
+import com.io.linkapp.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,5 +20,13 @@ public class ArticleRequest {
         this.folderId = folderId;
         this.linkUrl = linkUrl;
         this.tagIds = tagIds;
+    }
+
+    @Getter
+    @Builder
+    public static class OpenGraphSearch {
+        private User user;
+        //오픈그래프 정보 중 Title, Description 을 받을 수 있는 문자열
+        private String openGraphTag;
     }
 }
