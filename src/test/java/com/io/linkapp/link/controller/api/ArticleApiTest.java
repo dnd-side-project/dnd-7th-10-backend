@@ -8,7 +8,6 @@ import com.io.linkapp.exception.CustomGlobalException;
 import com.io.linkapp.exception.ErrorCode;
 import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.Folder;
-import com.io.linkapp.link.domain.Memo;
 import com.io.linkapp.link.mapper.ArticleMapper;
 import com.io.linkapp.link.repository.ArticleRepository;
 import com.io.linkapp.link.repository.FolderRepository;
@@ -16,7 +15,6 @@ import com.io.linkapp.link.repository.MemoRepository;
 import com.io.linkapp.link.request.ArticleRequest;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
