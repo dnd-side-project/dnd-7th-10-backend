@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +37,7 @@ public class Tag{
     private String tagName;
 
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "tag",cascade = CascadeType.REMOVE)
     @JsonManagedReference("tag-article")
     private List<ArticleTag> tagArticles = new ArrayList<>();
 }
