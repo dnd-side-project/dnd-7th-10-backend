@@ -86,7 +86,7 @@ class ArticleApiTest {
         jwtToken = JWT.create()
                 .withSubject(JwtProperty.SUBJECT)
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperty.EXPIRATION_TIME))
-                .withClaim("username", "chan")
+                .withClaim("username", "testUser")
                 .sign(Algorithm.HMAC512(JwtProperty.SECRET));
     }
 
