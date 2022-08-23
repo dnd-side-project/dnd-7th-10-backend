@@ -7,8 +7,10 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class ArticleRequest {
 
     private UUID folderId;

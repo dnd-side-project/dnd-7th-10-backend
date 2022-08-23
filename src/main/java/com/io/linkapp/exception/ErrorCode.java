@@ -22,6 +22,8 @@ public enum ErrorCode {
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 아티클입니다."),
     
     REMIND_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 리마인드입니다."),
+    
+    DEFAULT_REMIND_NOT_FOUND(HttpStatus.NOT_FOUND, "디폴트 리마인드가 존재하지 않습니다"),
 
     FOLDER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 폴더입니다."),
 

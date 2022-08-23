@@ -24,15 +24,6 @@ public class SchedulerApi {
 
     private final QuartzService service;
     
-//
-//    @SneakyThrows
-//    @ApiOperation("5분 간격 테스트")
-//    @GetMapping("/quartz")
-//    public void testQuartz(){
-//        System.out.println("testApi");
-//        service.init(); //여기로 넘겨준 다음에
-//    }
-    
     
     @SneakyThrows
     @ApiOperation("알림 스케줄러 설정")
@@ -44,7 +35,7 @@ public class SchedulerApi {
     
     
     @SneakyThrows
-    @ApiOperation("현재 등록된 모든 알람 정보 삭제")
+    @ApiOperation("현재 등록된 모든 유저의 모든 알람 정보 삭제")
     @DeleteMapping("/clear")
     public void clear(){
         //System.out.println("clear quartz");

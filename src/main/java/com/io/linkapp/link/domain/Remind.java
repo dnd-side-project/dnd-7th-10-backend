@@ -35,8 +35,12 @@ public class Remind {
     
     // 외래키(==참조키. 즉 상대방에서 어떤 컬럼을 기준으로 할지)가 있는 곳이 연관관계의 주인
     //[연관 관계의 주인 설정 기준] 연관 관계의 주인만이 등록, 수정을 할 수 있고 주인이 아닌 쪽은 조회만 할 수 있다
-    @OneToOne(mappedBy = "remind")
-    private User user;
+    @Column(name = "user_id")
+    private UUID userId;
+    
+    
+    @Column(name="cron")
+    private String cron;
     
     //https://www.inflearn.com/questions/480533 - 완전 좋음. 특히 하단의 Child 클래스 나오는 질문
     //https://www.inflearn.com/questions/113969
@@ -53,11 +57,8 @@ public class Remind {
     // - 위의 레퍼런스에 나와있음
     //referencedColumnName : 쉽게 말해 반대편 테이블의 조인 기준이 되는 컬럼명
     
-    //메모는 어차피 별개니까 그냥 프론트 측에서 메모 최신순으로 전체 조회만 가져오면 될 듯
-    //to - do: 알람 정보는 푸시 쪽과 함께 작업
     
-    //private Integer hour;
-    //private Integer min;
+
     
     
 }

@@ -37,6 +37,8 @@ public class FirebaseCloudMessageService {
     
     private final UserRepository userRepository;
     
+    private final ArticleRepository articleRepository;
+    
     //메시지 전송을 위해 요청하는 주소
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/linkkle-b8413/messages:send";
     private final ObjectMapper objectMapper;
@@ -72,6 +74,11 @@ public class FirebaseCloudMessageService {
         int idx = (int)((Math.random()*10000)%(articleIds.size()-1));
         UUID articleId = articleIds.get(idx);
         
+        Article article = articleRepository.findById(articleId)
+            .orElseThrow(()-> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
+        
+        UUID remindId = article.getRemindId();
+        
         FcmMessage fcmMessage = FcmMessage.builder()
             .message(FcmMessage.Message.builder()
                 .token(targetToken)
@@ -82,7 +89,7 @@ public class FirebaseCloudMessageService {
                 )
                 .data(FcmMessage.Data.builder()
                     .articleId(articleId)
-                    .remindId(user.getRemind().getRemindId())
+                    .remindId(remindId)
                     .build())
                 .build()).validateOnly(false).build();
         

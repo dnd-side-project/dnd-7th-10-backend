@@ -15,7 +15,9 @@ import com.io.linkapp.link.response.ArticleTagResponse;
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.repository.UserRepository;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -129,10 +131,17 @@ public class ArticleService {
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.USER_NOT_FOUND));
+        
+        QRemind qRemind = QRemind.remind;
+        BooleanBuilder builder = new BooleanBuilder();
 
-        if(article.isBookmark() == false) {
+        if(article.isBookmark() == false) { //북마크 설정된 애들은 몽땅 default 리마인드에 넣어줌
             article.setBookmark(true);
-            article.setRemindId(user.getRemind().getRemindId());
+            builder.and(qRemind.userId.eq(userId));
+            builder.and(qRemind.remindTitle.eq("default"));
+            Remind remind = remindRepository.findOne(builder)
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.DEFAULT_REMIND_NOT_FOUND));
+            article.setRemindId(remind.getRemindId());
         }else {
             article.setBookmark(false);
             article.setRemindId(null);

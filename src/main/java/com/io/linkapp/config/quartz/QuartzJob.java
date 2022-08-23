@@ -1,6 +1,14 @@
 package com.io.linkapp.config.quartz;
 
+import com.io.linkapp.exception.CustomGlobalException;
+import com.io.linkapp.exception.ErrorCode;
+import com.io.linkapp.link.domain.Article;
+import com.io.linkapp.link.domain.QArticle;
+import com.io.linkapp.link.domain.Remind;
+import com.io.linkapp.link.repository.ArticleRepository;
+import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.service.FirebaseCloudMessageService;
+import com.querydsl.core.BooleanBuilder;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +28,7 @@ import org.springframework.stereotype.Component;
 //Job은 @RequiredArgsConstructor 사용못함
 public class QuartzJob implements Job {
     
+    
     @Autowired
     private FirebaseCloudMessageService firebaseCloudMessageService;
     
@@ -35,10 +44,13 @@ public class QuartzJob implements Job {
         UUID userId = (UUID) dataMap.get("userId");
         String targetToken = (String) dataMap.get("targetToken");
         List<UUID> articleIds = (List<UUID>) dataMap.get("articleIds");
-        System.out.println("dataMap targetToken: "+targetToken);
-        System.out.println("dataMap userId: "+userId);
-        System.out.println("dataMap articleIds: "+articleIds);
         
+    
+    
+//        System.out.println("dataMap targetToken: "+targetToken);
+//        System.out.println("dataMap userId: "+userId);
+//        System.out.println("dataMap articleIds: "+articleIds);
+//
 
         try {
             firebaseCloudMessageService.sendMessageTo(userId,targetToken,articleIds);

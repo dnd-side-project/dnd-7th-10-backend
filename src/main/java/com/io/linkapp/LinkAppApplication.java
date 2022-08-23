@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class LinkAppApplication {
 
     public static void main(String[] args) {
+        System.out.println("LinkApplication started");
         SpringApplication.run(LinkAppApplication.class, args);
     }
 
