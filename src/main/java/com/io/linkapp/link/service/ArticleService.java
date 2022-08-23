@@ -55,13 +55,15 @@ public class ArticleService {
         List<ArticleTag> articleTags = article.getArticleTags();
         List<ArticleTagResponse> tagsResponse = new ArrayList<>();
 
-        for (ArticleTag articleTag : articleTags) {
-            ArticleTagResponse tags = ArticleTagResponse.builder()
-                .tagId(articleTag.getTag().getTagId())
-                .tagName(articleTag.getTag().getTagName())
-                .build();
+        if(articleTags!=null) {
+            for (ArticleTag articleTag : articleTags) {
+                ArticleTagResponse tags = ArticleTagResponse.builder()
+                        .tagId(articleTag.getTag().getTagId())
+                        .tagName(articleTag.getTag().getTagName())
+                        .build();
 
-            tagsResponse.add(tags);
+                tagsResponse.add(tags);
+            }
         }
 
         return articleTagResponseBuilder

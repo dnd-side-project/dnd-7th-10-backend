@@ -26,7 +26,7 @@ public class Folder {
 
     private String folderColor;
 
-    @OneToMany(mappedBy = "folder")
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.REMOVE)
     @JsonManagedReference(value = "folder-article")
     private List<Article> articles = new ArrayList<>();
 
