@@ -108,6 +108,7 @@ public class QuartzService {
             if(mode =="delete" || mode =="modify"){
                 if(scheduler.checkExists(new JobKey( "QuartzJob"+user.getId().toString()+pushRequest.getCron()))){
                     scheduler.deleteJob(new JobKey( "QuartzJob"+user.getId().toString()+pushRequest.getCron()));
+                    scheduler.start();
                     System.out.println("mode: "+mode+"  delete curr job");
                 }
             }
