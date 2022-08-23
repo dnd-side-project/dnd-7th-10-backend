@@ -58,16 +58,18 @@ public class TagApi {
     @PostMapping
     public TagResponse.GetAll add(@Valid @RequestBody TagRequest.Add in){
         Tag newTag = formMapper.toTag(in);
-        return formMapper.toGetAll(service.add(newTag));
+        UUID articleId = in.getArticleId();
+        return formMapper.toGetAll(service.add(newTag,articleId));
     }
     
     
-    @SneakyThrows
-    @ApiOperation("수정")
-    @PostMapping("/{tagId}")
-    public TagResponse.GetAll modify(@PathVariable UUID tagId,@Valid @RequestBody TagRequest.Modify in){
-        return formMapper.toGetAll(service.modify(tagId, formMapper.toTag(in)));
-    }
+//    @SneakyThrows
+//    @ApiOperation("수정")
+//    @PostMapping("/{tagId}")
+//    public TagResponse.GetAll modify(@PathVariable UUID tagId,@Valid @RequestBody TagRequest.Modify in){
+//        UUID articleId = in.getArticleId();
+//        return formMapper.toGetAll(service.modify(tagId, formMapper.toTag(in),articleId));
+//    }
     
     @SneakyThrows
     @ApiOperation("삭제")
