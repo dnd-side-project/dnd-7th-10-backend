@@ -18,8 +18,6 @@ public class QUser extends EntityPathBase<User> {
 
     private static final long serialVersionUID = -2001575628L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QUser user = new QUser("user");
 
     public final com.io.linkapp.common.QBaseTimeEntity _super = new com.io.linkapp.common.QBaseTimeEntity(this);
@@ -40,31 +38,22 @@ public class QUser extends EntityPathBase<User> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> registerDate = _super.registerDate;
 
-    public final com.io.linkapp.link.domain.QRemind remind;
+    public final ListPath<com.io.linkapp.link.domain.Remind, com.io.linkapp.link.domain.QRemind> remindList = this.<com.io.linkapp.link.domain.Remind, com.io.linkapp.link.domain.QRemind>createList("remindList", com.io.linkapp.link.domain.Remind.class, com.io.linkapp.link.domain.QRemind.class, PathInits.DIRECT2);
 
     public final EnumPath<Role> role = createEnum("role", Role.class);
 
     public final StringPath username = createString("username");
 
     public QUser(String variable) {
-        this(User.class, forVariable(variable), INITS);
+        super(User.class, forVariable(variable));
     }
 
     public QUser(Path<? extends User> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QUser(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QUser(PathMetadata metadata, PathInits inits) {
-        this(User.class, metadata, inits);
-    }
-
-    public QUser(Class<? extends User> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.remind = inits.isInitialized("remind") ? new com.io.linkapp.link.domain.QRemind(forProperty("remind"), inits.get("remind")) : null;
+        super(User.class, metadata);
     }
 
 }

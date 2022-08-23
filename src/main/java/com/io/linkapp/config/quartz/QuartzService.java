@@ -3,6 +3,11 @@ package com.io.linkapp.config.quartz;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.io.linkapp.config.security.auth.PrincipalDetails;
 import com.io.linkapp.exception.CustomGlobalException;
+import com.io.linkapp.exception.ErrorCode;
+import com.io.linkapp.link.domain.Article;
+import com.io.linkapp.link.domain.Remind;
+import com.io.linkapp.link.repository.ArticleRepository;
+import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.request.PushRequest;
 import com.io.linkapp.user.domain.User;
 import java.time.LocalDateTime;
@@ -22,6 +27,7 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
@@ -30,6 +36,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 public class QuartzService {
 
     private final Scheduler scheduler;
+    
+    private final RemindRepository remindRepository;
+    
+    private final ArticleRepository articleRepository;
     
     public void resetScheduler() throws SchedulerException {
         scheduler.clear();
@@ -116,7 +126,34 @@ public class QuartzService {
                 paramsMap.put("targetToken",pushRequest.getTargetToken());
                 paramsMap.put("userId",user.getId());
                 paramsMap.put("articleIds",pushRequest.getArticleIds());
-                System.out.println("job paramsMap created ");
+                //System.out.println("job paramsMap created ");
+    
+                String cron="";
+    
+                if(mode =="modify"){ //시간 정보가 수정되는 것이라면
+                    cron= pushRequest.getModifiedCron();
+                
+                }else if(mode =="add"){ //그냥 최초의 시간 정보라면 (시간 수정이 아니라면)
+                    cron = pushRequest.getCron();
+                }
+    
+                //알람 시간에 따른 해당 리마인드 객체 생성
+                Remind remind = Remind.builder()
+                    .userId(user.getId())
+                    .cron(cron)
+                    .remindTitle("remindFor "+cron)
+                    .build();
+    
+                Remind savedRemind = remindRepository.save(remind);
+    
+                //그리고 요청 받은 아티클들의 remindId 업데이트 - 원래는 default에만 있었음
+                for(int i=0;i<pushRequest.getArticleIds().size();i++){
+                    Article article = articleRepository.findById(pushRequest.getArticleIds().get(i))
+                        .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
+                    //article.setRemindId(null);
+                    article.setRemindId(savedRemind.getRemindId());
+                    articleRepository.save(article);
+                }
     
                 //job 생성 및 Scheduler에 등록
                 //넘겨받은 사용자 정보로 remind 시간 cron으로 변환해서 넣기

@@ -55,21 +55,22 @@ public class UserService {
     public User join(UserRequest userRequest) {
         userRequest.encodePassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
         User user = UserMapper.INSTANCE.toEntity(userRequest);
-
-        Remind remind = Remind.builder()
-            .remindTitle(user.getUsername() + "님의 리마인드")
-            .build();
-
-        remind = remindRepository.save(remind);
-
-        user.setRemind(remind);
-
+        
+        
         Folder defaultFolder = Folder.builder()
                 .folderTitle("기본 폴더")
                 .user(user)
                 .build();
 
         User savedUser = userRepository.save(user);
+    
+        Remind remind = Remind.builder()
+            .userId(savedUser.getId())
+            //.remindTitle(user.getUsername() + "님의 default 리마인드")
+            .remindTitle("default")
+            .build();
+    
+        remind = remindRepository.save(remind);
         folderRepository.save(defaultFolder);
         return savedUser;
     }
@@ -91,13 +92,14 @@ public class UserService {
                 .user(newUser)
                 .build();
 
-            Remind remind = Remind.builder()
-                .remindTitle(newUser.getUsername() + "님의 리마인드")
-                .build();
-
-            remind = remindRepository.save(remind);
-
             newUser = userRepository.save(userRepository.save(newUser));
+            
+            Remind remind = Remind.builder()
+                .userId(newUser.getId())
+                .remindTitle("default")
+                .build();
+    
+            remind = remindRepository.save(remind);
             folderRepository.save(defaultFolder);
             return jwtTokenProvider.provideToken(newUser.getUsername());
         }

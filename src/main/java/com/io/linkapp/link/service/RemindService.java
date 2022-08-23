@@ -27,14 +27,6 @@ public class RemindService {
     public List<Remind> getList(Predicate search){
         
         List<Remind> list = (List<Remind>) repository.findAll(search);
-        
-        //리마인드가 아티클 객체들을 잘 가지고 왔는지 확인
-//        for(int i=0;i<list.size();i++){
-//            //System.out.println(list.get(i).getArticleList().size());
-//            for(int j=0;j<list.get(i).getArticleList().size();j++){
-//                System.out.println(list.get(i).getArticleList().get(j).getLinkUrl());
-//            }
-//        }
         return list;
     }
     

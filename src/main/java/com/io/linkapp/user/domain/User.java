@@ -43,10 +43,10 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference(value = "user-article")
     private List<Article> articles = new ArrayList<>();
-
-    @OneToOne
-    @JoinColumn(name = "remind_id")
-    private Remind remind;
+    
+    @OneToMany
+    @JoinColumn(name = "user_id",referencedColumnName = "user_id")
+    private List<Remind> remindList;
 
     @Enumerated(value = EnumType.STRING)
     private Role role = Role.BASIC;
@@ -63,8 +63,7 @@ public class User extends BaseTimeEntity {
         this.username = username;
         this.role = role;
     }
-
-    public void setRemind(Remind remind) {
-        this.remind = remind;
-    }
+    
+    
+    
 }
