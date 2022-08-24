@@ -40,7 +40,7 @@ public class FirebaseCloudMessageService {
     private final ArticleRepository articleRepository;
     
     //메시지 전송을 위해 요청하는 주소
-    private final String API_URL = "https://fcm.googleapis.com/v1/projects/linkkle-b8413/messages:send";
+    private final String API_URL = "https://fcm.googleapis.com/v1/projects/linkkle-inandout/messages:send";
     private final ObjectMapper objectMapper;
     
     public void sendMessageTo(UUID userId,String targetToken,List<UUID> articleIds) throws IOException {
@@ -91,7 +91,9 @@ public class FirebaseCloudMessageService {
                     .articleId(articleId)
                     .remindId(remindId)
                     .build())
-                .build()).validateOnly(false).build();
+                .build()).validate_only(false).build();
+    
+        System.out.println(objectMapper.writeValueAsString(fcmMessage));
         
         return objectMapper.writeValueAsString(fcmMessage);
     }
