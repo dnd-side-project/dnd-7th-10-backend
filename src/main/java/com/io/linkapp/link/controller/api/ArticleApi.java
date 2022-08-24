@@ -7,6 +7,7 @@ import com.io.linkapp.link.request.ArticleTagRequest;
 import com.io.linkapp.link.response.ArticleResponse;
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.link.service.ArticleService;
+import com.io.linkapp.user.domain.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,13 @@ public class ArticleApi {
     @GetMapping("/article/{articleId}")
     public ArticleResponse.Tags get(@PathVariable("articleId") UUID uuid) {
         return articleService.findById(uuid);
+    }
+
+    @ApiOperation("북마크한 링크들만 조회")
+    @GetMapping("/articles/mark")
+    public List<ArticleResponse.Tags> getListByBookmark(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        User user = principalDetails.getUser();
+       return articleService.findByBookmark(user);
     }
 
     @ApiOperation("링크 삭제")

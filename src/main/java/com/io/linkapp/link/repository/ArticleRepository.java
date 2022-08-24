@@ -17,7 +17,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 public interface ArticleRepository extends JpaRepository<Article, UUID>, QuerydslPredicateExecutor<Article>{
 
     @EntityGraph(attributePaths = "memos")
-    @Query("SELECT DISTINCT article FROM Article article WHERE article.user=:user")
+    @Query("SELECT DISTINCT article FROM Article article WHERE article.user=:user AND article.isBookmark = true ORDER BY article.registerDate DESC")
     List<Article> findByUser(User user);
 
     Optional<Article> findById(UUID id);
