@@ -14,6 +14,7 @@ import com.io.linkapp.link.response.SuccessResponse;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -59,14 +60,22 @@ public class TagService {
      * @return
      */
     public Tag add(Tag tag,UUID articleId) {
+    
         Tag savedTag = repository.save(tag);
-        Article article = articleRepository.findById(articleId)
-            .orElseThrow(()->new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
         
-        ArticleTag articleTag = ArticleTag.builder().tag(savedTag).article(article).build();
+        if(articleId != null){
+            Article article = articleRepository.findById(articleId).orElse(null);
+    
+            if(article != null){
+                ArticleTag articleTag = ArticleTag.builder().tag(savedTag).article(article).build();
         
-        //연결 엔티티에도 추가
-        articleTagRepository.save(articleTag);
+                //연결 엔티티에도 추가
+                articleTagRepository.save(articleTag);
+        
+            }
+        }
+        
+       
         
         return savedTag;
     }
