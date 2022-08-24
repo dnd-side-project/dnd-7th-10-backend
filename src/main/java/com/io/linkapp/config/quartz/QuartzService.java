@@ -5,15 +5,19 @@ import com.io.linkapp.config.security.auth.PrincipalDetails;
 import com.io.linkapp.exception.CustomGlobalException;
 import com.io.linkapp.exception.ErrorCode;
 import com.io.linkapp.link.domain.Article;
+import com.io.linkapp.link.domain.QRemind;
 import com.io.linkapp.link.domain.Remind;
 import com.io.linkapp.link.repository.ArticleRepository;
 import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.request.PushRequest;
 import com.io.linkapp.user.domain.User;
+import com.querydsl.core.BooleanBuilder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.CronScheduleBuilder;
@@ -41,9 +45,37 @@ public class QuartzService {
     
     private final ArticleRepository articleRepository;
     
-    public void resetScheduler() throws SchedulerException {
-        scheduler.clear();
-        System.out.println("cleared");
+    public void resetScheduler(User user) throws SchedulerException {
+        UUID userId = user.getId();
+        
+        Remind defaultRemind = remindRepository.findOne(new BooleanBuilder(QRemind.remind.userId.eq(userId)
+            .and(QRemind.remind.remindTitle.eq("default")))).orElse(null);
+        
+        if(defaultRemind != null){
+            //그러면 리마인드 객체도 모두 없애주면서 그 안의 article들 모두 default 리마인드로 옮겨야 함
+            //1. 그 안의 article들 모두 default 리마인드로
+            List<Remind> remindList = (List<Remind>) remindRepository.findAll(new BooleanBuilder(QRemind.remind.userId.eq(userId).and(
+                QRemind.remind.remindTitle.ne("default")
+            )));
+            for(int i=0;i<remindList.size();i++){
+                Remind remind = remindList.get(i);
+                List<Article> articleList = remind.getArticleList();
+                for(int j=0;j<articleList.size();j++){
+                    Article article = articleList.get(j);
+                    article.setRemindId(defaultRemind.getRemindId());
+                    articleRepository.save(article);
+                }
+            }
+    
+            //2. 리마인드 객체 모두 없애기 - default 제외
+            remindRepository.deleteAll(remindList);
+    
+            scheduler.clear();
+            System.out.println("cleared");
+        }
+        
+        
+        
     }
     
     public void init(){
@@ -104,9 +136,27 @@ public class QuartzService {
                 System.out.println("add mode");
             }
             
+            
+            
             // 따라서 기존 알람 시간을 삭제하고 싶담뎐 - 수정 정보에 기존과 똑같은 cron을 넣어주면 됨
             if(mode =="delete" || mode =="modify"){
                 if(scheduler.checkExists(new JobKey( "QuartzJob"+user.getId().toString()+pushRequest.getCron()))){
+                    //그리고 그 리마인드를 삭제
+                    Remind deletedRemind = remindRepository.findOne(new BooleanBuilder(QRemind.remind.userId.eq(user.getId())
+                        .and(QRemind.remind.cron.eq(pushRequest.getCron())))).orElse(null);
+                    // 그 리마인드의 아티클들 default로 옮김
+                    Remind defaultRemind = remindRepository.findOne(new BooleanBuilder(QRemind.remind.userId.eq(user.getId())
+                        .and(QRemind.remind.remindTitle.eq("default")))).orElse(null);
+                    List<Article> articles = deletedRemind.getArticleList();
+                    for(int j=0;j<articles.size();j++){
+                        Article article = articles.get(j);
+                        article.setRemindId(defaultRemind.getRemindId());
+                        articleRepository.save(article);
+                    }
+                    if(deletedRemind !=null){
+                        remindRepository.delete(deletedRemind);
+                    }
+                    
                     scheduler.deleteJob(new JobKey( "QuartzJob"+user.getId().toString()+pushRequest.getCron()));
                     scheduler.start();
                     System.out.println("mode: "+mode+"  delete curr job");

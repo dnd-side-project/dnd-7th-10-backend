@@ -50,24 +50,23 @@ public class RemindApi {
         return formMapper.toGetAllList(service.getList(RemindFormPredicate.search(in,principalDetails.getUser())));
     }
     
-    @SneakyThrows
-    @ApiOperation("등록")
-    @PostMapping
-    public RemindResponse.GetAll add(@Valid @RequestBody RemindRequest.Add in){
-        
-        //일단 저장후
-        Remind remind = service.add(formMapper.toRemind(in));
-        
-        return formMapper.toGetAll(remind);
-    }
-    
-    @SneakyThrows
-    @ApiOperation("삭제")
-    @DeleteMapping("/{remindId}")
-    public SuccessResponse remove(@PathVariable UUID remindId) {
-        return service.remove(remindId);
-    }
-    
+//    @SneakyThrows
+//    @ApiOperation("등록")
+//    @PostMapping
+//    public RemindResponse.GetAll add(@Valid @RequestBody RemindRequest.Add in){
+//
+//        Remind remind = service.add(formMapper.toRemind(in));
+//
+//        return formMapper.toGetAll(remind);
+//    }
+//
+//    @SneakyThrows
+//    @ApiOperation("삭제")
+//    @DeleteMapping("/{remindId}")
+//    public SuccessResponse remove(@PathVariable UUID remindId) {
+//        return service.remove(remindId);
+//    }
+//
     
     
     
