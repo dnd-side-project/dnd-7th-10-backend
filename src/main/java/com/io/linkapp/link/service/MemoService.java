@@ -17,6 +17,8 @@ import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -65,7 +67,7 @@ public class MemoService {
     }
 
     public List<MemoResponse> searchMemo(Predicate search) {
-        List<Memo> memos = (List<Memo>) memoRepository.findAll(search);
+        List<Memo> memos = (List<Memo>) memoRepository.findAll(search, Sort.by(Direction.DESC, "registerDate"));
         return getMemoResponses(memos);
     }
 

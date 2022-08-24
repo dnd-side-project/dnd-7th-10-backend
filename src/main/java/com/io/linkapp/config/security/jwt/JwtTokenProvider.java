@@ -4,17 +4,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.io.linkapp.exception.RefreshTokenNotFoundException;
-import com.io.linkapp.exception.RefreshTokenNotValidateException;
+import com.io.linkapp.exception.CustomGlobalException;
+import com.io.linkapp.exception.ErrorCode;
+import com.io.linkapp.user.request.RefreshRequest;
 import com.io.linkapp.user.service.RedisService;
+import java.util.Date;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.ObjectUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -61,28 +59,28 @@ public class JwtTokenProvider {
     }
 
     @SneakyThrows
-    public JwtTokenProvider findRefreshToken(HttpServletRequest request){
-        boolean empty = ObjectUtils.isEmpty(request.getHeader(JwtProperty.REFRESH_HEADER));
-        if(empty) {
-            throw new RefreshTokenNotFoundException();
-        } else {
-            this.refreshToken = request.getHeader(JwtProperty.REFRESH_HEADER).replace(JwtProperty.TOKEN_PREFIX, "");
-        }
+    public JwtTokenProvider findRefreshToken(RefreshRequest refreshRequest){
+        this.refreshToken = refreshRequest.getRefreshToken();
+        this.jwtToken = refreshRequest.getAccessToken();
         return this;
     }
 
     public JwtTokenProvider validateRefreshToken() {
-        String username = JWT.decode(this.jwtToken).getClaim("username")
+        String username;
+        try {
+            username = JWT.decode(this.jwtToken)
+                .getClaim("username")
                 .asString();
-
+        } catch (RuntimeException e) {
+            throw new CustomGlobalException(ErrorCode.TOKEN_NOT_VALID);
+        }
         this.username = username;
 
         if(refreshToken.equals(redisService.getValues(username))){
             this.isValidate = true;
         }else{
-            throw new RefreshTokenNotValidateException();
+            throw new CustomGlobalException(ErrorCode.REFRESH_NOT_VALID);
         }
-
         return this;
     }
 

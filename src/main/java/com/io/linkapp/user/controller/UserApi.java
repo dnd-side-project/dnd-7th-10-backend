@@ -1,8 +1,10 @@
 package com.io.linkapp.user.controller;
 
 import com.io.linkapp.config.security.jwt.JwtResponse;
+import com.io.linkapp.config.security.jwt.JwtTokenProvider;
 import com.io.linkapp.link.request.KakaoRequest;
 import com.io.linkapp.user.domain.User;
+import com.io.linkapp.user.request.RefreshRequest;
 import com.io.linkapp.user.request.UserRequest;
 import com.io.linkapp.user.response.UserResponse;
 import com.io.linkapp.user.service.RedisService;
@@ -12,12 +14,14 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @Api(value = "User", tags = {"User"})
 @RequiredArgsConstructor
 @RestController
@@ -34,13 +38,13 @@ public class UserApi {
 
     @ApiOperation("회원 찾기")
     @GetMapping("/user/{username}")
-    public UserResponse getUser(@PathVariable("username") String username){
+    public UserResponse getUser(@PathVariable("username") String username) {
         return userService.findUser(username);
     }
 
     @ApiOperation("회원 전체 조회")
     @GetMapping("/users")
-    public List<UserResponse> getUsers(){
+    public List<UserResponse> getUsers() {
         return userService.findAll();
     }
 
@@ -48,5 +52,19 @@ public class UserApi {
     @PostMapping("/kakao")
     public JwtResponse kakaoLogin(@RequestBody KakaoRequest kakaoRequest) {
         return userService.kakaoLogin(kakaoRequest);
+    }
+
+    @ApiOperation(value = "리프레시 토큰")
+    @PostMapping("/refresh")
+    public JwtResponse regenerateAccessToken(@RequestBody RefreshRequest refreshRequest) {
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(redisService);
+        String accessToken = jwtTokenProvider.findRefreshToken(refreshRequest)
+            .validateRefreshToken()
+            .regenerateAccessToken();
+
+        return JwtResponse.builder()
+            .accessToken(accessToken)
+            .refreshToken(refreshRequest.getRefreshToken())
+            .build();
     }
 }

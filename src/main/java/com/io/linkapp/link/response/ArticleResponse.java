@@ -47,7 +47,8 @@ public class ArticleResponse {
                     .openGraph(article.getOpenGraph())
                     .memos(article.getMemos())
                     .registerDate(article.getRegisterDate())
-                    .modifiedDate(article.getModifiedDate());
+                    .modifiedDate(article.getModifiedDate())
+                    .isBookmark(article.isBookmark());
 
                 List<ArticleTag> articleTags = article.getArticleTags();
                 List<ArticleTagResponse> tagsResponse = new ArrayList<>();
