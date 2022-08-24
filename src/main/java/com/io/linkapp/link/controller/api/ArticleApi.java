@@ -43,6 +43,18 @@ public class ArticleApi {
         return articleService.searchArticle(ArticleFormPredicate.searchArticle(search));
     }
 
+    @ApiOperation(value = "아티클 폴더, 태그 변경")
+    @PatchMapping("/article")
+    public ArticleResponse.Tags modify(@RequestBody ArticleRequest.Modify modifyRequest) {
+        return articleService.modify(modifyRequest);
+    }
+
+    @ApiOperation(value = "아티클에 태그 제거")
+    @DeleteMapping(value = "/article/tag")
+    public SuccessResponse removeTag(@RequestBody ArticleRequest.DeleteTag deleteTagRequest){
+        return articleService.removeTag(deleteTagRequest);
+    }
+
     @ApiOperation("링크 조회")
     @GetMapping("/article/{articleId}")
     public ArticleResponse.Tags get(@PathVariable("articleId") UUID uuid) {

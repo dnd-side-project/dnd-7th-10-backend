@@ -14,7 +14,7 @@ public class OpenGraphParser {
 
     public OpenGraph parse(String linkUrl){
 
-        if (!linkUrl.startsWith("https://")) {
+        if (!linkUrl.startsWith("https://") || !linkUrl.startsWith("http://")) {
             linkUrl = "https://" + linkUrl;
         }
 
