@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface FolderRepository extends JpaRepository<Folder, UUID>{
 
     @EntityGraph(attributePaths = "articles")
-    @Query("SELECT DISTINCT folder FROM Folder folder where folder.user =:user")
+    @Query("SELECT DISTINCT folder FROM Folder folder where folder.user =:user ORDER BY folder.registerDate DESC ")
     List<Folder> findByUser(User user);
 }

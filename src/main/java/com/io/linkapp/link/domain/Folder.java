@@ -2,6 +2,7 @@ package com.io.linkapp.link.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.io.linkapp.common.BaseTimeEntity;
 import com.io.linkapp.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Folder {
+public class Folder extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
