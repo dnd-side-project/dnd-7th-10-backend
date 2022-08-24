@@ -25,6 +25,22 @@ public class ArticleRequest {
     }
 
     @Getter
+    @NoArgsConstructor
+    public static class Modify {
+        private UUID articleId;
+        private UUID folderId;
+        private List<UUID> tagIds = new ArrayList<>();
+
+        @Builder
+        public Modify(UUID articleId, UUID folderId, List<UUID> tagIds){
+            this.articleId = articleId;
+            this.folderId = folderId;
+            this.tagIds = tagIds;
+        }
+    }
+
+
+    @Getter
     @Builder
     public static class Search {
         private User user;

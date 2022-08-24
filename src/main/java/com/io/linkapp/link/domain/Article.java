@@ -79,10 +79,8 @@ public class Article extends BaseTimeEntity {
         this.remindId = id;
     }
 
-    public void addArticleToFolder(Folder folder) {
+    public void modifyArticle(Folder folder, List<ArticleTag> articleTags) {
         this.folder = folder;
-        if (!folder.getArticles().contains(this)) {
-            folder.getArticles().add(this);
-        }
+        this.articleTags = articleTags;
     }
 }

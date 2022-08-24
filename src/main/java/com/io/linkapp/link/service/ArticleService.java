@@ -43,16 +43,16 @@ public class ArticleService {
 
     public ArticleResponse.Tags findById(UUID id) {
         Article article = articleRepository.findByIdWithTag(id)
-            .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
 
         TagsBuilder articleTagResponseBuilder = Tags.builder()
-            .id(article.getId())
-            .remindId(article.getRemindId())
-            .linkUrl(article.getLinkUrl())
-            .openGraph(article.getOpenGraph())
-            .memos(article.getMemos())
-            .registerDate(article.getRegisterDate())
-            .modifiedDate(article.getModifiedDate());
+                .id(article.getId())
+                .remindId(article.getRemindId())
+                .linkUrl(article.getLinkUrl())
+                .openGraph(article.getOpenGraph())
+                .memos(article.getMemos())
+                .registerDate(article.getRegisterDate())
+                .modifiedDate(article.getModifiedDate());
 
         List<ArticleTag> articleTags = article.getArticleTags();
         List<ArticleTagResponse> tagsResponse = new ArrayList<>();
@@ -69,37 +69,37 @@ public class ArticleService {
         }
 
         return articleTagResponseBuilder
-            .tags(tagsResponse)
-            .build();
+                .tags(tagsResponse)
+                .build();
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public ArticleResponse add(ArticleRequest articleRequest, User user){
         Folder folder = folderRepository.findById(articleRequest.getFolderId())
-            .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND));
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND));
 
         OpenGraph openGraph = openGraphParser.parse(articleRequest.getLinkUrl());
 
         Article article = Article.builder()
-            .user(user)
-            .folder(folder)
-            .linkUrl(articleRequest.getLinkUrl())
-            .openGraph(openGraph)
-            .build();
+                .user(user)
+                .folder(folder)
+                .linkUrl(articleRequest.getLinkUrl())
+                .openGraph(openGraph)
+                .build();
 
         article = articleRepository.save(article);
 
         if(articleRequest.getTagIds() != null) {
             List<Tag> tags = articleRequest.getTagIds().stream()
-                .map(tagId -> tagRepository.findById(tagId)
-                    .orElseThrow(() -> new CustomGlobalException(ErrorCode.TAG_NOT_FOUND)))
-                .collect(Collectors.toList());
+                    .map(tagId -> tagRepository.findById(tagId)
+                            .orElseThrow(() -> new CustomGlobalException(ErrorCode.TAG_NOT_FOUND)))
+                    .collect(Collectors.toList());
 
             for (Tag tag : tags) {
                 ArticleTag articleTag = ArticleTag.builder()
-                    .tag(tag)
-                    .article(article)
-                    .build();
+                        .tag(tag)
+                        .article(article)
+                        .build();
 
                 articleTagRepository.save(articleTag);
             }
@@ -115,7 +115,7 @@ public class ArticleService {
 
     public SuccessResponse remove(UUID uuid){
         Article article = articleRepository.findById(uuid)
-            .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
 
         articleRepository.delete(article);
 
@@ -127,11 +127,11 @@ public class ArticleService {
 
     public ArticleResponse bookmark(UUID uuid,UUID userId) {
         Article article = articleRepository.findById(uuid)
-            .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
 
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new CustomGlobalException(ErrorCode.USER_NOT_FOUND));
-        
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.USER_NOT_FOUND));
+
         QRemind qRemind = QRemind.remind;
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -140,7 +140,7 @@ public class ArticleService {
             builder.and(qRemind.userId.eq(userId));
             builder.and(qRemind.remindTitle.eq("default"));
             Remind remind = remindRepository.findOne(builder)
-                .orElseThrow(() -> new CustomGlobalException(ErrorCode.DEFAULT_REMIND_NOT_FOUND));
+                    .orElseThrow(() -> new CustomGlobalException(ErrorCode.DEFAULT_REMIND_NOT_FOUND));
             article.setRemindId(remind.getRemindId());
         }else {
             article.setBookmark(false);
@@ -148,7 +148,7 @@ public class ArticleService {
         }
 
         ArticleResponse articleResponse = ArticleMapper.INSTANCE.toResponseDto(
-            articleRepository.save(article));
+                articleRepository.save(article));
         articleResponse.setBookmark(article.isBookmark());
 
         return articleResponse;
@@ -156,21 +156,71 @@ public class ArticleService {
 
     public SuccessResponse setTagInArticle(ArticleTagRequest articleTagRequest) {
         Tag tag = tagRepository.findById(articleTagRequest.getTagId())
-            .orElseThrow(() -> new CustomGlobalException(ErrorCode.TAG_NOT_FOUND));
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.TAG_NOT_FOUND));
 
         Article article = articleRepository.findById(articleTagRequest.getArticleId())
-            .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
 
         ArticleTag articleTag = ArticleTag.builder()
-            .article(article)
-            .tag(tag)
-            .build();
+                .article(article)
+                .tag(tag)
+                .build();
 
         articleTagRepository.save(articleTag);
 
         return SuccessResponse.builder()
-            .status(200)
-            .message("Set Tag Success")
-            .build();
+                .status(200)
+                .message("Set Tag Success")
+                .build();
+    }
+
+    public Tags modify(ArticleRequest.Modify modifyRequest) {
+        Article article = articleRepository.findById(modifyRequest.getArticleId())
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
+
+        List<ArticleTag> existArticleTags = article.getArticleTags();
+
+        for (ArticleTag existArticleTag : existArticleTags) {
+            articleTagRepository.delete(existArticleTag);
+        }
+
+        List<UUID> tagIds = modifyRequest.getTagIds();
+        List<ArticleTag> articleTags = new ArrayList<>();
+        List<ArticleTagResponse> tagResponses = new ArrayList<>();
+
+        for (UUID tagId : tagIds) {
+            Tag tag = tagRepository.findById(tagId)
+                    .orElseThrow(() -> new CustomGlobalException(ErrorCode.TAG_NOT_FOUND));
+
+            ArticleTag articleTag = ArticleTag.builder()
+                    .article(article)
+                    .tag(tag)
+                    .build();
+
+            articleTagRepository.save(articleTag);
+
+            ArticleTagResponse tagResponse = ArticleTagResponse.builder()
+                    .tagId(tag.getTagId())
+                    .tagName(tag.getTagName())
+                    .build();
+
+            tagResponses.add(tagResponse);
+        }
+
+        Folder folder = folderRepository.findById(modifyRequest.getFolderId())
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND));
+
+        article.modifyArticle(folder, articleTags);
+        article = articleRepository.save(article);
+        return ArticleResponse.Tags.builder()
+                .id(article.getId())
+                .remindId(article.getRemindId())
+                .linkUrl(article.getLinkUrl())
+                .openGraph(article.getOpenGraph())
+                .memos(article.getMemos())
+                .registerDate(article.getRegisterDate())
+                .modifiedDate(article.getModifiedDate())
+                .tags(tagResponses)
+                .build();
     }
 }
