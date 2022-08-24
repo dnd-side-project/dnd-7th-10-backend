@@ -257,4 +257,10 @@ public class ArticleService {
             .message("Tag Remove Success.")
             .build();
     }
+
+    public List<Tags> findByBookmark(User user) {
+        System.out.println("====");
+        List<Article> articles = articleRepository.findByUser(user);
+        return ArticleResponse.Tags.articleTagBuilder(articles);
+    }
 }
