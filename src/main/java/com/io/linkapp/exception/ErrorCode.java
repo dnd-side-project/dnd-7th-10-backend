@@ -11,6 +11,7 @@ public enum ErrorCode {
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     
     REMIND_NO_MORE(HttpStatus.BAD_REQUEST, "사용자 한 명당 한 개의 리마인드만 가질 수 있습니다"),
+
     NO_ARTICLES_FOR_REMIND(HttpStatus.NOT_FOUND, "현재 리마인딩할 아티클이 없습니다"),
 
     POSTS_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 요청의 리소스를 찾을 수 없습니다."),
@@ -33,7 +34,11 @@ public enum ErrorCode {
 
     TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 태그입니다."),
 
-    PARSE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "URL 정보가 잘못되었습니다.");
+    PARSE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "URL 정보가 잘못되었습니다."),
+
+    REFRESH_NOT_VALID(HttpStatus.NOT_FOUND, "일치하는 리프레시 토큰 정보를 찾을 수 없습니다."),
+
+    TOKEN_NOT_VALID(HttpStatus.NOT_FOUND, "일치하는 액세스 토큰 정보를 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String message;

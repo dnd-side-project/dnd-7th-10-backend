@@ -27,42 +27,48 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private AuthenticationManager authenticationManager;
     private RedisService redisService;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, RedisService redisService) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
+        RedisService redisService) {
         this.authenticationManager = authenticationManager;
         this.redisService = redisService;
     }
 
     @SneakyThrows
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request,
+        HttpServletResponse response) throws AuthenticationException {
         ObjectMapper objectMapper = new ObjectMapper();
         User user = objectMapper.readValue(request.getInputStream(), User.class);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+            user.getUsername(), user.getPassword());
         try {
             return authenticationManager.authenticate(authenticationToken);
         } catch (InternalAuthenticationServiceException e) {
             log.error("UserNotFoundException!", e);
             ErrorResponse error = ErrorResponse.customBuilder()
-                    .error("UserNotFoundException")
-                    .status(404)
-                    .message("Can not Found User.")
-                    .build();
+                .error("UserNotFoundException")
+                .status(404)
+                .message("Can not Found User.")
+                .build();
             response.getWriter().write(objectMapper.writeValueAsString(error));
         }
         return null;
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-            PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
-            String username = principalDetails.getUsername();
+    protected void successfulAuthentication(HttpServletRequest request,
+        HttpServletResponse response, FilterChain chain, Authentication authResult)
+        throws IOException, ServletException {
+        PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+        String username = principalDetails.getUsername();
 
-            JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(redisService);
+        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(redisService);
         JwtResponse jwtResponse = jwtTokenProvider.provideToken(username);
 
         ObjectMapper objectMapper = new ObjectMapper();
-            String jwtAccessToken = objectMapper.writeValueAsString(jwtResponse);
-            response.getWriter().write(jwtAccessToken);
-            response.addHeader(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtResponse.getAccessToken());
-        }
+        String jwtAccessToken = objectMapper.writeValueAsString(jwtResponse);
+        response.getWriter().write(jwtAccessToken);
+        response.addHeader(JwtProperty.HEADER,
+            JwtProperty.TOKEN_PREFIX + jwtResponse.getAccessToken());
+    }
 }
