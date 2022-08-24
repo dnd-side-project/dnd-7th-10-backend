@@ -37,9 +37,8 @@ public class SchedulerApi {
     @SneakyThrows
     @ApiOperation("현재 등록된 모든 유저의 모든 알람 정보 삭제")
     @DeleteMapping("/clear")
-    public void clear(){
-        //System.out.println("clear quartz");
-        service.resetScheduler();
+    public void clear(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        service.resetScheduler(principalDetails.getUser());
     }
     
     
