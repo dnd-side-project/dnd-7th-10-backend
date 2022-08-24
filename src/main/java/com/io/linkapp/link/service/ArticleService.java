@@ -223,4 +223,27 @@ public class ArticleService {
                 .tags(tagResponses)
                 .build();
     }
+
+    public SuccessResponse removeTag(ArticleRequest.DeleteTag deleteTagRequest) {
+        UUID tagId = deleteTagRequest.getTagId();
+        UUID articleId = deleteTagRequest.getArticleId();
+
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new CustomGlobalException(ErrorCode.ARTICLE_NOT_FOUND));
+
+        List<ArticleTag> articleTags = article.getArticleTags();
+
+        for (ArticleTag articleTag : articleTags) {
+            if (articleTag.getArticle().getId().equals(articleId) && articleTag.getTag().getTagId().equals(tagId)) {
+
+                articleTag = articleTagRepository.findByArticleAndTag(articleId, tagId);
+                articleTagRepository.delete(articleTag);
+            }
+        }
+
+        return SuccessResponse.builder()
+                .status(200)
+                .message("Tag Remove Success.")
+                .build();
+    }
 }

@@ -26,6 +26,19 @@ public class ArticleRequest {
 
     @Getter
     @NoArgsConstructor
+    public static class DeleteTag {
+        private UUID articleId;
+        private UUID tagId;
+
+        @Builder
+        public DeleteTag(UUID articleId, UUID tagId) {
+            this.articleId = articleId;
+            this.tagId = tagId;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
     public static class Modify {
         private UUID articleId;
         private UUID folderId;

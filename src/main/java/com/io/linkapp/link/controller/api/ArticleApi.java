@@ -50,9 +50,9 @@ public class ArticleApi {
     }
 
     @ApiOperation(value = "아티클에 태그 제거")
-    @DeleteMapping
-    public ArticleResponse.Tags removeTag(){
-        return null;
+    @DeleteMapping(value = "/article/tag")
+    public SuccessResponse removeTag(@RequestBody ArticleRequest.DeleteTag deleteTagRequest){
+        return articleService.removeTag(deleteTagRequest);
     }
 
     @ApiOperation("링크 조회")
