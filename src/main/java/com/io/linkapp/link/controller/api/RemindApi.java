@@ -1,6 +1,7 @@
 package com.io.linkapp.link.controller.api;
 
 
+import com.io.linkapp.config.security.auth.PrincipalDetails;
 import com.io.linkapp.link.controller.mapper.RemindFormMapper;
 import com.io.linkapp.link.controller.predicate.RemindFormPredicate;
 import com.io.linkapp.link.domain.Remind;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,8 +46,8 @@ public class RemindApi {
     @SneakyThrows
     @ApiOperation("목록 조회")
     @GetMapping
-    public List<GetAll> getList(RemindRequest.GetAll in){
-        return formMapper.toGetAllList(service.getList(RemindFormPredicate.search(in)));
+    public List<GetAll> getList(RemindRequest.GetAll in,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        return formMapper.toGetAllList(service.getList(RemindFormPredicate.search(in,principalDetails.getUser())));
     }
     
     @SneakyThrows
@@ -55,10 +57,6 @@ public class RemindApi {
         
         //일단 저장후
         Remind remind = service.add(formMapper.toRemind(in));
-        
-        //확인용 - 유저에서 해당 리마인드 정상 조인 되어서 가지고 있는지
-        // "com.io.linkapp.user.domain.User.getRemind()" is null...
-        //System.out.println(userService.findUserById(in.getUserId()).getRemind());
         
         return formMapper.toGetAll(remind);
     }
