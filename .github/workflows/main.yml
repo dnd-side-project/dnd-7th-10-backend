@@ -39,12 +39,14 @@ jobs:
           jpa.hibernate.ddl-auto: none
           
       - name: Create Firebase secret Json
-        run:
+        run: |
           cd ./src/main/resources
           ls -a .
           touch ./firebase_service_key.json
           echo "${{ secrets.FIREBASE_SERVICE_KEY }}" > ./firebase_service_key.json
-        shell: bash
+      
+      - name: Check Firebase secret key
+        run: echo "${{ secrets.FIREBASE_SERVICE_KEY }}"
         
       - name: Build Gradle
         run: ./gradlew clean build
