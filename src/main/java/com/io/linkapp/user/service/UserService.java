@@ -53,6 +53,11 @@ public class UserService {
     }
 
     public User join(UserRequest userRequest) {
+        if(userRepository.findByUsername(userRequest.getUsername()).isPresent()){
+            throw new CustomGlobalException(ErrorCode.EXIST_USER);
+        }
+
+
         userRequest.encodePassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
         User user = UserMapper.INSTANCE.toEntity(userRequest);
         
