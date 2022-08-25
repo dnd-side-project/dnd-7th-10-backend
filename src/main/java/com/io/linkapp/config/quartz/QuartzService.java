@@ -176,7 +176,8 @@ public class QuartzService {
                 // 파라미터를 map으로 넘겨주는 거임
                 paramsMap.put("targetToken",pushRequest.getTargetToken());
                 paramsMap.put("userId",user.getId());
-                paramsMap.put("articleIds",pushRequest.getArticleIds());
+                paramsMap.put("articleIds",pushRequest.getArticleIds()); //uuid로 넘어감
+                //System.out.println("pushRequest.getArticleIds().class: "+pushRequest.getArticleIds().get(0).getClass().toString());
                 //System.out.println("job paramsMap created ");
     
                 String cron="";
