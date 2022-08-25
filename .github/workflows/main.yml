@@ -6,7 +6,8 @@ on:
 
 env:
   RESOURCE_PATH: ./src/main/resources/application.yml
-
+  FIREBASE_PATH: ./src/main/resources/firebase/firebase_service_key.json
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -39,14 +40,21 @@ jobs:
           jpa.hibernate.ddl-auto: none
           
       - name: Create Firebase secret Json
+        uses: microsoft/variable-substitution@v1 
+        with:
+          files: ${{ env.FIREBASE_PATH }}
+        env:
+          private_key_id: "${{ secrets.FIREBASE_KEY_ID }}"
+          private_key: "${{ secrets.FIREBASE_KEY }}"
+          client_email: "${{ secrets.FIREBASE_EMAIL }}"
+          client_id: "${{ secrets.FIREBASE_ID }}"
+          
+      - name: Check Firebase secret key
         run: |
           cd ./src/main/resources/firebase
           ls -a .
-          touch ./firebase_service_key.json
-          echo "${{ secrets.FIREBASE_SERVICE_KEY }}" > ./firebase_service_key.json
-      
-      - name: Check Firebase secret key
-        run: echo "${{ secrets.FIREBASE_SERVICE_KEY }}"
+          echo firebase_service_key.json
+        shell: bash
         
       - name: Build Gradle
         run: ./gradlew clean build
