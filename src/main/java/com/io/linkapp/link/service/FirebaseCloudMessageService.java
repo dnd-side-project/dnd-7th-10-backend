@@ -39,6 +39,8 @@ public class FirebaseCloudMessageService {
     
     private final ArticleRepository articleRepository;
     
+    private final RemindRepository remindRepository;
+    
     //메시지 전송을 위해 요청하는 주소
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/linkkle-inandout/messages:send";
     private final ObjectMapper objectMapper;
@@ -82,12 +84,20 @@ public class FirebaseCloudMessageService {
         
         UUID remindId = article.getRemindId();
         
+        
+        Remind defaultRemind = remindRepository.findOne(
+            new BooleanBuilder(QRemind.remind.userId.eq(userId)
+                .and(QRemind.remind.remindTitle.eq("default")))).orElse(null);
+        
+        article.setRemindId(defaultRemind.getRemindId());
+        articleRepository.save(article);
+        
         FcmMessage fcmMessage = FcmMessage.builder()
             .message(FcmMessage.Message.builder()
                 .token(targetToken)
                 .notification(FcmMessage.Notification.builder()
-                    .title("push title")
-                    .body("push body")
+                    .title("링크를 끌어모아, 링끌 모아 태산!")
+                    .body("오늘은 어떤 링크일까요?")
                     .build()
                 )
                 .data(FcmMessage.Data.builder()
