@@ -46,7 +46,8 @@ public class FirebaseCloudMessageService {
     public void sendMessageTo(UUID userId,String targetToken,List<UUID> articleIds) throws IOException {
         // 실제로 전달하는 메시지
         String message = makeMessage(userId,targetToken,articleIds);
-        
+    
+        System.out.println("fcm sendMessageTO");
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(message,
             MediaType.get("application/json; charset=utf-8"));
@@ -68,6 +69,8 @@ public class FirebaseCloudMessageService {
         User user = userRepository.findById(userId).orElseThrow(()->{
             throw new CustomGlobalException(ErrorCode.USER_NOT_FOUND);
         });
+    
+        System.out.println("makeMessage");
 
         //그리고 아티클 리스트에서 푸시할 아티클 하나 임의 추출
         //랜덤으로 추출된 아티클의 인덱스
@@ -99,8 +102,13 @@ public class FirebaseCloudMessageService {
     }
     
     private String getAccessToken() throws IOException {
-        String firebaseConfigPath = "firebase/firebase_service_key.json";
         
+        
+        String firebaseConfigPath = "firebase/firebase_service_key.json";
+    
+        System.out.println("getAccessToken");
+    
+    
         GoogleCredentials googleCredentials = GoogleCredentials
             .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
             .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));

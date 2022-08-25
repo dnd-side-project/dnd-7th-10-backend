@@ -45,6 +45,10 @@ public class QuartzJob implements Job {
         String targetToken = (String) dataMap.get("targetToken");
         List<UUID> articleIds = (List<UUID>) dataMap.get("articleIds");
         
+        
+    
+        System.out.println("before fcm sendMessageTo");
+        
     
     
 //        System.out.println("dataMap targetToken: "+targetToken);
