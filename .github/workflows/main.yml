@@ -53,7 +53,7 @@ jobs:
         run: |
           cd ./src/main/resources/firebase
           ls -a .
-          echo firebase_service_key.json
+          cat firebase_service_key.json
         shell: bash
         
       - name: Build Gradle
