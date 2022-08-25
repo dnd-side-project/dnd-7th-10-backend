@@ -37,14 +37,6 @@ jobs:
           spring.security.client.registration.kakao.client-id: ${{ secrets.KAKAO_CLIENT_ID }}
           spring.security.client.registration.kakao.client-secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
           jpa.hibernate.ddl-auto: none
-          
-#       - name: Create Firebase secret Json
-#         id: create-json
-#         uses: jsdaniell/create-json@1.1.2
-#         with:
-#           name: "firebase_service_key.json"
-#           json: ${{ secrets.FIREBASE_SERVICE_KEY }}
-#           dir: "src/main/resources/firebase/"
         
       - name: Build Gradle
         run: ./gradlew clean build
