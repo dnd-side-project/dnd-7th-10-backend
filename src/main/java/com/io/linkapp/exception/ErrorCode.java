@@ -38,7 +38,9 @@ public enum ErrorCode {
 
     REFRESH_NOT_VALID(HttpStatus.NOT_FOUND, "일치하는 리프레시 토큰 정보를 찾을 수 없습니다."),
 
-    TOKEN_NOT_VALID(HttpStatus.NOT_FOUND, "일치하는 액세스 토큰 정보를 찾을 수 없습니다.");
+    TOKEN_NOT_VALID(HttpStatus.NOT_FOUND, "일치하는 액세스 토큰 정보를 찾을 수 없습니다."),
+
+    EXIST_USER(HttpStatus.INTERNAL_SERVER_ERROR, "이미 존재하는 유저 이름입니다.");
 
     private final HttpStatus status;
     private final String message;
