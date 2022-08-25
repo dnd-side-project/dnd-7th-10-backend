@@ -22,6 +22,8 @@ public class QFolder extends EntityPathBase<Folder> {
 
     public static final QFolder folder = new QFolder("folder");
 
+    public final com.io.linkapp.common.QBaseTimeEntity _super = new com.io.linkapp.common.QBaseTimeEntity(this);
+
     public final ListPath<Article, QArticle> articles = this.<Article, QArticle>createList("articles", Article.class, QArticle.class, PathInits.DIRECT2);
 
     public final StringPath folderColor = createString("folderColor");
@@ -29,6 +31,12 @@ public class QFolder extends EntityPathBase<Folder> {
     public final ComparablePath<java.util.UUID> folderId = createComparable("folderId", java.util.UUID.class);
 
     public final StringPath folderTitle = createString("folderTitle");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registerDate = _super.registerDate;
 
     public final com.io.linkapp.user.domain.QUser user;
 
