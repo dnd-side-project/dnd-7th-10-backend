@@ -39,13 +39,13 @@ jobs:
           jpa.hibernate.ddl-auto: none
           
       - name: Create Firebase secret Json
-        id: create-json
-        uses: jsdaniell/create-json@1.1.2
-        with:
-          name: "firebase_service_key.json"
-          json: ${{ secrets.FIREBASE_SERVICE_KEY }}
-          dir: "src/main/resources/firebase/"        
-      
+        run:
+          cd ./src/main/resources
+          ls -a .
+          touch ./firebase_service_key.json
+          echo "${{ secrets.FIREBASE_SERVICE_KEY }}" > ./firebase_service_key.json
+        shell: bash
+        
       - name: Build Gradle
         run: ./gradlew clean build
         
