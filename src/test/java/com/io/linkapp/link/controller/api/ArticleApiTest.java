@@ -88,18 +88,18 @@ class ArticleApiTest {
                 .sign(Algorithm.HMAC512(JwtProperty.SECRET));
     }
 
-    @Test
-    @DisplayName("POST: /article 요청 시 링크가 저장된다")
-    void addTest() throws Exception {
-        //expected
-        mockMvc.perform(post("/article")
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
-                        .header(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtToken))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.linkUrl").value("www.naver.com"))
-                .andDo(print());
-    }
+//    @Test
+//    @DisplayName("POST: /article 요청 시 링크가 저장된다")
+//    void addTest() throws Exception {
+//        //expected
+//        mockMvc.perform(post("/article")
+//                        .contentType(APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(request))
+//                        .header(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtToken))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.linkUrl").value("www.naver.com"))
+//                .andDo(print());
+//    }
 
     @Test
     @DisplayName("GET: /article/{id}로 링크를 조회한다")

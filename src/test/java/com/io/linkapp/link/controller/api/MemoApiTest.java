@@ -97,23 +97,23 @@ class MemoApiTest {
                 .sign(Algorithm.HMAC512(JwtProperty.SECRET));
     }
 
-    @Test
-    @DisplayName("POST: /memo 요청 시 메모가 저장된다.")
-    void saveMemoTest() throws Exception {
-        //given
-        MemoRequest request = MemoRequest.builder()
-            .articleId(tempArticle.getId())
-            .content("testMemo")
-            .build();
-
-        //expected
-        mockMvc.perform(post("/memo")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
-                        .header(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtToken))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+//    @Test
+//    @DisplayName("POST: /memo 요청 시 메모가 저장된다.")
+//    void saveMemoTest() throws Exception {
+//        //given
+//        MemoRequest request = MemoRequest.builder()
+//            .articleId(tempArticle.getId())
+//            .content("testMemo")
+//            .build();
+//
+//        //expected
+//        mockMvc.perform(post("/memo")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(request))
+//                        .header(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtToken))
+//                .andExpect(status().isOk())
+//                .andDo(print());
+//    }
 
     @Test
     @DisplayName("POST: 단건 메모 저장 시 NULL, 공백이 들어가면 400에러를 반환한다")
