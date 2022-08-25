@@ -19,7 +19,7 @@ spring:
         show_sql: false
 
   redis:
-    host: ec2-13-125-200-177.ap-northeast-2.compute.amazonaws.com
+    host: ec2-52-78-160-195.ap-northeast-2.compute.amazonaws.com
     port: 6379
 
   security:
