@@ -19,6 +19,7 @@ import com.io.linkapp.link.response.FolderResponse.GetArticles.GetArticlesBuilde
 import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,8 @@ public class FolderService {
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.FOLDER_NOT_FOUND));
 
         List<Article> articles = folder.getArticles();
+
+        Collections.sort(articles);
 
         GetArticlesBuilder getArticlesBuilder = GetArticles.builder()
             .folderId(folder.getFolderId())

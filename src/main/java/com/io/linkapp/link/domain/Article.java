@@ -3,6 +3,8 @@ package com.io.linkapp.link.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.io.linkapp.common.BaseTimeEntity;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,11 +23,12 @@ import com.io.linkapp.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class Article extends BaseTimeEntity {
+public class Article extends BaseTimeEntity implements Comparable<Article> {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -82,5 +85,15 @@ public class Article extends BaseTimeEntity {
     public void modifyArticle(Folder folder, List<ArticleTag> articleTags) {
         this.folder = folder;
         this.articleTags = articleTags;
+    }
+
+    @Override
+    public int compareTo(@NotNull Article article) {
+        if(this.getRegisterDate().isBefore(article.getRegisterDate())){
+            return 1;
+        } else if (this.getRegisterDate().isAfter(article.getRegisterDate())) {
+            return -1;
+        }
+        return 0;
     }
 }
