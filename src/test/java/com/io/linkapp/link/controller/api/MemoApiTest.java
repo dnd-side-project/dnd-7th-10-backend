@@ -15,10 +15,7 @@ import com.io.linkapp.link.request.MemoRequest;
 import com.io.linkapp.link.service.MemoService;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -97,23 +94,24 @@ class MemoApiTest {
                 .sign(Algorithm.HMAC512(JwtProperty.SECRET));
     }
 
-//    @Test
-//    @DisplayName("POST: /memo 요청 시 메모가 저장된다.")
-//    void saveMemoTest() throws Exception {
-//        //given
-//        MemoRequest request = MemoRequest.builder()
-//            .articleId(tempArticle.getId())
-//            .content("testMemo")
-//            .build();
-//
-//        //expected
-//        mockMvc.perform(post("/memo")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(request))
-//                        .header(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtToken))
-//                .andExpect(status().isOk())
-//                .andDo(print());
-//    }
+    @Test
+    @DisplayName("POST: /memo 요청 시 메모가 저장된다.")
+    @Disabled("Redis의 test property 설정으로 인해 배포 시에 컴파일 에러가 뜨는 테스트")
+    void saveMemoTest() throws Exception {
+        //given
+        MemoRequest request = MemoRequest.builder()
+            .articleId(tempArticle.getId())
+            .content("testMemo")
+            .build();
+
+        //expected
+        mockMvc.perform(post("/memo")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .header(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtToken))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 
     @Test
     @DisplayName("POST: 단건 메모 저장 시 NULL, 공백이 들어가면 400에러를 반환한다")
