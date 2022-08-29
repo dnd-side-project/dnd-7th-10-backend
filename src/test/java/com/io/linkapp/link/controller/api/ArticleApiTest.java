@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -56,8 +57,8 @@ class ArticleApiTest {
     UserRepository userRepository;
 
 
-    private static ArticleRequest request;
-    private static String jwtToken;
+    private ArticleRequest request;
+    private String jwtToken;
 
     @BeforeEach
     void setUp() {

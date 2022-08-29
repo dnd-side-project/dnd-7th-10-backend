@@ -63,8 +63,8 @@ class MemoApiTest {
     @Autowired
     FolderRepository folderRepository;
 
-    private static Article tempArticle;
-    private static String jwtToken;
+    private Article tempArticle;
+    private String jwtToken;
 
     @BeforeEach
     public void createArticle(){
