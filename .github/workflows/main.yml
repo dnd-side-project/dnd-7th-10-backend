@@ -6,6 +6,7 @@ on:
 
 env:
   RESOURCE_PATH: ./src/main/resources/application.yml
+  FIREBASE_PATH: ./src/main/resources/firebase/firebase_service_key.json
   
 jobs:
   build:
