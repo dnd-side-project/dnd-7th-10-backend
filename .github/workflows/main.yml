@@ -44,10 +44,10 @@ jobs:
         with:
           files: ${{ env.FIREBASE_PATH }}
         env:
-          private_key_id: "${{ secrets.FIREBASE_KEY_ID }}"
-          private_key: "${{ secrets.FIREBASE_KEY }}"
-          client_email: "${{ secrets.FIREBASE_EMAIL }}"
-          client_id: "${{ secrets.FIREBASE_ID }}"
+          private_key_id: ${{ secrets.FIREBASE_KEY_ID }}
+          private_key: ${{ secrets.FIREBASE_KEY }}
+          client_email: ${{ secrets.FIREBASE_EMAIL }}
+          client_id: ${{ secrets.FIREBASE_ID }}
 
       - name: Check Firebase secret key
         run: |
