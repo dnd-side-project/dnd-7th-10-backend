@@ -37,7 +37,24 @@ jobs:
           spring.security.client.registration.kakao.client-id: ${{ secrets.KAKAO_CLIENT_ID }}
           spring.security.client.registration.kakao.client-secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
           jpa.hibernate.ddl-auto: none
-          
+
+      - name: Create Firebase secret Json
+        uses: microsoft/variable-substitution@v1 
+        with:
+          files: ${{ env.FIREBASE_PATH }}
+        env:
+          private_key_id: "${{ secrets.FIREBASE_KEY_ID }}"
+          private_key: "${{ secrets.FIREBASE_KEY }}"
+          client_email: "${{ secrets.FIREBASE_EMAIL }}"
+          client_id: "${{ secrets.FIREBASE_ID }}"
+
+      - name: Check Firebase secret key
+        run: |
+          cd ./src/main/resources/firebase
+          ls -a .
+          cat firebase_service_key.json
+        shell: bash
+
       - name: Build Gradle
         run: ./gradlew clean build
         
