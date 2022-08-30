@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Properties;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
+@Slf4j
 @Configuration // 환경 설정 및 Bean을 등록하기 위한 애노테이션
 @RequiredArgsConstructor
 public class QuartzConfig{
@@ -48,7 +50,7 @@ public class QuartzConfig{
             propertiesFactoryBean.afterPropertiesSet();
             properties= propertiesFactoryBean.getObject();
         }catch(IOException e){
-            System.out.println(e);
+            log.error("Quartz IOException", e);
         }
         
         return properties;

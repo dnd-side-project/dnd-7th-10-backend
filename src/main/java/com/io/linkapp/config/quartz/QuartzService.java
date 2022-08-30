@@ -66,7 +66,7 @@ public class QuartzService {
             remindRepository.deleteAll(remindList);
     
             scheduler.clear();
-            System.out.println("cleared");
+            log.info("Cleared");
         }
     }
     

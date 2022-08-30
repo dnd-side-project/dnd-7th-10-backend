@@ -1,11 +1,12 @@
 package com.io.linkapp.config.quartz;
 
-import org.quartz.JobDataMap;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
 import org.quartz.Trigger;
 import org.quartz.Trigger.CompletedExecutionInstruction;
 import org.quartz.TriggerListener;
 
+@Slf4j
 //trigger 실행 전후에 event 걸기
 public class QuartzTriggerListener implements TriggerListener {
     
@@ -16,7 +17,7 @@ public class QuartzTriggerListener implements TriggerListener {
     
     @Override
     public void triggerFired(Trigger trigger, JobExecutionContext context) {
-        System.out.println("Trigger 실행");
+        log.info("Trigger Start");
     }
     
     /**
@@ -31,28 +32,17 @@ public class QuartzTriggerListener implements TriggerListener {
      */
     @Override
     public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context) {
-    
-        System.out.println("trigger 상태 체크");
-    
-//        JobDataMap map = context.getJobDetail().getJobDataMap();
-//
-//        int executeCount = 1;
-//
-//        if(map.containsKey("executeCount")){
-//            executeCount=(int)map.get("executeCount");
-//        }
-        
+        log.info("Health Check on Trigger");
         return false; //false면 중단 없는 것 , true이면 job 중단
     }
     
     @Override
     public void triggerMisfired(Trigger trigger) {
-    
     }
     
     @Override
     public void triggerComplete(Trigger trigger, JobExecutionContext context,
         CompletedExecutionInstruction triggerInstructionCode) {
-        System.out.println("Trigger 성공");
+        log.info("Complete Trigger");
     }
 }
