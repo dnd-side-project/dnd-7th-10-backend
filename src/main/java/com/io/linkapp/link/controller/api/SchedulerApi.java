@@ -35,6 +35,4 @@ public class SchedulerApi {
     public void clear(@AuthenticationPrincipal PrincipalDetails principalDetails){
         service.resetScheduler(principalDetails.getUser());
     }
-    
-    
 }

@@ -4,7 +4,7 @@ import com.io.linkapp.link.domain.Article;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 import java.util.UUID;
-import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

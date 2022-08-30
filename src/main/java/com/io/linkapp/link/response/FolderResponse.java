@@ -1,6 +1,5 @@
 package com.io.linkapp.link.response;
 
-import com.io.linkapp.link.domain.Article;
 import lombok.Builder;
 import lombok.Getter;
 

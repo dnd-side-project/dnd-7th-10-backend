@@ -1,16 +1,13 @@
 package com.io.linkapp.config.security.oauth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.io.linkapp.config.security.auth.PrincipalDetails;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.mapper.UserMapper;
 import com.io.linkapp.user.request.Oauth2UserRequest;
-import com.io.linkapp.user.request.UserRequest;
 import com.io.linkapp.user.service.UserService;
-import java.util.Map;
+
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

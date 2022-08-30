@@ -1,8 +1,7 @@
 package com.io.linkapp.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.io.linkapp.exception.CustomGlobalException;
-import com.io.linkapp.exception.ErrorCode;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

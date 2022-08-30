@@ -1,7 +1,5 @@
 package com.io.linkapp.link.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.io.linkapp.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
