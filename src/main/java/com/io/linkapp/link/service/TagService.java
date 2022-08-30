@@ -6,7 +6,6 @@ import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.ArticleTag;
 import com.io.linkapp.link.domain.QTag;
 import com.io.linkapp.link.domain.Tag;
-import com.io.linkapp.link.mapper.TagMapper;
 import com.io.linkapp.link.repository.ArticleRepository;
 import com.io.linkapp.link.repository.ArticleTagRepository;
 import com.io.linkapp.link.repository.TagRepository;
@@ -14,13 +13,9 @@ import com.io.linkapp.link.response.SuccessResponse;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service

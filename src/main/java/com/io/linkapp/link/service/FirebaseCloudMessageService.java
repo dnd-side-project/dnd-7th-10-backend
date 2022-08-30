@@ -8,21 +8,19 @@ import com.google.common.net.HttpHeaders;
 import com.io.linkapp.exception.CustomGlobalException;
 import com.io.linkapp.exception.ErrorCode;
 import com.io.linkapp.link.domain.Article;
-import com.io.linkapp.link.domain.QArticle;
 import com.io.linkapp.link.domain.QRemind;
 import com.io.linkapp.link.domain.Remind;
 import com.io.linkapp.link.repository.ArticleRepository;
 import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.response.FcmMessage;
-import com.io.linkapp.user.domain.QUser;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.repository.UserRepository;
 import com.querydsl.core.BooleanBuilder;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -31,6 +29,7 @@ import okhttp3.Response;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FirebaseCloudMessageService {
@@ -49,7 +48,7 @@ public class FirebaseCloudMessageService {
         // 실제로 전달하는 메시지
         String message = makeMessage(userId,targetToken,articleIds);
     
-        System.out.println("fcm sendMessageTO");
+        log.info("FCM SendMessageTO");
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(message,
             MediaType.get("application/json; charset=utf-8"));
@@ -62,7 +61,7 @@ public class FirebaseCloudMessageService {
         
         Response response = client.newCall(request).execute(); //요청 후 돌아오는 응답
         
-        System.out.println(response.body().string());
+        log.info("FcmResponse = {} ", response.body().string());
     }
     
     private String makeMessage(UUID userId, String targetToken,List<UUID> articleIds) throws JsonParseException, JsonProcessingException {
@@ -72,7 +71,7 @@ public class FirebaseCloudMessageService {
             throw new CustomGlobalException(ErrorCode.USER_NOT_FOUND);
         });
     
-        System.out.println("makeMessage");
+        log.info("FCM MakeMessage");
 
         //그리고 아티클 리스트에서 푸시할 아티클 하나 임의 추출
         //랜덤으로 추출된 아티클의 인덱스
@@ -106,19 +105,16 @@ public class FirebaseCloudMessageService {
                     .build())
                 .build()).validate_only(false).build();
     
-        System.out.println(objectMapper.writeValueAsString(fcmMessage));
+        log.info("FCM message : {}", objectMapper.writeValueAsString(fcmMessage));
         
         return objectMapper.writeValueAsString(fcmMessage);
     }
     
     private String getAccessToken() throws IOException {
-        
-        
         String firebaseConfigPath = "firebase/firebase_service_key.json";
-    
-        System.out.println("getAccessToken");
-    
-    
+
+        log.info("getFcmAccessToken");
+
         GoogleCredentials googleCredentials = GoogleCredentials
             .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
             .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));

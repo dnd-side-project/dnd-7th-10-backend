@@ -1,9 +1,5 @@
 package com.io.linkapp.link.repository;
 
-import com.io.linkapp.link.domain.Article;
-import com.io.linkapp.link.domain.QArticle;
-import com.io.linkapp.link.domain.QRemind;
-import java.util.List;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 

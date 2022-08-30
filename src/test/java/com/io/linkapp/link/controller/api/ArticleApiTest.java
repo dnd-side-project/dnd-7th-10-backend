@@ -1,4 +1,5 @@
 package com.io.linkapp.link.controller.api;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +16,7 @@ import com.io.linkapp.link.request.ArticleRequest;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +58,8 @@ class ArticleApiTest {
     UserRepository userRepository;
 
 
-    private static ArticleRequest request;
-    private static String jwtToken;
+    private ArticleRequest request;
+    private String jwtToken;
 
     @BeforeEach
     void setUp() {
@@ -87,18 +89,19 @@ class ArticleApiTest {
             .sign(Algorithm.HMAC512(JwtProperty.SECRET));
     }
 
-//    @Test
-//    @DisplayName("POST: /article 요청 시 링크가 저장된다")
-//    void addTest() throws Exception {
-//        //expected
-//        mockMvc.perform(post("/article")
-//                        .contentType(APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(request))
-//                        .header(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtToken))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.linkUrl").value("www.naver.com"))
-//                .andDo(print());
-//    }
+    @Test
+    @DisplayName("POST: /article 요청 시 링크가 저장된다")
+    @Disabled("Redis의 test property 설정으로 인해 배포 시에 컴파일 에러가 뜨는 테스트")
+    void addTest() throws Exception {
+        //expected
+        mockMvc.perform(post("/article")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .header(JwtProperty.HEADER, JwtProperty.TOKEN_PREFIX + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.linkUrl").value("www.naver.com"))
+                .andDo(print());
+    }
 
     @Test
     @DisplayName("GET: /article/{id}로 링크를 조회한다")

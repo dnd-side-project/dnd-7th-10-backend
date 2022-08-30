@@ -2,7 +2,6 @@ package com.io.linkapp.link.repository;
 
 import com.io.linkapp.link.domain.Memo;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 

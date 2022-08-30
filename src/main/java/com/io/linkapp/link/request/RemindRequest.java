@@ -1,10 +1,8 @@
 package com.io.linkapp.link.request;
 
-import com.io.linkapp.user.domain.User;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.UUID;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
