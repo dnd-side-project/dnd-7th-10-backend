@@ -6,6 +6,7 @@ on:
 
 env:
   RESOURCE_PATH: ./src/main/resources/application.yml
+  TEST_RESOURCE_PATH: ./src/test/resources/application.yml
   FIREBASE_PATH: ./src/main/resources/firebase/firebase_service_key.json
   
 jobs:
@@ -29,6 +30,20 @@ jobs:
         uses: microsoft/variable-substitution@v1
         with:
           files: ${{ env.RESOURCE_PATH }}
+        env:
+          spring.datasource.url: ${{ secrets.DATASOURCE_URL }}
+          spring.datasource.username: ${{ secrets.DATASOURCE_USERNAME }}
+          spring.datasource.password: ${{ secrets.DATASOURCE_PASSWORD }}
+          spring.security.client.registration.google.client-id: ${{ secrets.GOOGLE_CLIENT_ID }}
+          spring.security.client.registration.google.client-secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          spring.security.client.registration.kakao.client-id: ${{ secrets.KAKAO_CLIENT_ID }}
+          spring.security.client.registration.kakao.client-secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
+          jpa.hibernate.ddl-auto: none
+          
+      - name: Set yaml file in test
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.TEST_RESOURCE_PATH }}
         env:
           spring.datasource.url: ${{ secrets.DATASOURCE_URL }}
           spring.datasource.username: ${{ secrets.DATASOURCE_USERNAME }}
