@@ -39,20 +39,6 @@ jobs:
           spring.security.client.registration.kakao.client-id: ${{ secrets.KAKAO_CLIENT_ID }}
           spring.security.client.registration.kakao.client-secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
           jpa.hibernate.ddl-auto: none
-          
-      - name: Set yaml file in test
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ env.TEST_RESOURCE_PATH }}
-        env:
-          spring.datasource.url: ${{ secrets.DATASOURCE_URL }}
-          spring.datasource.username: ${{ secrets.DATASOURCE_USERNAME }}
-          spring.datasource.password: ${{ secrets.DATASOURCE_PASSWORD }}
-          spring.security.client.registration.google.client-id: ${{ secrets.GOOGLE_CLIENT_ID }}
-          spring.security.client.registration.google.client-secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          spring.security.client.registration.kakao.client-id: ${{ secrets.KAKAO_CLIENT_ID }}
-          spring.security.client.registration.kakao.client-secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
-          jpa.hibernate.ddl-auto: none
 
       - name: Create Firebase secret Json
         uses: microsoft/variable-substitution@v1 
