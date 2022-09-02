@@ -6,7 +6,7 @@ build/
 !**/src/test/**/build/
 /src/main/resources/application-local.yml
 /src/main/resources/firebase/firebase.properties
-/src/test/resources/application.yml
+/src/main/generated
 
 ### STS ###
 .apt_generated

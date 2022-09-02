@@ -9,6 +9,7 @@ import com.io.linkapp.link.response.FolderResponse;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +36,7 @@ class FolderServiceTest {
     User user;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         folder = Folder.builder()
                 .folderTitle("testFolder")
                 .folderColor("red")
@@ -52,7 +53,7 @@ class FolderServiceTest {
     }
 
     @Test
-    public void get_메소드는_UUID로_조회한다(){
+    void get_메소드는_UUID로_폴더를_조회한다(){
         FolderResponse.GetArticles folderResponse = folderService.get(folder.getFolderId());
 
         assertThat(folderResponse.getFolderId()).isEqualTo(folder.getFolderId());
@@ -61,7 +62,7 @@ class FolderServiceTest {
     }
 
     @Test
-    public void get_메소드가_NULL을_조회시_CustomException을_반환한다(){
+    void get_메소드가_NULL을_조회시_CustomException을_반환한다(){
         assertThatThrownBy(() -> folderService.get(UUID.randomUUID()))
                 .isInstanceOf(CustomGlobalException.class)
                 .hasMessageContaining(ErrorCode.FOLDER_NOT_FOUND.getMessage())
@@ -70,7 +71,7 @@ class FolderServiceTest {
     }
 
     @Test
-    public void add_메소드로_추가한다(){
+    void add_메소드로_추가한다(){
         FolderResponse savedFolder = folderService.add(FolderRequest.builder()
                 .folderTitle("testFolder")
                 .folderColor("blue")
@@ -82,7 +83,20 @@ class FolderServiceTest {
     }
 
     @Test
-    public void remove_메소드에서_예외(){
+    void remove_메소드가_존재하지않는_폴더아이디를_조회하면_예외(){
+        assertThatThrownBy(() -> folderService.remove(UUID.randomUUID()))
+                .isInstanceOf(CustomGlobalException.class)
+                .hasMessageContaining(ErrorCode.FOLDER_NOT_FOUND.getMessage())
+                .extracting("status")
+                .isEqualTo(HttpStatus.NOT_FOUND);
+    }
 
+    @Test
+    void 폴더_조회는_0쩜001초내로_수행된다(){
+        long start = System.currentTimeMillis();
+        folderService.get(folder.getFolderId());
+        long end = System.currentTimeMillis();
+        long time = end - start;
+        assertThat(time).isLessThan(10);
     }
 }
