@@ -93,7 +93,6 @@ class MemoApiTest {
 
     @Test
     @DisplayName("POST: /memo 요청 시 메모가 저장된다.")
-    @Disabled("Redis의 test property 설정으로 인해 배포 시에 컴파일 에러가 뜨는 테스트")
     void saveMemoTest() throws Exception {
         //given
         MemoRequest request = MemoRequest.builder()

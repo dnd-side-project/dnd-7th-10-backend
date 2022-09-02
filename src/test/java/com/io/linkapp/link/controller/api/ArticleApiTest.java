@@ -91,7 +91,6 @@ class ArticleApiTest {
 
     @Test
     @DisplayName("POST: /article 요청 시 링크가 저장된다")
-    @Disabled("Redis의 test property 설정으로 인해 배포 시에 컴파일 에러가 뜨는 테스트")
     void addTest() throws Exception {
         //expected
         mockMvc.perform(post("/article")
