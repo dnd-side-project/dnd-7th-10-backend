@@ -1,8 +1,10 @@
 package com.io.linkapp.user.controller;
 
+import com.io.linkapp.config.security.auth.PrincipalDetails;
 import com.io.linkapp.config.security.jwt.JwtResponse;
 import com.io.linkapp.config.security.jwt.JwtTokenProvider;
 import com.io.linkapp.link.request.KakaoRequest;
+import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.request.RefreshRequest;
 import com.io.linkapp.user.request.UserRequest;
@@ -15,11 +17,8 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Api(value = "User", tags = {"User"})
@@ -46,6 +45,13 @@ public class UserApi {
     @GetMapping("/users")
     public List<UserResponse> getUsers() {
         return userService.findAll();
+    }
+
+    @ApiOperation("회원 탈퇴")
+    @DeleteMapping("/user")
+    public SuccessResponse removeUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        User user = principalDetails.getUser();
+        return userService.removeUser(user);
     }
 
     @ApiOperation(value = "카카오 로그인", notes = "첫 요청 시 회원가입 후 로그인, 이후 요청은 로그인")

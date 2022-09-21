@@ -9,6 +9,7 @@ import com.io.linkapp.link.domain.Remind;
 import com.io.linkapp.link.repository.FolderRepository;
 import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.request.KakaoRequest;
+import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.user.domain.User;
 import com.io.linkapp.user.mapper.UserMapper;
 import com.io.linkapp.user.repository.UserRepository;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -120,5 +122,13 @@ public class UserService {
                 .map(user -> UserMapper.INSTANCE.toResponseDto(user))
                 .collect(Collectors.toList());
     }
-    
+
+    public SuccessResponse removeUser(User user) {
+        userRepository.delete(user);
+
+        return SuccessResponse.builder()
+                .status(200)
+                .message("Remove User Success")
+                .build();
+    }
 }

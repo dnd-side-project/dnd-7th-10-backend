@@ -30,15 +30,15 @@ public class User extends BaseTimeEntity {
 
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @JsonManagedReference(value = "user-folder")
     private List<Folder> folders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @JsonManagedReference(value = "user-memo")
     private List<Memo> memos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @JsonManagedReference(value = "user-article")
     private List<Article> articles = new ArrayList<>();
     
