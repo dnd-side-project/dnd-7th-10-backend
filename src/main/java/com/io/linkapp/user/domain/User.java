@@ -30,6 +30,8 @@ public class User extends BaseTimeEntity {
 
     private String password;
 
+    private String nickname;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @JsonManagedReference(value = "user-folder")
     private List<Folder> folders = new ArrayList<>();
@@ -50,9 +52,10 @@ public class User extends BaseTimeEntity {
     private Role role = Role.BASIC;
 
     @Builder
-    public User(String username, String password) {
+    public User(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
+        this.nickname = nickname;
     }
 
     @Builder
