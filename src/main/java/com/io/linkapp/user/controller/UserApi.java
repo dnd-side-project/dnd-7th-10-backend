@@ -36,9 +36,9 @@ public class UserApi {
     }
 
     @ApiOperation("회원 찾기")
-    @GetMapping("/user/{username}")
-    public UserResponse getUser(@PathVariable("username") String username) {
-        return userService.findUser(username);
+    @GetMapping("/user/{userEmail}")
+    public UserResponse getUser(@PathVariable("userEmail") String userEmail) {
+        return userService.findUser(userEmail);
     }
 
     @ApiOperation("회원 전체 조회")
