@@ -33,6 +33,8 @@ public class QUser extends EntityPathBase<User> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
+    public final StringPath nickname = createString("nickname");
+
     public final StringPath password = createString("password");
 
     //inherited

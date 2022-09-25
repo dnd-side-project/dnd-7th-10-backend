@@ -10,6 +10,8 @@ public enum ErrorCode {
     
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     
+    INQUIRY_ALREADY_ANSWERED(HttpStatus.BAD_REQUEST, "이미 답변이 완료된 문의사항입니다"),
+    
     REMIND_NO_MORE(HttpStatus.BAD_REQUEST, "사용자 한 명당 한 개의 리마인드만 가질 수 있습니다"),
 
     NO_ARTICLES_FOR_REMIND(HttpStatus.NOT_FOUND, "현재 리마인딩할 아티클이 없습니다"),
@@ -21,6 +23,7 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류입니다."),
 
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 아티클입니다."),
+    INQUIRY_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 문의사항입니다."),
     
     REMIND_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 리마인드입니다."),
     
