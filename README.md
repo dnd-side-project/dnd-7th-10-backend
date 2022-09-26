@@ -1,4 +1,6 @@
-## 10조 인앤아웃(I/O) - 링끌
+## 링크 아카이빙 서비스, Linkkle - Backend
+
+![image (1)](https://user-images.githubusercontent.com/87016418/192398706-8d72d400-6ad5-4e4d-9d27-ddf3a74808f3.png)
 
 <details>
 
