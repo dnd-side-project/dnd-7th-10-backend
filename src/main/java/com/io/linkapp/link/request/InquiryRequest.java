@@ -1,5 +1,6 @@
 package com.io.linkapp.link.request;
 
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +29,8 @@ public class InquiryRequest {
     public static class Add{
         //질문 제목
         private String inquiryTitle;
+        //질문자 아이디
+        private UUID userId;
         //질문 내용
         private String inquiry;
         //질문 제목
@@ -44,6 +47,8 @@ public class InquiryRequest {
     public static class Modify{
         //질문 제목
         private String inquiryTitle;
+        //질문자 아이디
+        private UUID userId;
         //질문 내용
         private String inquiry;
         //질문 제목

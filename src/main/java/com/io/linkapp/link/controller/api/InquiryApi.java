@@ -49,6 +49,13 @@ public class InquiryApi {
     }
     
     @SneakyThrows
+    @ApiOperation("답변 여부 바꾸기")
+    @GetMapping("setAnswered/{inquiryId}")
+    public InquiryResponse.GetAll get(@PathVariable UUID inquiryId,Boolean answered){
+        return formMapper.toGetAll(service.setIsAnswered(inquiryId,answered));
+    }
+    
+    @SneakyThrows
     @ApiOperation("등록")
     @PostMapping
     public InquiryResponse.GetAll add(@Valid @RequestBody InquiryRequest.Add in){
@@ -63,7 +70,7 @@ public class InquiryApi {
        return formMapper.toGetAll(service.modify(inquiryId,formMapper.toInquiry(in)));
     }
     
-    @ApiOperation("메모 삭제")
+    @ApiOperation("문의 삭제")
     @DeleteMapping("/{inquiryId}")
     public void remove(@PathVariable UUID inquiryId){
          service.remove(inquiryId);

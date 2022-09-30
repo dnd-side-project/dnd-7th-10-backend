@@ -67,7 +67,19 @@ public class InquiryService {
         out.setAnswerTitle(inquiry.getAnswerTitle());
         out.setAnswer(inquiry.getAnswer());
         
+        
         return out;
+    }
+    
+    /**
+     * (1:1 문의사항) 답변 여부
+     * @param
+     * @return
+     */
+    public Inquiry setIsAnswered(UUID id, Boolean answered){
+        Inquiry inquiry = repository.getById(id);
+        inquiry.setAnswered(answered);
+        return repository.save(inquiry);
     }
     
     /**
