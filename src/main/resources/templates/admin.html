@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
+  <title>홈페이지</title>
+</head>
+<body>
+<h1>문의사항</h1>
+<table>
+  <thead>
+  <tr>
+    <th>번호</th>
+    <th>식별번호</th>
+    <th>제목</th>
+    <th>작성자</th>
+    <th>날짜</th>
+  </tr>
+  </thead>
+  <tbody th:each="inquiry,iterState : ${inquiryList}">
+  <tr>
+    <td><span th:text="${iterState.index}"></span></td>
+    <td><span th:text="${inquiry.getId()}"></span></td>
+    <td><span th:text="*{inquiry.getInquiryTitle()}"></span></td>
+    <td><span th:text="${inquiry.getUserId()}"></span></td>
+    <td><span th:text="${#temporals.format(inquiry.getRegisterDate(), 'yyyy-MM-dd HH:mm')}"></span></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

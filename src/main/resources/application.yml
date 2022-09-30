@@ -2,6 +2,14 @@ server:
   servlet:
     context-path: /api
 
+thymeleaf:
+  prefix=classpath: templates/
+  suffix: .html
+  check-template-location: true
+  cache: false
+  mvc:
+    static-path-pattern: "/static/**"
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
