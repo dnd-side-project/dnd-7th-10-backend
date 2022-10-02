@@ -2,12 +2,11 @@ package com.io.linkapp.link.controller.api;
 
 
 import com.io.linkapp.link.domain.Inquiry;
-import com.io.linkapp.link.response.TagResponse;
 import com.io.linkapp.link.service.InquiryService;
 import com.querydsl.core.BooleanBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -15,24 +14,30 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
-@Api(value = "Page", tags = {"Page"})
-@RequiredArgsConstructor
+@Api(value = "AdminPage", tags = {"AdminPage"})
+@RequestMapping(value = "/admin/inquiry")
 @Controller
-public class PageApi {
+@RequiredArgsConstructor
+public class AdminPageApi {
     
     private final InquiryService service;
     private int cnt =0;
     
     @SneakyThrows
     @ApiOperation("페이징 세팅")
-    @PostMapping("/admin/set")
+    @PostMapping("/set")
     @ResponseBody
     public void set( ){
         service.set();
@@ -42,16 +47,16 @@ public class PageApi {
     
     
     @SneakyThrows
-    @ApiOperation("페이징 조회")
-    @GetMapping("/admin")
+    @ApiOperation("전체 페이징 조회")
+    @GetMapping
     public String get(Model model, @PageableDefault(size = 3, sort = "registerDate", direction = Sort.Direction.DESC) Pageable page){
         
-        cnt+=1;
-        
-        if(cnt == 1 ){
-            service.set();
-        }
-        
+//        cnt+=1;
+//
+//        if(cnt == 1 ){
+//            service.set();
+//        }
+//
         BooleanBuilder builder = new BooleanBuilder();
         Page<Inquiry> list = service.getPage(builder,page);
     
@@ -70,5 +75,40 @@ public class PageApi {
     
         return "/admin";
     }
+    
+    
+    @SneakyThrows
+    @ApiOperation("페이징 상세 조회")
+    @GetMapping("/{id}")
+    public String detail(Model model,@PathVariable UUID id){
+        Inquiry inquiry = service.get(id);
+        model.addAttribute("detailInfo",inquiry);
+        return "/detail";
+    }
+    
+    
+    @SneakyThrows
+    @ApiOperation("답변 등록")
+    @PostMapping(value = "/answer/{id}")
+    public String answer(Model model,@PathVariable UUID id, @RequestParam Map<String,String> answerData){
+        
+        Inquiry origin = service.get(id);
+        
+        
+        Inquiry inquiry = Inquiry.builder().inquiryTitle(origin.getInquiryTitle())
+            .inquiry(origin.getInquiry())
+            .answerTitle(answerData.get("title"))
+            .answer(answerData.get("answer"))
+            .isAnswered(true)
+            .build();
+        
+        service.modify(id,inquiry);
+        
+        return String.format("redirect:/admin/inquiry/%s", id);
+    }
+    
+    
+    
+    
 
 }

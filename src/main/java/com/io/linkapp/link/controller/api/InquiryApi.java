@@ -59,7 +59,6 @@ public class InquiryApi {
     @ApiOperation("등록")
     @PostMapping
     public InquiryResponse.GetAll add(@Valid @RequestBody InquiryRequest.Add in){
-        //파라미터로 authentication 받아와야 함 - userId 넣어줘야 함
         return formMapper.toGetAll(service.add(formMapper.toInquiry(in)));
     }
     
