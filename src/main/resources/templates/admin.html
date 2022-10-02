@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
+  <title>Admin Inquiry</title>
+</head>
+<body>
+<h1>문의사항</h1>
+<table>
+  <thead>
+  <tr>
+    <th>번호</th><!--번호 = 전체 게시물 개수 - (현재 페이지 * 페이지당 게시물 개수) - 나열 인덱스-->
+    <th>제목</th>
+    <th>작성자</th>
+    <th>답변여부</th>
+    <th>날짜</th>
+  </tr>
+  </thead>
+  <tbody th:each="inquiry,iterState : ${inquiryList}">
+  <tr>
+    <td><span th:text="${inquiryList.getTotalElements - (pageable.pageNumber * pageable.pageSize) - iterState.index}"></span></td>
+    <td><a th:href="@{|/admin/inquiry/${inquiry.getId()}|}" th:text="*{inquiry.getInquiryTitle()}"></a></td>
+    <td><span th:text="${inquiry.getUserId()}"></span></td>
+    <td>
+      <div th:if="${inquiry.getIsAnswered()}">답변 완료 됨</div>
+      <div th:unless="${inquiry.getIsAnswered()}"> <strong style="color:red">답변 필요함</strong></div>
+    </td>
+    <td><span th:text="${#temporals.format(inquiry.getRegisterDate(), 'yyyy-MM-dd HH:mm')}"></span></td>
+  </tr>
+  </tbody>
+</table>
+
+<th:block th:each="page:${#numbers.sequence(startPage,endPage)}">
+  <a th:if="${page != nowPage}" th:href="@{/admin/inquiry(page=${page - 1})}" th:text ="${page}"></a>
+  <strong th:if="${page==nowPage}" th:text ="${page}" style="color:red"></strong>
+</th:block>
+
+</body>
+</html>
+
