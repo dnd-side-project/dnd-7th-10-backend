@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
+  <title>Inquiry Detail</title>
+</head>
+<body>
+
+<h1>문의 상세 사항</h1>
+<h3 th:text="|식별번호: ${detailInfo.getId()}|"></h3>
+<h1>유저 정보</h1>
+<h3 th:text="|유저 식별번호: ${detailInfo.getUserId()}|"></h3>
+<h3 th:text="|유저 네임: ${detailInfo.getUser().getUsername()}|"></h3>
+<h3 th:text="|유저 네임: ${detailInfo.getUser().getNickname()}|"></h3>
+
+<table>
+  <thead>
+  <tr>
+    <td><span th:text="${detailInfo.getInquiryTitle()}"></span></td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><span th:text="${detailInfo.getInquiry()}"></span></td>
+  </tr>
+  </tbody>
+</table>
+<br/>
+
+<!-- 답변이 있다면 답변을 보여주고-->
+<div th:if="${detailInfo.getIsAnswered()}">
+  <table>
+    <thead>
+    <tr>
+      <td><span th:text="${detailInfo.getAnswerTitle()}"></span></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><span th:text="${detailInfo.getAnswer()}"></span></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 답변이 없다면 답변 등록을 하기 위한 폼을 보여줌-->
+<div th:if="!${detailInfo.getIsAnswered()}">
+  <form th:action="@{|/admin/inquiry/answer/${detailInfo.getId()}|}" method="post">
+    <table>
+      <thead>
+      <tr>
+        <td>
+          <input type="text" id="title" name="title" placeholder="답변 제목을 입력하세요">
+        </td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+          <textarea name="answer" id="answer" rows="15" cols="50"></textarea>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <button type="submit" value="register">답변 등록</button>
+  </form>
+</div>
+
+</body>
+</html>
+
