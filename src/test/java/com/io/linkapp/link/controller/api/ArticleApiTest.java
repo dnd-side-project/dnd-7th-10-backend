@@ -60,19 +60,17 @@ class ArticleApiTest {
 
     private ArticleRequest request;
     private String jwtToken;
-    private User user;
-    private Folder folder;
 
     @BeforeEach
     void setUp() {
-        user = User.builder()
+        User user = User.builder()
             .username("testUser")
             .password("test")
             .build();
 
         user = userRepository.save(user);
 
-        folder = Folder.builder()
+        Folder folder = Folder.builder()
             .user(user)
             .folderTitle("testFolder")
             .build();
@@ -103,29 +101,6 @@ class ArticleApiTest {
                 .andExpect(jsonPath("$.linkUrl").value("www.naver.com"))
                 .andDo(print());
     }
-
-    @Test
-    @DisplayName("GET: /article/{id}로 링크를 조회한다")
-    void getLink() throws Exception {
-        Article article = ArticleMapper.INSTANCE.toEntity(request);
-
-        Article getArticle = Article.builder()
-                .user(user)
-                .folder(folder)
-                .linkUrl("www.naver.com")
-                .build();
-
-        article = articleRepository.save(getArticle);
-
-        //expected
-        mockMvc.perform(get("/article/{articleId}", getArticle.getId())
-                .contentType(APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(article.getId().toString()))
-            .andExpect(jsonPath("$.linkUrl").value("www.naver.com"))
-            .andDo(print());
-    }
-
 
     @Test
     @DisplayName("DELETE: /article/{id} 요청 시 링크를 삭제한다")
