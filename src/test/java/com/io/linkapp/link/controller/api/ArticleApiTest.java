@@ -60,17 +60,19 @@ class ArticleApiTest {
 
     private ArticleRequest request;
     private String jwtToken;
+    private User user;
+    private Folder folder;
 
     @BeforeEach
     void setUp() {
-        User user = User.builder()
+        user = User.builder()
             .username("testUser")
             .password("test")
             .build();
 
         user = userRepository.save(user);
 
-        Folder folder = Folder.builder()
+        folder = Folder.builder()
             .user(user)
             .folderTitle("testFolder")
             .build();
@@ -107,10 +109,16 @@ class ArticleApiTest {
     void getLink() throws Exception {
         Article article = ArticleMapper.INSTANCE.toEntity(request);
 
-        article = articleRepository.save(article);
+        Article getArticle = Article.builder()
+                .user(user)
+                .folder(folder)
+                .linkUrl("www.naver.com")
+                .build();
+
+        article = articleRepository.save(getArticle);
 
         //expected
-        mockMvc.perform(get("/article/{articleId}", article.getId())
+        mockMvc.perform(get("/article/{articleId}", getArticle.getId())
                 .contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(article.getId().toString()))
