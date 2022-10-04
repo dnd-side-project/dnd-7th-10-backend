@@ -4,10 +4,12 @@ import com.io.linkapp.link.domain.Article;
 import com.io.linkapp.link.domain.ArticleTag;
 import com.io.linkapp.link.domain.Memo;
 import com.io.linkapp.link.domain.OpenGraph;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,6 +17,7 @@ import lombok.Getter;
 @Getter
 public class ArticleResponse {
     private UUID id;
+    private UUID folderId;
     private UUID remindId;
     private String linkUrl;
     private OpenGraph openGraph;
@@ -27,6 +30,7 @@ public class ArticleResponse {
     @Getter
     public static class Tags {
         private UUID id;
+        private UUID folderId;
         private UUID remindId;
         private String linkUrl;
         private OpenGraph openGraph;
@@ -36,35 +40,36 @@ public class ArticleResponse {
         private LocalDateTime registerDate;
         private LocalDateTime modifiedDate;
 
-        public static List<ArticleResponse.Tags> articleTagBuilder(List<Article> articles){
+        public static List<ArticleResponse.Tags> articleTagBuilder(List<Article> articles) {
             List<ArticleResponse.Tags> articleTagList = new ArrayList<>();
 
             for (Article article : articles) {
                 TagsBuilder articleTagResponseBuilder = Tags.builder()
-                    .id(article.getId())
-                    .remindId(article.getRemindId())
-                    .linkUrl(article.getLinkUrl())
-                    .openGraph(article.getOpenGraph())
-                    .memos(article.getMemos())
-                    .registerDate(article.getRegisterDate())
-                    .modifiedDate(article.getModifiedDate())
-                    .isBookmark(article.isBookmark());
+                        .id(article.getId())
+                        .folderId(article.getFolder().getFolderId())
+                        .remindId(article.getRemindId())
+                        .linkUrl(article.getLinkUrl())
+                        .openGraph(article.getOpenGraph())
+                        .memos(article.getMemos())
+                        .registerDate(article.getRegisterDate())
+                        .modifiedDate(article.getModifiedDate())
+                        .isBookmark(article.isBookmark());
 
                 List<ArticleTag> articleTags = article.getArticleTags();
                 List<ArticleTagResponse> tagsResponse = new ArrayList<>();
 
                 for (ArticleTag articleTag : articleTags) {
                     ArticleTagResponse tagResponse = ArticleTagResponse.builder()
-                        .tagId(articleTag.getTag().getTagId())
-                        .tagName(articleTag.getTag().getTagName())
-                        .build();
+                            .tagId(articleTag.getTag().getTagId())
+                            .tagName(articleTag.getTag().getTagName())
+                            .build();
 
                     tagsResponse.add(tagResponse);
                 }
 
                 Tags tagResponse = articleTagResponseBuilder
-                    .tags(tagsResponse)
-                    .build();
+                        .tags(tagsResponse)
+                        .build();
 
                 articleTagList.add(tagResponse);
             }
@@ -74,7 +79,7 @@ public class ArticleResponse {
         }
     }
 
-    public void setBookmark(boolean isBookmark){
+    public void setBookmark(boolean isBookmark) {
         this.isBookmark = isBookmark;
     }
 }
