@@ -88,6 +88,7 @@ public class FolderService {
             .orElseThrow(() -> new CustomGlobalException(ErrorCode.POSTS_NOT_FOUND));
 
         folder.changeFolderTitle(folderRequest.getFolderTitle());
+        folder.changeFolderColor(folderRequest.getFolderColor());
         return FolderMapper.INSTANCE.toResponseDto(folderRepository.save(folder));
     }
 }
