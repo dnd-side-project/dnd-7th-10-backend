@@ -55,4 +55,8 @@ public class Folder extends BaseTimeEntity {
     public void changeFolderTitle(String folderTitle) {
         this.folderTitle = folderTitle;
     }
+
+    public void changeFolderColor(String folderColor) {
+        this.folderColor = folderColor;
+    }
 }
