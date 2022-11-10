@@ -45,9 +45,9 @@ public class RemindApi {
     
     @SneakyThrows
     @ApiOperation("단건 조회")
-    @GetMapping
-    public GetAll get(RemindRequest.GetAll in,@AuthenticationPrincipal PrincipalDetails principalDetails){
-        return formMapper.toGetAll(service.get(RemindFormPredicate.search(in,principalDetails.getUser())));
+    @GetMapping("/{remindId}")
+    public GetAll get(@PathVariable UUID remindId){
+        return formMapper.toGetAll(service.get(remindId));
     }
     
 //    @SneakyThrows

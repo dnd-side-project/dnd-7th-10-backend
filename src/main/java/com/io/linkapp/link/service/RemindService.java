@@ -39,11 +39,11 @@ public class RemindService {
     /**
      * 조회
      *
-     * @param search
+     * @param id
      * @return
      */
-    public Remind get(Predicate search){
-        return repository.findOne(search).orElseThrow(()->(new CustomGlobalException(ErrorCode.REMIND_NOT_FOUND)));
+    public Remind get(UUID id){
+        return repository.findById(id).orElseThrow(()->(new CustomGlobalException(ErrorCode.REMIND_NOT_FOUND)));
     }
     
     
