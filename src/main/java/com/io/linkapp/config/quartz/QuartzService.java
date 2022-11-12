@@ -70,7 +70,7 @@ public class QuartzService {
         }
     }
     
-    public void initSchedule(PushRequest pushRequest, User user){
+    public Remind initSchedule(PushRequest pushRequest, User user){
         log.info("Quartz Service Init");
         try{
             //job 삭제되면 trigger도 삭제됨 - 직접 테스트, db 확인해서 확실하게 확인함
@@ -159,10 +159,12 @@ public class QuartzService {
                     String jobName = "QuartzJob"+user.getId().toString()+pushRequest.getModifiedCron(); //유저마다, 또 해당 시간마다 jobName이 모두 다르도록- 그래서 key로 구분될 수 있도록
                     addJob(QuartzJob.class,jobName,"quartz",paramsMap, pushRequest.getModifiedCron());
                     log.info("Modified Cron Job");
+                    return savedRemind;
                 }else if(mode =="add"){ //그냥 최초의 시간 정보라면 (시간 수정이 아니라면)
                     String jobName = "QuartzJob"+user.getId().toString()+pushRequest.getCron(); //유저마다, 또 해당 시간마다 jobName이 모두 다르도록- 그래서 key로 구분될 수 있도록
                     addJob(QuartzJob.class,jobName,"quartz",paramsMap, pushRequest.getCron());
                     log.info("AddJob and Register to Scheduler");
+                    return savedRemind;
                 }
             }
             
@@ -170,6 +172,8 @@ public class QuartzService {
         }catch(Exception e){
            log.error("Add job error = {}", e);
         }
+        
+        return null;
     }
     
     //job 추가
