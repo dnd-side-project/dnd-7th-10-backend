@@ -6,17 +6,21 @@ import com.io.linkapp.link.controller.mapper.RemindFormMapper;
 import com.io.linkapp.link.controller.predicate.RemindFormPredicate;
 import com.io.linkapp.link.request.RemindRequest;
 import com.io.linkapp.link.response.RemindResponse.GetAll;
+import com.io.linkapp.link.response.SuccessResponse;
 import com.io.linkapp.link.service.RemindService;
 import com.io.linkapp.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,6 +42,14 @@ public class RemindApi {
         return formMapper.toGetAllList(service.getList(RemindFormPredicate.search(in,principalDetails.getUser())));
     }
     
+    
+    @SneakyThrows
+    @ApiOperation("단건 조회")
+    @GetMapping("/{remindId}")
+    public GetAll get(@PathVariable UUID remindId){
+        return formMapper.toGetAll(service.get(remindId));
+    }
+    
 //    @SneakyThrows
 //    @ApiOperation("등록")
 //    @PostMapping
@@ -48,13 +60,13 @@ public class RemindApi {
 //        return formMapper.toGetAll(remind);
 //    }
 //
-//    @SneakyThrows
-//    @ApiOperation("삭제")
-//    @DeleteMapping("/{remindId}")
-//    public SuccessResponse remove(@PathVariable UUID remindId) {
-//        return service.remove(remindId);
-//    }
-//
+    @SneakyThrows
+    @ApiOperation("삭제")
+    @DeleteMapping("/{remindId}")
+    public SuccessResponse remove(@PathVariable UUID remindId) {
+        return service.remove(remindId);
+    }
+
     
     
     

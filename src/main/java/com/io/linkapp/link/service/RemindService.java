@@ -1,8 +1,13 @@
 package com.io.linkapp.link.service;
 
+import com.io.linkapp.exception.CustomGlobalException;
+import com.io.linkapp.exception.ErrorCode;
+import com.io.linkapp.link.domain.QTag;
 import com.io.linkapp.link.domain.Remind;
+import com.io.linkapp.link.domain.Tag;
 import com.io.linkapp.link.repository.RemindRepository;
 import com.io.linkapp.link.response.SuccessResponse;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +33,17 @@ public class RemindService {
         
         List<Remind> list = (List<Remind>) repository.findAll(search);
         return list;
+    }
+    
+    
+    /**
+     * 조회
+     *
+     * @param id
+     * @return
+     */
+    public Remind get(UUID id){
+        return repository.findById(id).orElseThrow(()->(new CustomGlobalException(ErrorCode.REMIND_NOT_FOUND)));
     }
     
     
