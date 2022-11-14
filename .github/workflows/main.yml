@@ -88,6 +88,9 @@ jobs:
           tags:
             ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:latest
       
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
       - name: Nginx Image Build and Push
         uses: docker/build-push-action@v3.0.0
         with:
@@ -107,5 +110,3 @@ jobs:
           application_name: dnd-7th-linkApp
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
           deployment_package: ./docker-compose.yml
-          
-          
